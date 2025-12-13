@@ -4,7 +4,7 @@
             <a routerLink="/">NABADA</a>
         </h1>
         <nav #nav (mouseleave)="resetBg()">
-                 <li class="bgEl" [ngStyle]="{'left.px' : bgElPosition,'width.px':bgElWidth}"></li>
+            <li class="bgEl" [ngStyle]="{'left.px' : bgElPosition,'width.px':bgElWidth}"></li>
             <li>
                 <a routerLink="/" (mouseenter)="moveBg($event)">Sessions</a>
             </li>
@@ -12,7 +12,7 @@
                 <a routerLink="/products" (mouseenter)="moveBg($event)">Products</a>
             </li>
             <li>
-                <a routerLink="/Analytics" (mouseenter)="moveBg($event)">Analytics</a>
+                <a routerLink="/analytics" (mouseenter)="moveBg($event)">Analytics</a>
             </li>
 
         </nav>
