@@ -1,0 +1,24 @@
+<header>
+    <div class="heading">
+        <h1>
+            <a routerLink="/">NABADA</a>
+        </h1>
+        <nav #nav (mouseleave)="resetBg()">
+                 <li class="bgEl" [ngStyle]="{'left.px' : bgElPosition,'width.px':bgElWidth}"></li>
+            <li>
+                <a routerLink="/" (mouseenter)="moveBg($event)">Sessions</a>
+            </li>
+            <li>
+                <a routerLink="/products" (mouseenter)="moveBg($event)">Products</a>
+            </li>
+            <li>
+                <a routerLink="/Analytics" (mouseenter)="moveBg($event)">Analytics</a>
+            </li>
+
+        </nav>
+    </div>
+    <div class="footing">
+        <button class="langSwitcher">EN</button>
+        <button class="profileBtn"></button>
+    </div>
+</header>

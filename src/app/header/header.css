@@ -1,0 +1,79 @@
+header {
+  padding: 2.4rem 4.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.2rem;
+}
+header .heading {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+header h1 {
+  font-family: 'Monoton', sans-serif;
+  font-size: 2.4rem;
+  font-weight: 400;
+  cursor: pointer;
+  margin-right: 8.4rem;
+  color: var(--secondary-color);
+}
+header nav {
+  display: flex;
+  align-items: center;
+  gap: 2.4rem;
+  list-style: none;
+  font-size: 1.6rem;
+  /* border: 1px solid var(--border-color); */
+  position: relative;
+}
+/* header li {
+} */
+header .bgEl {
+  position: absolute;
+  background-color: var(--hover-color);
+  width: 88px;
+  height: 100%;
+  border-radius: 50rem;
+  z-index: -1;
+  transition: 0.4s ease-in-out;
+  pointer-events: none;
+}
+header li a {
+  cursor: pointer;
+  transition: 0.4s;
+  padding: 0.4rem 1.2rem;
+}
+header li a:hover {
+  color: var(--primary-color);
+}
+header .footing {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+header .langSwitcher {
+  cursor: pointer;
+  border: 1px solid var(--border-color);
+  background-color: var(--background-secondary);
+  color: var(--secondary-color);
+  font-size: 1.6rem;
+  padding: 0.4rem 1.2rem;
+  border-radius: 4px;
+  transition: 0.4s;
+}
+header .langSwitcher:hover {
+  background-color: var(--hover-color);
+}
+header .langSwitcher:active {
+  color: var(--primary-color);
+}
+header .profileBtn {
+  background-color: var(--primary-color);
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  border: none;
+  cursor: pointer;
+}

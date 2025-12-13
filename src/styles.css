@@ -1,12 +1,27 @@
 :root {
   --primary-color: #fca311;
-  --secondary-color: #14213d;
-  --background-color: #000000;
-  --text-color: #ffffff;
-  --border-color: #e5e5e5;
-  --hover-color: #333533;
+  --secondary-color: #fff;
+  --background-main: #000000;
+  --background-secondary: #0a0a0a;
+  --text-color: #a1a1a1;
+  --border-color: #2d2d2d;
+  --hover-color: #1f1f1f;
   --active-color: #cfdbd5;
+  --error: #dc2626;
+  --success: #44bba4;
 }
+/* .light {
+  --background-color: #fafafa;
+  --primary-color: #a855f7;
+  --secondary-color: #000;
+  --text-color: #666666;
+  --hover-color: #ebebeb;
+  --border-color: #e1e1e1;
+  --accent-color: #fff;
+  --error: #dc2626;
+  --success: #44bba4;
+} */
+
 /* 1. Use a more-intuitive box-sizing model */
 *,
 *::before,
@@ -87,7 +102,7 @@ html {
 }
 body {
   font-family: 'Roboto', sans-serif;
-  background-color: var(--background-color);
+  background-color: var(--background-main);
   color: var(--text-color);
 }
 app-root {
