@@ -25,11 +25,8 @@ header nav {
   gap: 2.4rem;
   list-style: none;
   font-size: 1.6rem;
-  /* border: 1px solid var(--border-color); */
   position: relative;
 }
-/* header li {
-} */
 header .bgEl {
   position: absolute;
   background-color: var(--hover-color);
@@ -45,7 +42,10 @@ header li a {
   transition: 0.4s;
   padding: 0.4rem 1.2rem;
 }
-header li a:hover {
+header li a:active {
+  color: var(--primary-color);
+}
+.active {
   color: var(--primary-color);
 }
 header .footing {

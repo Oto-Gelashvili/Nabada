@@ -6,13 +6,13 @@
         <nav #nav (mouseleave)="resetBg()">
             <li class="bgEl" [ngStyle]="{'left.px' : bgElPosition,'width.px':bgElWidth}"></li>
             <li>
-                <a routerLink="/" (mouseenter)="moveBg($event)">Sessions</a>
+                 <a id="sessions" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (mouseenter)="moveBg($event)">Sessions</a>
             </li>
             <li>
-                <a routerLink="/products" (mouseenter)="moveBg($event)">Products</a>
+                <a id="products" routerLink="/products" routerLinkActive="active" (mouseenter)="moveBg($event)">Products</a>
             </li>
             <li>
-                <a routerLink="/analytics" (mouseenter)="moveBg($event)">Analytics</a>
+                <a id="analytics" routerLink="/analytics" routerLinkActive="active" (mouseenter)="moveBg($event)">Analytics</a>
             </li>
 
         </nav>
