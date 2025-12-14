@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
-import { Sessions } from './sessions/sessions';
-import { Products } from './products/products';
-import { Analytics } from './analytics/analytics';
+import { Sessions } from './features/sessions/sessions';
+import { Products } from './features/products/products';
+import { Analytics } from './features/analytics/analytics';
 
 export const routes: Routes = [
   {
