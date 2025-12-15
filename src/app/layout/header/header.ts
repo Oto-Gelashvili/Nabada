@@ -1,7 +1,6 @@
-import { AfterViewInit, Component, ElementRef, inject, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, ViewChild, OnDestroy, signal } from '@angular/core';
 import { NgStyle } from '@angular/common';
-import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/router';
-import { filter } from 'rxjs';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -9,49 +8,40 @@ import { filter } from 'rxjs';
   templateUrl: './header.html',
   styleUrl: './header.css',
 })
-export class Header implements AfterViewInit {
+export class Header implements AfterViewInit, OnDestroy {
   @ViewChild('nav', { static: true }) navRef!: ElementRef<HTMLElement>;
-
-  bgElPosition = 0;
-  bgElWidth = 0;
+  bgElPosition = signal(0);
+  bgElWidth = signal(0);
   private navRect!: DOMRect;
-  private router = inject(Router);
 
   ngAfterViewInit() {
-    this.navRect = this.navRef.nativeElement.getBoundingClientRect();
-
-    // so i can remember
-    // because ihave bgElement that should attach to active link on load, this was only thing that helpmed to chive that
-    // i think router wasnt able to set url fast enough, so activeLink was correctly initialized
-    // as without navigationEnd when i used debbuger on resetBg method, activeLink would just return '/' in every case, even when standing on /products
-    // that was maybe (not sure) reason why i didng use routerLinkActives .active class to get current active link
-    // as in that case it would return null for activeLink
-    // first time i felt like next.js is better, as there is terrible docs and very small amount of content about this topic, next.js eco is better
-    this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe(() => {
-      this.resetBg();
-    });
+    // so what actually happes here is that yes DOM is ready, but external assets like ( styles, images, font families...) are not, in some cases accurately calculated
+    // therefore we use load event and calculate rect after  all assets load
+    window.addEventListener('load', this.initialSetup);
   }
 
+  ngOnDestroy() {
+    window.removeEventListener('load', this.initialSetup);
+  }
+
+  // lexicly binds "this" to header instance so we dont have to use explicit binding inside events
+  private initialSetup = () => {
+    this.navRect = this.navRef.nativeElement.getBoundingClientRect();
+    this.bgReset();
+  };
   moveBg(event: MouseEvent) {
     const target = event.target as HTMLElement;
     const targetRect = target.getBoundingClientRect();
 
-    this.bgElPosition = targetRect.left - this.navRect.left;
-    this.bgElWidth = targetRect.width;
+    this.bgElPosition.set(targetRect.left - this.navRect.left);
+    this.bgElWidth.set(targetRect.width);
   }
 
-  resetBg() {
-    const currentPath = this.router.url.slice(1);
-    let activeLink: HTMLElement | null;
-    if (currentPath !== '') {
-      activeLink = this.navRef.nativeElement.querySelector(`#${currentPath}`);
-    } else {
-      activeLink = this.navRef.nativeElement.querySelector('#sessions');
-    }
-    if (activeLink) {
-      const activeLinkRect = activeLink.getBoundingClientRect();
-      this.bgElPosition = activeLinkRect.left - this.navRect.left;
-      this.bgElWidth = activeLinkRect.width;
-    }
-  }
+  bgReset = () => {
+    debugger;
+    const activeLink = document.querySelector('.active') as HTMLElement;
+    const activeLinkRect = activeLink?.getBoundingClientRect() as DOMRect;
+    this.bgElPosition.set(activeLinkRect.left - this.navRect.left);
+    this.bgElWidth.set(activeLinkRect.width);
+  };
 }

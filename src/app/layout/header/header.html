@@ -3,8 +3,8 @@
         <h1>
             <a routerLink="/">NABADA</a>
         </h1>
-        <nav #nav (mouseleave)="resetBg()">
-            <li class="bgEl" [ngStyle]="{'left.px' : bgElPosition,'width.px':bgElWidth}"></li>
+        <nav #nav (mouseleave)="bgReset()" >
+            <li class="bgEl" [ngStyle]="{'left.px' : bgElPosition(),'width.px':bgElWidth()}"></li>
             <li>
                  <a id="sessions" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (mouseenter)="moveBg($event)">Sessions</a>
             </li>
