@@ -38,9 +38,9 @@ export class Header implements AfterViewInit, OnDestroy {
   }
 
   bgReset = () => {
-    debugger;
-    const activeLink = document.querySelector('.active') as HTMLElement;
-    const activeLinkRect = activeLink?.getBoundingClientRect() as DOMRect;
+    const activeLink = document.querySelector<HTMLElement>('.active');
+    if (!activeLink || !this.navRect) return;
+    const activeLinkRect = activeLink.getBoundingClientRect();
     this.bgElPosition.set(activeLinkRect.left - this.navRect.left);
     this.bgElWidth.set(activeLinkRect.width);
   };
