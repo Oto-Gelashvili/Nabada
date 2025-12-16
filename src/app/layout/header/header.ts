@@ -1,4 +1,13 @@
-import { AfterViewInit, Component, ElementRef, ViewChild, OnDestroy, signal } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  ViewChild,
+  OnDestroy,
+  signal,
+  Inject,
+  LOCALE_ID,
+} from '@angular/core';
 import { NgStyle } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 
@@ -13,6 +22,8 @@ export class Header implements AfterViewInit, OnDestroy {
   bgElPosition = signal(0);
   bgElWidth = signal(0);
   private navRect!: DOMRect;
+
+  constructor(@Inject(LOCALE_ID) private currentLocale: string) {}
 
   ngAfterViewInit() {
     // so what actually happes here is that yes DOM is ready, but external assets like ( styles, images, font families...) are not, in some cases accurately calculated
@@ -44,4 +55,13 @@ export class Header implements AfterViewInit, OnDestroy {
     this.bgElPosition.set(activeLinkRect.left - this.navRect.left);
     this.bgElWidth.set(activeLinkRect.width);
   };
+  switchLang() {
+    const pathname = window.location.pathname;
+
+    if (this.currentLocale === 'ka') {
+      window.location.href = pathname.replace('/ka', '/en-US');
+    } else {
+      window.location.href = pathname.replace('/en-US', '/ka');
+    }
+  }
 }

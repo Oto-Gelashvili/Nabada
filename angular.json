@@ -7,6 +7,15 @@
   "newProjectRoot": "projects",
   "projects": {
     "nabada-manager": {
+      "i18n": {
+        "sourceLocale": "en-US",
+        "locales": {
+          "ka": {
+            "translation": "src/locale/messages.ka.json",
+            "baseHref": "/ka/"
+          }
+        }
+      },
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -24,12 +33,12 @@
                 "input": "public"
               }
             ],
-            "styles": [
-              "src/styles.css"
-            ]
+            "styles": ["src/styles.css"],
+            "polyfills": ["@angular/localize/init"]
           },
           "configurations": {
             "production": {
+              "localize": true,
               "budgets": [
                 {
                   "type": "initial",
@@ -45,9 +54,13 @@
               "outputHashing": "all"
             },
             "development": {
+              "localize": false,
               "optimization": false,
               "extractLicenses": false,
               "sourceMap": true
+            },
+            "ka": {
+              "localize": ["ka"]
             }
           },
           "defaultConfiguration": "production"
@@ -55,6 +68,9 @@
         "serve": {
           "builder": "@angular/build:dev-server",
           "configurations": {
+            "ka": {
+              "buildTarget": "nabada-manager:build:development,ka"
+            },
             "production": {
               "buildTarget": "nabada-manager:build:production"
             },
