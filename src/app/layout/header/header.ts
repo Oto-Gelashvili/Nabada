@@ -58,13 +58,13 @@ export class Header implements AfterViewInit, OnDestroy {
     this.bgElWidth.set(activeLinkRect.width);
   };
   switchLang() {
-    // const pathname = window.location.pathname;
+    const pathname = window.location.pathname;
     this.loading.set(true);
 
-    // if (this.currentLocale === 'ka') {
-    //   window.location.href = pathname.replace('/ka', '/en');
-    // } else {
-    //   window.location.href = pathname.replace('/en', '/ka');
-    // }
+    if (this.currentLocale === 'ka') {
+      window.location.href = pathname.replace('/ka', '/en');
+    } else {
+      window.location.href = pathname.replace('/en', '/ka');
+    }
   }
 }
