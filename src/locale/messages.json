@@ -1,9 +1,9 @@
 {
-  "locale": "en-US",
+  "locale": "en",
   "translations": {
-    "721963055036507192": "Sessions",
-    "6707361102856436710": "Products",
-    "7861389751355579174": "Analytics",
-    "4915167949506219424": "ქარ"
+    "sessionLink": "Sessions",
+    "productsLink": "Products",
+    "analyticsLink": "Analytics",
+    "languageSwitcherBtn": "ქარ"
   }
 }
