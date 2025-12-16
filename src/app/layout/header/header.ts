@@ -10,10 +10,11 @@ import {
 } from '@angular/core';
 import { NgStyle } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Loader } from '../../components/loader/loader';
 
 @Component({
   selector: 'app-header',
-  imports: [NgStyle, RouterLink, RouterLinkActive],
+  imports: [NgStyle, RouterLink, RouterLinkActive, Loader],
   templateUrl: './header.html',
   styleUrl: './header.css',
 })
@@ -22,6 +23,7 @@ export class Header implements AfterViewInit, OnDestroy {
   bgElPosition = signal(0);
   bgElWidth = signal(0);
   private navRect!: DOMRect;
+  loading = signal(false);
 
   constructor(@Inject(LOCALE_ID) private currentLocale: string) {}
 
@@ -56,12 +58,13 @@ export class Header implements AfterViewInit, OnDestroy {
     this.bgElWidth.set(activeLinkRect.width);
   };
   switchLang() {
-    const pathname = window.location.pathname;
+    // const pathname = window.location.pathname;
+    this.loading.set(true);
 
-    if (this.currentLocale === 'ka') {
-      window.location.href = pathname.replace('/ka', '/en-US');
-    } else {
-      window.location.href = pathname.replace('/en-US', '/ka');
-    }
+    // if (this.currentLocale === 'ka') {
+    //   window.location.href = pathname.replace('/ka', '/en');
+    // } else {
+    //   window.location.href = pathname.replace('/en', '/ka');
+    // }
   }
 }

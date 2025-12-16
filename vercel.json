@@ -1,7 +1,7 @@
 {
   "rewrites": [
     { "source": "/ka/(.*)", "destination": "/ka/index.html" },
-    { "source": "/en-US/(.*)", "destination": "/en-US/index.html" },
-    { "source": "/(.*)", "destination": "/en-US/index.html" }
+    { "source": "/en/(.*)", "destination": "/en/index.html" },
+    { "source": "/(.*)", "destination": "/en/index.html" }
   ]
 }

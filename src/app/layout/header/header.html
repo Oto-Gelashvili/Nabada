@@ -1,3 +1,6 @@
+    @if(loading()){
+    <app-loader ></app-loader>
+    }
 <header>
     <div class="heading">
         <h1>
@@ -6,19 +9,19 @@
         <nav #nav (mouseleave)="bgReset()" >
             <li class="bgEl" [ngStyle]="{'left.px' : bgElPosition(),'width.px':bgElWidth()}"></li>
             <li>
-                 <a i18n @@sessionLink id="sessions" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (mouseenter)="moveBg($event)">Sessions</a>
+                 <a i18n="@@sessionLink" id="sessions" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (mouseenter)="moveBg($event)">Sessions</a>
             </li>
             <li>
-                <a i18n @@productsLink id="products" routerLink="/products" routerLinkActive="active" (mouseenter)="moveBg($event)">Products</a>
+                <a i18n="@@productsLink" id="products" routerLink="/products" routerLinkActive="active" (mouseenter)="moveBg($event)">Products</a>
             </li>
             <li>
-                <a i18n @@analyticsLink id="analytics" routerLink="/analytics" routerLinkActive="active" (mouseenter)="moveBg($event)">Analytics</a>
+                <a i18n="@@analyticsLink" id="analytics" routerLink="/analytics" routerLinkActive="active" (mouseenter)="moveBg($event)">Analytics</a>
             </li>
 
         </nav>
     </div>
     <div class="footing">
-        <button i18n @@languageSwitcherBtn class="langSwitcher" (click)="switchLang()">ქარ</button>
+        <button i18n="@@languageSwitcherBtn" class="langSwitcher" (click)="switchLang()">ქარ</button>
         <button class="profileBtn"></button>
     </div>
 </header>
