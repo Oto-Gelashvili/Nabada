@@ -1,8 +1,9 @@
 import { Component, signal, effect, ElementRef, inject, OnDestroy, DOCUMENT } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-profile-btn',
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './profile-btn.html',
   styleUrl: './profile-btn.css',
 })

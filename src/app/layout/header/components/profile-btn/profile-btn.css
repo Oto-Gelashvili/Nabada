@@ -43,6 +43,7 @@
 .profileMenu a:active {
   color: var(--primary-color);
 }
+
 .profileMenu .themeCont {
   border-top: 1px solid var(--border-color);
   border-bottom: 1px solid var(--border-color);
