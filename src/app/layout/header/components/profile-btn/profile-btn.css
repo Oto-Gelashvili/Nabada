@@ -1,0 +1,108 @@
+.profileBtn {
+  background-color: var(--primary-color);
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  border: none;
+  cursor: pointer;
+  position: relative;
+}
+.profileMenu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: var(--accent-color);
+  color: var(--text-color);
+  padding-block: 0.4rem;
+  border-radius: 12px;
+  margin-top: 1.2rem;
+  width: 256px;
+  border: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  font-size: 1.6rem;
+  cursor: pointer;
+}
+.profileMenu .username {
+  color: var(--secondary-color);
+}
+.profileMenu > * {
+  padding: 0.8rem 1.6rem;
+  border-radius: 4px;
+  transition: 0.4s;
+}
+.profileMenu a {
+  width: 100%;
+  text-align: start;
+}
+.profileMenu a:hover {
+  background-color: var(--hover-color);
+  color: var(--secondary-color);
+}
+.profileMenu a:active {
+  color: var(--primary-color);
+}
+.profileMenu .themeCont {
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+  cursor: pointer;
+  border-radius: unset;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+.profileMenu .themeToggle {
+  display: flex;
+  gap: 1.2rem;
+  border: 1px solid var(--text-color);
+  border-radius: 50rem;
+  font-weight: 400;
+  overflow: hidden;
+}
+.profileMenu .themeToggle button {
+  background-color: var(--accent-color);
+  border: none;
+  cursor: pointer;
+  transition: 0.4s;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.profileMenu .themeToggle button span {
+  color: var(--secondary-color);
+  padding: 0.4rem;
+  border-radius: 50%;
+  font-size: 1.8rem;
+  transition: 0.4s;
+}
+
+.profileBtn .themeToggle button span.active {
+  background-color: var(--primary-color);
+  /* color: #fff; */
+}
+.profileMenu .btnCont {
+  padding: 0.8rem 1.6rem;
+  width: 100%;
+}
+.profileMenu .logOutBtn {
+  padding: 0.8rem 1.6rem;
+  background-color: var(--secondary-color);
+  color: var(--accent-color);
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: 0.4s;
+}
+.profileMenu .logOutBtn:hover {
+  background-color: var(--accent-color);
+  color: var(--secondary-color);
+  border-color: var(--secondary-color);
+}
+.profileMenu .logOutBtn:active {
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+}

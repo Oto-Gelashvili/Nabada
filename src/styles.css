@@ -1,8 +1,8 @@
 :root {
   --primary-color: #fca311;
   --secondary-color: #fff;
-  --background-main: #000000;
-  --background-secondary: #0a0a0a;
+  --background-color: #000000;
+  --accent-color: #0a0a0a;
   --text-color: #a1a1a1;
   --border-color: #2d2d2d;
   --hover-color: #1f1f1f;
@@ -10,7 +10,23 @@
   --error: #dc2626;
   --success: #44bba4;
 }
-/* .light {
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --primary-color: #a855f7;
+    --secondary-color: #000;
+    --background-color: #fafafa;
+    --accent-color: #fff;
+    --text-color: #666666;
+    --hover-color: #ebebeb;
+    --border-color: #e1e1e1;
+    --error: #dc2626;
+    --success: #44bba4;
+    --active-color: #cfdbd5;
+  }
+}
+:root[data-theme='light'] {
+  color-scheme: light;
   --background-color: #fafafa;
   --primary-color: #a855f7;
   --secondary-color: #000;
@@ -20,8 +36,22 @@
   --accent-color: #fff;
   --error: #dc2626;
   --success: #44bba4;
-} */
+  --active-color: #cfdbd5;
+}
 
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --primary-color: #fca311;
+  --secondary-color: #fff;
+  --background-color: #000000;
+  --accent-color: #0a0a0a;
+  --text-color: #a1a1a1;
+  --border-color: #2d2d2d;
+  --hover-color: #1f1f1f;
+  --active-color: #cfdbd5;
+  --error: #dc2626;
+  --success: #44bba4;
+}
 /* 1. Use a more-intuitive box-sizing model */
 *,
 *::before,
@@ -103,14 +133,23 @@ a {
 }
 html {
   font-size: 62.5%;
+  color-scheme: light dark;
 }
 body {
   font-family: 'Roboto', sans-serif;
-  background-color: var(--background-main);
+  background-color: var(--background-color);
   color: var(--text-color);
 }
 app-root {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+}
+a:visited {
+  color: var(--text-color);
+}
+html.disable-transitions *,
+html.disable-transitions *::before,
+html.disable-transitions *::after {
+  transition: none !important;
 }

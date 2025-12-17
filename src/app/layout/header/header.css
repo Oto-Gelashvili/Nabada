@@ -57,9 +57,7 @@ header li a:hover {
 header li a:active {
   color: var(--primary-color);
 }
-header li a:visited {
-  color: var(--text-color);
-}
+
 header li a.active {
   color: var(--primary-color);
 }
@@ -71,7 +69,7 @@ header .footing {
 header .langSwitcher {
   cursor: pointer;
   border: 1px solid var(--border-color);
-  background-color: var(--background-secondary);
+  background-color: var(--accent-color);
   color: var(--secondary-color);
   font-size: 1.6rem;
   padding: 0.4rem 1.2rem;
@@ -83,12 +81,4 @@ header .langSwitcher:hover {
 }
 header .langSwitcher:active {
   color: var(--primary-color);
-}
-header .profileBtn {
-  background-color: var(--primary-color);
-  border-radius: 50%;
-  width: 32px;
-  height: 32px;
-  border: none;
-  cursor: pointer;
 }

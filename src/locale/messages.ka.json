@@ -1,6 +1,9 @@
 {
   "locale": "ka",
   "translations": {
+    "settingLink": "პარამეტრები",
+    "theme": "თემა",
+    "logOutBtn": "გამოსვლა",
     "sessionLink": "სესიები",
     "productsLink": "პროდუქტები",
     "analyticsLink": "ანალიტიკა",

@@ -1,0 +1,16 @@
+<button class="profileBtn" (click)="toggleState()">
+    @if(open()){
+    <div class="profileMenu" (click)="$event.stopPropagation()">
+        <p class="username">Oto Gelashvili</p>
+        <a i18n="@@settingLink" routerLink="/settings" routerLinkActive="active">Settings</a>
+        <div class="themeCont">
+            <p i18n="@@theme">Theme</p>
+            <div class="themeToggle" id="theme">
+                <button (click)="setTheme('light')"><span class="material-symbols-outlined"  [class.active]="activeTheme() === 'light'">sunny</span></button>
+                <button (click)="setTheme('dark')"><span class="material-symbols-outlined"  [class.active]="activeTheme() === 'dark'">bedtime</span></button>
+            </div>
+        </div>
+        <div class="btnCont"><button i18n="@@logOutBtn" class="logOutBtn">Log out</button></div>
+    </div>
+    }
+</button>

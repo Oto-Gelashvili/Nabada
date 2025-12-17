@@ -1,6 +1,9 @@
 {
   "locale": "en",
   "translations": {
+    "settingLink": "Settings",
+    "theme": "Theme",
+    "logOutBtn": "Log out",
     "sessionLink": "Sessions",
     "productsLink": "Products",
     "analyticsLink": "Analytics",

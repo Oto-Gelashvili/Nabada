@@ -12,10 +12,11 @@ import {
 import { NgStyle } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { Loader } from '../../components/loader/loader';
+import { ProfileBtn } from './components/profile-btn/profile-btn';
 
 @Component({
   selector: 'app-header',
-  imports: [NgStyle, RouterLink, RouterLinkActive, Loader],
+  imports: [NgStyle, RouterLink, RouterLinkActive, Loader, ProfileBtn],
   templateUrl: './header.html',
   styleUrl: './header.css',
 })
