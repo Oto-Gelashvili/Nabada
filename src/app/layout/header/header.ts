@@ -19,20 +19,19 @@ import { Loader } from '../../components/loader/loader';
   styleUrl: './header.css',
 })
 export class Header implements AfterViewInit, OnDestroy {
-  @ViewChild('nav', { static: true }) navRef!: ElementRef<HTMLElement>;
+  @ViewChild('nav', { static: false }) navRef!: ElementRef<HTMLElement>;
   bgElPosition = signal(0);
   bgElWidth = signal(0);
   private navRect!: DOMRect;
   loading = signal(false);
 
   constructor(@Inject(LOCALE_ID) private currentLocale: string) {}
-
   ngAfterViewInit() {
     // so what actually happes here is that yes DOM is ready, but external assets like ( styles, images, font families...) are not, in some cases accurately calculated
     // therefore we use load event and calculate rect after  all assets load
+    // using router event to subsbscribe to instance of navigationEnd event also had a weird bug ,even when bgReset() was run with setTimout, on initial load navRect would have wrong value.
     window.addEventListener('load', this.initialSetup);
   }
-
   ngOnDestroy() {
     window.removeEventListener('load', this.initialSetup);
   }
@@ -51,11 +50,19 @@ export class Header implements AfterViewInit, OnDestroy {
   }
 
   bgReset = () => {
-    const activeLink = document.querySelector<HTMLElement>('.active');
+    const activeLink = this.navRef.nativeElement.querySelector<HTMLElement>('.active');
     if (!activeLink || !this.navRect) return;
     const activeLinkRect = activeLink.getBoundingClientRect();
     this.bgElPosition.set(activeLinkRect.left - this.navRect.left);
     this.bgElWidth.set(activeLinkRect.width);
+  };
+  logoReset = () => {
+    const homeLink = document.querySelector<HTMLElement>('.homeLink');
+    if (homeLink) {
+      const heomLinkWidth = homeLink.getBoundingClientRect().width;
+      this.bgElPosition.set(0);
+      this.bgElWidth.set(heomLinkWidth);
+    }
   };
   switchLang() {
     const pathname = window.location.pathname;
