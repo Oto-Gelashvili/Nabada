@@ -7,6 +7,7 @@ import {
   signal,
   Inject,
   LOCALE_ID,
+  inject,
 } from '@angular/core';
 import { NgStyle } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
@@ -24,8 +25,8 @@ export class Header implements AfterViewInit, OnDestroy {
   bgElWidth = signal(0);
   private navRect!: DOMRect;
   loading = signal(false);
+  private currentLocale = inject(LOCALE_ID);
 
-  constructor(@Inject(LOCALE_ID) private currentLocale: string) {}
   ngAfterViewInit() {
     // so what actually happes here is that yes DOM is ready, but external assets like ( styles, images, font families...) are not, in some cases accurately calculated
     // therefore we use load event and calculate rect after  all assets load
