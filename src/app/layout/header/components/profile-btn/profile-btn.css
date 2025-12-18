@@ -78,11 +78,17 @@
   border-radius: 50%;
   font-size: 1.8rem;
   transition: 0.4s;
+  width: 26px;
+  height: 26px;
+  line-height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .profileBtn .themeToggle button span.active {
   background-color: var(--primary-color);
-  /* color: #fff; */
+  color: #fff;
 }
 .profileMenu .btnCont {
   padding: 0.8rem 1.6rem;

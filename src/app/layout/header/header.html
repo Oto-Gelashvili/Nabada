@@ -1,27 +1,49 @@
-    @if(loading()){
-    <app-loader ></app-loader>
-    }
+@if (loading()) {
+  <app-loader></app-loader>
+}
 <header>
-    <div class="heading">
-        <h1>
-            <a routerLink="/" (click)="logoReset()">NABADA</a>
-        </h1>
-        <nav #nav (mouseleave)="bgReset()" >
-            <li class="bgEl" [ngStyle]="{'left.px' : bgElPosition(),'width.px':bgElWidth()}"></li>
-            <li>
-                 <a i18n="@@sessionLink" id="sessions" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="homeLink" (mouseenter)="moveBg($event)">Sessions</a>
-            </li>
-            <li>
-                <a i18n="@@productsLink" id="products" routerLink="/products" routerLinkActive="active" (mouseenter)="moveBg($event)">Products</a>
-            </li>
-            <li>
-                <a i18n="@@analyticsLink" id="analytics" routerLink="/analytics" routerLinkActive="active" (mouseenter)="moveBg($event)">Analytics</a>
-            </li>
-
-        </nav>
-    </div>
-    <div class="footing">
-        <button i18n="@@languageSwitcherBtn" class="langSwitcher" (click)="switchLang()">ქარ</button>
-        <app-profile-btn></app-profile-btn>
-    </div>
+  <div class="heading">
+    <h1>
+      <a routerLink="/" (click)="logoReset()">NABADA</a>
+    </h1>
+    <nav #nav (mouseleave)="bgReset()">
+      <li class="bgEl" [ngStyle]="{ 'left.px': bgElPosition(), 'width.px': bgElWidth() }"></li>
+      <li>
+        <a
+          i18n="@@sessionLink"
+          id="sessions"
+          routerLink="/"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="homeLink"
+          (mouseenter)="moveBg($event)"
+          >Sessions</a
+        >
+      </li>
+      <li>
+        <a
+          i18n="@@productsLink"
+          id="products"
+          routerLink="/products"
+          routerLinkActive="active"
+          (mouseenter)="moveBg($event)"
+          >Products</a
+        >
+      </li>
+      <li>
+        <a
+          i18n="@@analyticsLink"
+          id="analytics"
+          routerLink="/analytics"
+          routerLinkActive="active"
+          (mouseenter)="moveBg($event)"
+          >Analytics</a
+        >
+      </li>
+    </nav>
+  </div>
+  <div class="footing">
+    <button i18n="@@languageSwitcherBtn" class="langSwitcher" (click)="switchLang()">ქარ</button>
+    <app-profile-btn></app-profile-btn>
+  </div>
 </header>
