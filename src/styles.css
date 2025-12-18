@@ -37,6 +37,7 @@
   --error: #dc2626;
   --success: #44bba4;
   --active-color: #cfdbd5;
+  --leftPostition: 0;
 }
 
 :root[data-theme='dark'] {
@@ -51,6 +52,7 @@
   --active-color: #cfdbd5;
   --error: #dc2626;
   --success: #44bba4;
+  --leftPostition: calc(100% - 26px);
 }
 /* 1. Use a more-intuitive box-sizing model */
 *,

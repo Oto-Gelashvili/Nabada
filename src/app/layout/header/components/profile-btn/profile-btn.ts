@@ -1,6 +1,5 @@
 import { Component, signal, effect, ElementRef, inject, OnDestroy, DOCUMENT } from '@angular/core';
 import { RouterLink } from '@angular/router';
-
 @Component({
   selector: 'app-profile-btn',
   imports: [RouterLink],
@@ -11,7 +10,6 @@ export class ProfileBtn implements OnDestroy {
   // injecting for SSR in future if needed
   private elementRef = inject(ElementRef);
   private document = inject(DOCUMENT);
-  activeTheme = signal<'light' | 'dark'>('dark');
 
   open = signal(false);
 
@@ -23,29 +21,13 @@ export class ProfileBtn implements OnDestroy {
         this.document.removeEventListener('click', this.clickChecker);
       }
     });
-    let firstLoad = true;
-
-    effect(() => {
-      const theme = this.activeTheme();
-      const html = this.document.documentElement;
-
-      if (!firstLoad) {
-        html.classList.add('disable-transitions');
-      }
-      html.setAttribute('data-theme', theme);
-      localStorage.setItem('theme', theme);
-
-      if (!firstLoad) {
-        requestAnimationFrame(() => {
-          html.classList.remove('disable-transitions');
-        });
-      }
-      firstLoad = false;
-    });
 
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme === 'light' || savedTheme === 'dark') {
-      this.activeTheme.set(savedTheme);
+      this.setTheme(savedTheme);
+    } else {
+      // data theme systme doesnt actually exist, but when data theme has any other value than light and dark, it defaults to system value
+      this.setTheme('system');
     }
   }
 
@@ -59,8 +41,17 @@ export class ProfileBtn implements OnDestroy {
   toggleState() {
     this.open.update((v) => !v);
   }
-  setTheme(theme: 'light' | 'dark') {
-    this.activeTheme.set(theme);
+  setTheme(theme: 'light' | 'dark' | 'system') {
+    const html = this.document.documentElement;
+
+    html.classList.add('disable-transitions');
+
+    html.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+
+    requestAnimationFrame(() => {
+      html.classList.remove('disable-transitions');
+    });
   }
 
   ngOnDestroy() {

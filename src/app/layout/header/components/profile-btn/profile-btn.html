@@ -6,15 +6,12 @@
       <div class="themeCont">
         <p i18n="@@theme">Theme</p>
         <div class="themeToggle" id="theme">
+          <div class="themeBackgroundElement"></div>
           <button (click)="setTheme('light')">
-            <span class="material-symbols-outlined" [class.active]="activeTheme() === 'light'"
-              >sunny</span
-            >
+            <span class="material-symbols-outlined">sunny</span>
           </button>
           <button (click)="setTheme('dark')">
-            <span class="material-symbols-outlined" [class.active]="activeTheme() === 'dark'"
-              >bedtime</span
-            >
+            <span class="material-symbols-outlined">bedtime</span>
           </button>
         </div>
       </div>
