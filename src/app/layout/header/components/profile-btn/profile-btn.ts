@@ -10,7 +10,7 @@ export class ProfileBtn implements OnDestroy {
   // injecting for SSR in future if needed
   private elementRef = inject(ElementRef);
   private document = inject(DOCUMENT);
-
+  isAnimating = signal<'sun' | 'moon' | null>(null);
   open = signal(false);
 
   constructor() {
@@ -24,10 +24,10 @@ export class ProfileBtn implements OnDestroy {
 
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme === 'light' || savedTheme === 'dark') {
-      this.setTheme(savedTheme);
+      this.setTheme(savedTheme, null);
     } else {
       // data theme systme doesnt actually exist, but when data theme has any other value than light and dark, it defaults to system value
-      this.setTheme('system');
+      this.setTheme('system', null);
     }
   }
 
@@ -39,19 +39,29 @@ export class ProfileBtn implements OnDestroy {
   };
 
   toggleState() {
+    this.isAnimating.set(null);
     this.open.update((v) => !v);
   }
-  setTheme(theme: 'light' | 'dark' | 'system') {
+  setTheme(theme: 'light' | 'dark' | 'system', icon: 'sun' | 'moon' | null) {
     const html = this.document.documentElement;
 
+    //disable stransition so whole document doesnt transit/ looks weird
     html.classList.add('disable-transitions');
 
     html.setAttribute('data-theme', theme);
+
+    //this applys animation to clicked buttons icon
+    this.isAnimating.set(icon);
+
     localStorage.setItem('theme', theme);
 
     requestAnimationFrame(() => {
       html.classList.remove('disable-transitions');
     });
+  }
+
+  onAnimationEnd() {
+    this.isAnimating.set(null);
   }
 
   ngOnDestroy() {
