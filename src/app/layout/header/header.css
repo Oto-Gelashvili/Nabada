@@ -4,6 +4,8 @@ header {
   align-items: center;
   justify-content: space-between;
   gap: 1.2rem;
+  height: 8.4rem;
+  position: relative;
 }
 header .heading {
   display: flex;
@@ -40,4 +42,19 @@ header .langSwitcher:hover {
 }
 header .langSwitcher:active {
   color: var(--primary-color);
+}
+@media screen and (max-width: 1024px) {
+  header h1 {
+    margin-right: 4.2rem;
+  }
+}
+@media screen and (max-width: 768px) {
+  header {
+    padding-inline: 2.4rem;
+  }
+}
+@media screen and (max-width: 375px) {
+  header h1 {
+    margin-right: 0;
+  }
 }

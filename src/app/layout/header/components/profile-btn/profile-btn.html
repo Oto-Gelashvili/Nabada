@@ -1,32 +1,51 @@
-<button class="profileBtn" (click)="toggleState()">
-  @if (open()) {
-    <div class="profileMenu" (click)="$event.stopPropagation()">
-      <p class="username">Oto Gelashvili</p>
-      <a i18n="@@settingLink" routerLink="/settings">Settings</a>
-      <div class="themeCont">
-        <p i18n="@@theme">Theme</p>
-        <div class="themeToggle" id="theme">
-          <div class="themeBackgroundElement"></div>
-          <button (click)="setTheme('light', 'sun')">
-            <span
-              class="material-symbols-outlined sun"
-              [class.animate]="isAnimating() === 'sun'"
-              (animationend)="onAnimationEnd()"
-            >
-              sunny
-            </span>
-          </button>
-          <button (click)="setTheme('dark', 'moon')">
-            <span
-              class="material-symbols-outlined moon"
-              [class.animate]="isAnimating() === 'moon'"
-              (animationend)="onAnimationEnd()"
-              >bedtime</span
-            >
-          </button>
-        </div>
+<span class="material-symbols-outlined profileBtn" (click)="toggleState()"> menu </span>
+@if (open()) {
+  <div
+    class="profileMenu"
+    (click)="$event.stopPropagation()"
+    animate.enter="enter-animation"
+    animate.leave="leave-animation"
+  >
+    <p class="username">Oto Gelashvili</p>
+    <a routerLink="/sessions" routerLinkActive="active" class="mobile"
+      ><p i18n="@@sessionsLink">Sessions</p>
+      <span class="material-symbols-outlined"> home </span>
+    </a>
+    <a routerLink="/products" routerLinkActive="active" class="mobile"
+      ><p i18n="@@productsLink">Products</p>
+      <span class="material-symbols-outlined"> box_add </span>
+    </a>
+    <a routerLink="/analytics" routerLinkActive="active" class="mobile"
+      ><p i18n="@@analyticsLink">Analytics</p>
+      <span class="material-symbols-outlined"> analytics </span>
+    </a>
+    <a routerLink="/settings" routerLinkActive="active"
+      ><p i18n="@@settingLink">Settings</p>
+      <span class="material-symbols-outlined"> settings </span>
+    </a>
+    <div class="themeCont">
+      <p i18n="@@theme">Theme</p>
+      <div class="themeToggle" id="theme">
+        <div class="themeBackgroundElement"></div>
+        <button (click)="setTheme('light', 'sun')">
+          <span
+            class="material-symbols-outlined sun"
+            [class.animate]="isAnimating() === 'sun'"
+            (animationend)="onAnimationEnd()"
+          >
+            sunny
+          </span>
+        </button>
+        <button (click)="setTheme('dark', 'moon')">
+          <span
+            class="material-symbols-outlined moon"
+            [class.animate]="isAnimating() === 'moon'"
+            (animationend)="onAnimationEnd()"
+            >bedtime</span
+          >
+        </button>
       </div>
-      <div class="btnCont"><button i18n="@@logOutBtn" class="logOutBtn">Log out</button></div>
     </div>
-  }
-</button>
+    <div class="btnCont"><button i18n="@@logOutBtn" class="logOutBtn">Log out</button></div>
+  </div>
+}

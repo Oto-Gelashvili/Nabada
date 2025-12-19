@@ -1,12 +1,12 @@
 {
   "locale": "en",
   "translations": {
+    "sessionsLink": "Sessions",
+    "productsLink": "Products",
+    "analyticsLink": "Analytics",
     "settingLink": "Settings",
     "theme": "Theme",
     "logOutBtn": "Log out",
-    "sessionLink": "Sessions",
-    "productsLink": "Products",
-    "analyticsLink": "Analytics",
     "languageSwitcherBtn": "ქარ"
   }
 }
