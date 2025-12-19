@@ -159,3 +159,13 @@ html.disable-transitions *::before,
 html.disable-transitions *::after {
   transition: none !important;
 }
+/* Remove mobile tap highlight globally */
+* {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+}
+
+button:focus,
+a:focus {
+  outline: none;
+}
