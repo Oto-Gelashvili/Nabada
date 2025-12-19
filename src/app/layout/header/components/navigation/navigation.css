@@ -1,0 +1,37 @@
+nav {
+  display: flex;
+  align-items: center;
+  gap: 2.4rem;
+  list-style: none;
+  font-size: 1.6rem;
+  position: relative;
+}
+nav .bgEl {
+  position: absolute;
+  background-color: var(--hover-color);
+  width: 88px;
+  height: 3.2rem;
+  border-radius: 50rem;
+  z-index: 1;
+  transition: 0.4s ease-in-out;
+  pointer-events: none;
+}
+nav li {
+  z-index: 2;
+}
+nav li a {
+  cursor: pointer;
+  transition: 0.4s;
+  padding: 0.4rem 1.2rem;
+  z-index: 2;
+}
+nav li a:hover {
+  color: var(--secondary-color);
+}
+nav li a:active {
+  color: var(--primary-color);
+}
+
+nav li a.active {
+  color: var(--primary-color);
+}

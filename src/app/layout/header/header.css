@@ -19,48 +19,7 @@ header h1 {
   margin-right: 8.4rem;
   color: var(--secondary-color);
 }
-header nav {
-  display: flex;
-  align-items: center;
-  gap: 2.4rem;
-  list-style: none;
-  font-size: 1.6rem;
-  position: relative;
-  /* border: 1px solid var(--border-color);
-  border-radius: 50rem;
-  padding: 1.2rem 2.4rem;
-  background-color: var(--background-secondary);
-  z-index: 0; */
-}
-header .bgEl {
-  position: absolute;
-  background-color: var(--hover-color);
-  width: 88px;
-  height: 3.2rem;
-  border-radius: 50rem;
-  z-index: 1;
-  transition: 0.4s ease-in-out;
-  pointer-events: none;
-}
-header li {
-  z-index: 2;
-}
-header li a {
-  cursor: pointer;
-  transition: 0.4s;
-  padding: 0.4rem 1.2rem;
-  z-index: 2;
-}
-header li a:hover {
-  color: var(--secondary-color);
-}
-header li a:active {
-  color: var(--primary-color);
-}
 
-header li a.active {
-  color: var(--primary-color);
-}
 header .footing {
   display: flex;
   align-items: center;
