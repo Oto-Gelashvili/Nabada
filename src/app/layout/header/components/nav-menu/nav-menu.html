@@ -10,7 +10,11 @@
     animate.leave="leave-animation"
   >
     <p class="username">Oto Gelashvili</p>
-    <a routerLink="/" routerLinkActive="active" class="mobile"
+    <a
+      routerLink="/"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+      class="mobile"
       ><p i18n="@@sessionsLink">Sessions</p>
       <span class="material-symbols-outlined"> home </span>
     </a>
