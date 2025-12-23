@@ -7,20 +7,6 @@ header {
   height: 8.4rem;
   position: relative;
 }
-header .heading {
-  display: flex;
-  align-items: center;
-  gap: 1.2rem;
-}
-
-header h1 {
-  font-family: 'Monoton', sans-serif;
-  font-size: 2.4rem;
-  font-weight: 400;
-  cursor: pointer;
-  margin-right: 8.4rem;
-  color: var(--secondary-color);
-}
 
 header .footing {
   display: flex;
@@ -43,18 +29,9 @@ header .langSwitcher:hover {
 header .langSwitcher:active {
   color: var(--primary-color);
 }
-@media screen and (max-width: 1024px) {
-  header h1 {
-    margin-right: 4.2rem;
-  }
-}
+
 @media screen and (max-width: 768px) {
   header {
     padding-inline: 2.4rem;
-  }
-}
-@media screen and (max-width: 375px) {
-  header h1 {
-    margin-right: 0;
   }
 }

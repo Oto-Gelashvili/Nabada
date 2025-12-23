@@ -1,3 +1,16 @@
+.heading {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+.logoHeading {
+  font-family: 'Monoton', sans-serif;
+  font-size: 2.4rem;
+  font-weight: 400;
+  cursor: pointer;
+  margin-right: 8.4rem;
+  color: var(--secondary-color);
+}
 nav {
   display: flex;
   align-items: center;
@@ -35,8 +48,18 @@ nav li a:active {
 nav li a.active {
   color: var(--primary-color);
 }
+@media screen and (max-width: 1024px) {
+  .logoHeading {
+    margin-right: 4.2rem;
+  }
+}
 @media screen and (max-width: 768px) {
   nav {
     display: none;
+  }
+}
+@media screen and (max-width: 375px) {
+  .logoHeading {
+    margin-right: 0;
   }
 }
