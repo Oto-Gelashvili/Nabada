@@ -8,7 +8,7 @@ import { Component, DOCUMENT, inject, signal } from '@angular/core';
 })
 export class ThemeSwitcher {
   private document = inject(DOCUMENT);
-  isAnimating = signal<'sun' | 'moon' | null>(null);
+  readonly isAnimating = signal<'sun' | 'moon' | null>(null);
   constructor() {
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme === 'light' || savedTheme === 'dark') {

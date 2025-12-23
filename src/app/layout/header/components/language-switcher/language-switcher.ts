@@ -9,7 +9,7 @@ import { Loader } from '../../../../components/loader/loader';
 })
 export class LanguageSwitcher {
   private currentLocale = inject(LOCALE_ID);
-  loading = signal(false);
+  readonly loading = signal(false);
 
   switchLang() {
     const pathname = window.location.pathname;

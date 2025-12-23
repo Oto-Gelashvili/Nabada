@@ -10,7 +10,7 @@ import { ThemeSwitcher } from './theme-switcher/theme-switcher';
 export class NavMenu implements OnDestroy {
   private elementRef = inject(ElementRef);
   private document = inject(DOCUMENT);
-  open = signal(false);
+  readonly open = signal(false);
 
   constructor() {
     effect(() => {
