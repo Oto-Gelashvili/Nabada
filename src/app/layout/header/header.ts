@@ -1,26 +1,12 @@
-import { Component, LOCALE_ID, inject, signal } from '@angular/core';
-import { Loader } from '../../components/loader/loader';
+import { Component } from '@angular/core';
 import { ProfileBtn } from './components/nav-menu/nav-menu';
 import { Navigation } from './components/navigation/navigation';
+import { LanguageSwitcher } from './components/language-switcher/language-switcher';
 
 @Component({
   selector: 'app-header',
-  imports: [Loader, ProfileBtn, Navigation],
+  imports: [ProfileBtn, Navigation, LanguageSwitcher],
   templateUrl: './header.html',
   styleUrl: './header.css',
 })
-export class Header {
-  private currentLocale = inject(LOCALE_ID);
-  loading = signal(false);
-
-  switchLang() {
-    const pathname = window.location.pathname;
-    this.loading.set(true);
-
-    if (this.currentLocale === 'ka') {
-      window.location.href = pathname.replace('/ka', '/en');
-    } else {
-      window.location.href = pathname.replace('/en', '/ka');
-    }
-  }
-}
+export class Header {}

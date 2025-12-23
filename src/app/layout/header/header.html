@@ -1,10 +1,7 @@
-@if (loading()) {
-  <app-loader></app-loader>
-}
 <header>
   <app-navigation></app-navigation>
   <div class="footing">
-    <button i18n="@@languageSwitcherBtn" class="langSwitcher" (click)="switchLang()">ქარ</button>
+    <app-language-switcher></app-language-switcher>
     <app-profile-btn></app-profile-btn>
   </div>
 </header>
