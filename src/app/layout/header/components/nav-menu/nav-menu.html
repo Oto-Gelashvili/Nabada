@@ -26,29 +26,7 @@
       ><p i18n="@@settingLink">Settings</p>
       <span class="material-symbols-outlined"> settings </span>
     </a>
-    <div class="themeCont">
-      <p i18n="@@theme">Theme</p>
-      <div class="themeToggle" id="theme">
-        <div class="themeBackgroundElement"></div>
-        <button (click)="setTheme('light', 'sun')">
-          <span
-            class="material-symbols-outlined sun"
-            [class.animate]="isAnimating() === 'sun'"
-            (animationend)="onAnimationEnd()"
-          >
-            sunny
-          </span>
-        </button>
-        <button (click)="setTheme('dark', 'moon')">
-          <span
-            class="material-symbols-outlined moon"
-            [class.animate]="isAnimating() === 'moon'"
-            (animationend)="onAnimationEnd()"
-            >bedtime</span
-          >
-        </button>
-      </div>
-    </div>
+    <app-theme-switcher></app-theme-switcher>
     <div class="btnCont"><button i18n="@@logOutBtn" class="logOutBtn">Log out</button></div>
   </div>
 }
