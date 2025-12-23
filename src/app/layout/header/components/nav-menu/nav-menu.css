@@ -5,6 +5,10 @@
   font-size: 3.2rem;
   border: none;
   cursor: pointer;
+  transition: 0.4s;
+}
+.profileBtn.open {
+  transform: rotate(90deg);
 }
 .profileMenu {
   position: absolute;
@@ -189,6 +193,7 @@
 .leave-animation {
   animation: slide-out 1s;
 }
+
 @keyframes slide-in {
   from {
     opacity: 0;
@@ -208,6 +213,7 @@
     transform: translateX(100%);
   }
 }
+
 @media screen and (max-width: 768px) {
   .profileMenu a.mobile {
     display: flex;

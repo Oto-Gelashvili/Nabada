@@ -1,4 +1,7 @@
-<span class="material-symbols-outlined profileBtn" (click)="toggleState()"> menu </span>
+<span class="material-symbols-outlined profileBtn" (click)="toggleState()" [class.open]="open()">
+  {{ open() ? 'close' : 'menu' }}
+</span>
+
 @if (open()) {
   <div
     class="profileMenu"

@@ -1,7 +1,7 @@
 import { Component, LOCALE_ID, ViewChild, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Loader } from '../../components/loader/loader';
-import { ProfileBtn } from './components/profile-btn/profile-btn';
+import { ProfileBtn } from './components/nav-menu/nav-menu';
 import { Navigation } from './components/navigation/navigation';
 
 @Component({

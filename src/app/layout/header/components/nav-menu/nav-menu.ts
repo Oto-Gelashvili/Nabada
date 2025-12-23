@@ -3,8 +3,8 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 @Component({
   selector: 'app-profile-btn',
   imports: [RouterLink, RouterLinkActive],
-  templateUrl: './profile-btn.html',
-  styleUrl: './profile-btn.css',
+  templateUrl: './nav-menu.html',
+  styleUrl: './nav-menu.css',
 })
 export class ProfileBtn implements OnDestroy {
   // injecting for SSR in future if needed
