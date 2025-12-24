@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 import { Sessions } from './features/sessions/sessions';
 import { Products } from './features/products/products';
 import { Analytics } from './features/analytics/analytics';
-import { Settings } from './features/settingsPage/settings';
+import { Settings } from './features/settings/settings';
 
 export const routes: Routes = [
   {

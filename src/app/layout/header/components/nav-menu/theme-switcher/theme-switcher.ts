@@ -9,15 +9,6 @@ import { Component, DOCUMENT, inject, signal } from '@angular/core';
 export class ThemeSwitcher {
   private document = inject(DOCUMENT);
   readonly isAnimating = signal<'sun' | 'moon' | null>(null);
-  constructor() {
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'light' || savedTheme === 'dark') {
-      this.setTheme(savedTheme, null);
-    } else {
-      // data theme systme doesnt actually exist, but when data theme has any other value than light and dark, it defaults to system value
-      this.setTheme('system', null);
-    }
-  }
 
   setTheme(theme: 'light' | 'dark' | 'system', icon: 'sun' | 'moon' | null) {
     const html = this.document.documentElement;
