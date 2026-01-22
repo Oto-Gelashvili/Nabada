@@ -1,12 +1,18 @@
 {
   "locale": "en",
   "translations": {
+    "notFoundPageHeading": "Page not found",
+    "notFoundReasonsBrokenLink": "The link may be broken",
+    "notFoundReasonsPageDeleted": "The page may have been moved or deleted",
+    "notFoundReasonsUrlTypo": "The URL might be mistyped",
+    "notFoundMessageHeading": "404",
+    "notFoundMessageDesc": " Indicates that the browser was able to {$LINE_BREAK}communicate with the server, but the server {$LINE_BREAK}cound not find the requested resourse. ",
+    "languageSwitcherBtn": "ქარ",
     "sessionsLink": "Sessions",
     "productsLink": "Products",
     "analyticsLink": "Analytics",
     "settingLink": "Settings",
-    "theme": "Theme",
     "logOutBtn": "Log out",
-    "languageSwitcherBtn": "ქარ"
+    "theme": "Theme"
   }
 }

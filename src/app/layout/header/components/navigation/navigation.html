@@ -3,7 +3,7 @@
     <a routerLink="/" (click)="logoReset()">NABADA</a>
   </h1>
   <nav #nav (mouseleave)="bgReset()">
-    <li class="bgEl" [ngStyle]="{ 'left.px': bgElPosition(), 'width.px': bgElWidth() }"></li>
+    <li class="bgEl" [style.left.px]="bgElPosition()" [style.width.px]="bgElWidth()"></li>
     <li>
       <a
         i18n="@@sessionsLink"

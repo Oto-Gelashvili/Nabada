@@ -1,6 +1,12 @@
 {
   "locale": "ka",
   "translations": {
+    "notFoundPageHeading": "გვერდი ვერ მოიძებნა",
+    "notFoundReasonsBrokenLink": "ბმული დაზიანებულია",
+    "notFoundReasonsPageDeleted": "გვერდი გადატანილი ან წაშლილია",
+    "notFoundReasonsUrlTypo": "URL-ის შეყვანის დროს შეცდომა",
+    "notFoundMessageHeading": "404",
+    "notFoundMessageDesc": " აჩვენებს რომ ბრაუზერმა შეძლო {$LINE_BREAK}სერვერთან კომუნიკაცია, მაგრამ სერვერმა {$LINE_BREAK}ვერ იპოვა მოთხოვნილი რესურსი. ",
     "settingLink": "პარამეტრები",
     "theme": "თემა",
     "logOutBtn": "გამოსვლა",

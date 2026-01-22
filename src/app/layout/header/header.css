@@ -5,7 +5,9 @@ header {
   justify-content: space-between;
   gap: 1.2rem;
   height: 8.4rem;
-  position: relative;
+  position: fixed;
+  width: 100%;
+  z-index: 2;
 }
 
 header .footing {

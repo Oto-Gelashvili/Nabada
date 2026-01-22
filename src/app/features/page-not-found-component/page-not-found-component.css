@@ -1,0 +1,88 @@
+:host {
+  display: contents;
+}
+#notFoundPage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  position: relative;
+  gap: 2.4rem;
+  /* sum of mains top and bottom padding values = 10.8 */
+  min-height: calc(100vh - 10.8rem);
+}
+#notFoundPage h1 {
+  font-size: 2.4rem;
+}
+.notFoundMessage {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  gap: 2.4rem;
+  align-items: center;
+  color: var(--error);
+  font-size: 1.6rem;
+}
+.notFoundMessage h2 {
+  font-size: 6.4rem;
+  font-weight: 700;
+  letter-spacing: -3px;
+}
+.notFoundMessage p {
+  line-height: 1.6rem;
+}
+#notFoundPage .notFoundReasons {
+  font-size: 1.6rem;
+  list-style: none;
+  display: flex;
+  gap: 1.2rem;
+  text-align: center;
+}
+#notFoundPage .notFoundReasons li {
+  background-color: var(--hover-color);
+  border-radius: 12px;
+  padding: 1.2rem;
+}
+
+@media screen and (max-width: 1024px) {
+  #notFoundPage .notFoundReasons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  #notFoundPage .notFoundReasons .pageDeletedReason {
+    grid-column: span 2;
+  }
+}
+@media screen and (max-width: 768px) {
+  #notFoundPage .notFoundReasons {
+    display: flex;
+    flex-direction: column;
+    text-align: start;
+    list-style: circle;
+  }
+  .notFoundMessage h2 {
+    font-size: 3.6rem;
+  }
+  .notFoundMessage {
+    font-size: 1.4rem;
+  }
+}
+@media screen and (max-height: 500px) {
+  .notFoundMessage {
+    display: none;
+  }
+}
+@media screen and (max-width: 475px) {
+  .notFoundMessage {
+    display: none;
+  }
+  #notFoundPage h1 {
+    font-size: 2rem;
+  }
+  #notFoundPage .notFoundReasons {
+    list-style: none;
+    font-size: 1.4rem;
+  }
+}

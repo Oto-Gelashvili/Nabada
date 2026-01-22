@@ -3,6 +3,7 @@ import { Sessions } from './features/sessions/sessions';
 import { Products } from './features/products/products';
 import { Analytics } from './features/analytics/analytics';
 import { Settings } from './features/settings/settings';
+import { PageNotFoundComponent } from './features/page-not-found-component/page-not-found-component';
 
 export const routes: Routes = [
   {
@@ -26,6 +27,5 @@ export const routes: Routes = [
     component: Settings,
     title: 'Settings Page',
   },
-  //when page not found redirected to sessions
-  { path: '**', redirectTo: '', pathMatch: 'full' },
+  { path: '**', component: PageNotFoundComponent, title: 'Page Not Found' },
 ];

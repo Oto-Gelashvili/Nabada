@@ -1,4 +1,3 @@
-import { NgStyle } from '@angular/common';
 import {
   AfterViewInit,
   Component,
@@ -13,7 +12,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component({
   selector: 'app-navigation',
-  imports: [NgStyle, RouterLinkActive, RouterLink],
+  imports: [RouterLinkActive, RouterLink],
   templateUrl: './navigation.html',
   styleUrl: './navigation.css',
 })
@@ -53,10 +52,14 @@ export class Navigation implements AfterViewInit, OnDestroy {
 
   bgReset = () => {
     const activeLink = this.navRef.nativeElement.querySelector<HTMLElement>('.active');
-    if (!activeLink || !this.navRect) return;
-    const activeLinkRect = activeLink.getBoundingClientRect();
-    this.bgElPosition.set(activeLinkRect.left - this.navRect.left);
-    this.bgElWidth.set(activeLinkRect.width);
+    if (!activeLink || !this.navRect) {
+      this.bgElPosition.set(0);
+      this.bgElWidth.set(0);
+    } else {
+      const activeLinkRect = activeLink.getBoundingClientRect();
+      this.bgElPosition.set(activeLinkRect.left - this.navRect.left);
+      this.bgElWidth.set(activeLinkRect.width);
+    }
   };
   logoReset = () => {
     const homeLink = this.document.querySelector<HTMLElement>('.homeLink');
