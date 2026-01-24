@@ -1,5 +1,5 @@
 import { Component, inject, LOCALE_ID, signal } from '@angular/core';
-import { Loader } from '../../../../components/loader/loader';
+import { Loader } from '../loader/loader';
 
 @Component({
   selector: 'app-language-switcher',

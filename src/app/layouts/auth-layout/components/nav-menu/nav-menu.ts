@@ -1,6 +1,6 @@
 import { Component, signal, effect, ElementRef, inject, OnDestroy, DOCUMENT } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { ThemeSwitcher } from './theme-switcher/theme-switcher';
+import { ThemeSwitcher } from '../../../../shared/components/theme-switcher/theme-switcher';
 @Component({
   selector: 'app-nav-menu',
   imports: [RouterLink, RouterLinkActive, ThemeSwitcher],
