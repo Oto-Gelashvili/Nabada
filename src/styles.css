@@ -1,5 +1,5 @@
 :root {
-  --primary-color: #fca311;
+  --primary-color: #ffc363;
   --secondary-color: #fff;
   --background-color: #000000;
   --accent-color: #0a0a0a;
@@ -44,7 +44,7 @@
 
 :root[data-theme='dark'] {
   color-scheme: dark;
-  --primary-color: #fca311;
+  --primary-color: #ffc363;
   --secondary-color: #fff;
   --background-color: #000000;
   --accent-color: #0a0a0a;
@@ -164,6 +164,10 @@ app-root {
   min-height: 100vh;
   /* overflow: hidden; */
 }
+app-blank-layout {
+  display: flex;
+  flex: 1;
+}
 a:visited {
   color: var(--text-color);
 }
@@ -193,7 +197,7 @@ a:focus {
 main {
   display: flex;
   flex: 1;
-  padding: 8.4rem 4.8rem 2.4rem 8.4rem;
+  padding: 8.4rem 4.8rem 2.4rem 4.8rem;
 }
 
 @media screen and (max-width: 768px) {

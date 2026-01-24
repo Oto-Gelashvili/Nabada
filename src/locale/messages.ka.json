@@ -1,6 +1,15 @@
 {
   "locale": "ka",
   "translations": {
+    "signUpHeading": "მოგესასალმებით ნაბადაში",
+    "signUpDesc": "დარეგისტრირდი და მართე შენი სათამაშო დარბაზი.",
+    "signUpGoogle": "შესვლა გუგლით",
+    "signUpDivider": "ან",
+    "signUpLabel": "მიუთითეთ ელ. ფოსტა",
+    "signUpPlaceholder": "მიუთითეთ ელ. ფოსტა",
+    "signUpError": "მიუთითეთ ვალიდური ელ. ფოსტა.",
+    "signUpSubmit": "გაგრძელება",
+    "signUpRegistered": " უკვე დარეგისტრირდით? {$START_LINK}შესვლა{$CLOSE_LINK}",
     "notFoundPageHeading": "გვერდი ვერ მოიძებნა",
     "notFoundReasonsBrokenLink": "ბმული დაზიანებულია",
     "notFoundReasonsPageDeleted": "გვერდი გადატანილი ან წაშლილია",

@@ -1,0 +1,247 @@
+.gsi-material-button {
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  -webkit-appearance: none;
+  background-color: WHITE;
+  background-image: none;
+  border: 2px solid var(--border-color);
+  -webkit-border-radius: 20px;
+  border-radius: 20px;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  color: #1f1f1f;
+  cursor: pointer;
+  font-family: 'Roboto', arial, sans-serif;
+  font-size: 14px;
+  height: 40px;
+  letter-spacing: 0.25px;
+  outline: none;
+  overflow: hidden;
+  padding: 0 12px;
+  position: relative;
+  text-align: center;
+  -webkit-transition:
+    background-color 0.218s,
+    border-color 0.218s,
+    box-shadow 0.218s;
+  transition:
+    background-color 0.218s,
+    border-color 0.218s,
+    box-shadow 0.218s;
+  vertical-align: middle;
+  white-space: nowrap;
+  width: auto;
+  max-width: 400px;
+  min-width: min-content;
+}
+
+.gsi-material-button .gsi-material-button-icon {
+  height: 20px;
+  margin-right: 10px;
+  min-width: 20px;
+  width: 20px;
+}
+
+.gsi-material-button .gsi-material-button-content-wrapper {
+  -webkit-align-items: center;
+  align-items: center;
+  display: flex;
+  -webkit-flex-direction: row;
+  flex-direction: row;
+  -webkit-flex-wrap: nowrap;
+  flex-wrap: nowrap;
+  height: 100%;
+  justify-content: space-between;
+  position: relative;
+  width: 100%;
+}
+
+.gsi-material-button .gsi-material-button-contents {
+  -webkit-flex-grow: 1;
+  flex-grow: 1;
+  font-family: 'Roboto', arial, sans-serif;
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: top;
+}
+
+.gsi-material-button .gsi-material-button-state {
+  -webkit-transition: opacity 0.218s;
+  transition: opacity 0.218s;
+  bottom: 0;
+  left: 0;
+  opacity: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.gsi-material-button:disabled {
+  cursor: default;
+  background-color: #ea4335;
+}
+
+.gsi-material-button:disabled .gsi-material-button-contents {
+  opacity: 38%;
+}
+
+.gsi-material-button:disabled .gsi-material-button-icon {
+  opacity: 38%;
+}
+.gsi-material-button:not(:disabled):hover .gsi-material-button-state {
+  background-color: var(--primary-color);
+  opacity: 8%;
+}
+.gsi-material-button:not(:disabled):active .gsi-material-button-state,
+.gsi-material-button:not(:disabled):focus .gsi-material-button-state {
+  background-color: var(--primary-color);
+  opacity: 12%;
+}
+
+:host {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+}
+#signUpCont {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 2.4rem;
+  width: 280px;
+}
+h1 {
+  color: var(--secondary-color);
+  font-size: 2.8rem;
+  font-weight: 700;
+  line-height: 1;
+}
+.desc {
+  font-size: 1.6rem;
+  line-height: 1.2;
+}
+.divider {
+  font-size: 1.4rem;
+}
+form {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  gap: 2.8rem;
+}
+form label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+form input {
+  width: 100%;
+  font-size: 1.4rem;
+  /* height: 40px; */
+  padding: 0.8rem 1.6rem;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  transition: 0.4s;
+  outline: 1px solid transparent;
+}
+form input:hover {
+  outline-color: var(--primary-color);
+}
+
+form input:focus {
+  outline-color: var(--primary-color);
+}
+
+form button {
+  background-color: var(--secondary-color);
+  color: var(--accent-color);
+  border-radius: 50rem;
+  width: 100%;
+  padding: 0.8rem 2.4rem;
+  /* height: 40px; */
+  outline: 1px solid transparent;
+  border: 1px solid transparent;
+  font-size: 1.6rem;
+  transition: 0.4s;
+  cursor: pointer;
+}
+
+form button:hover {
+  background-color: var(--primary-color);
+  color: #fff;
+}
+
+form button:active {
+  opacity: 0.8;
+}
+form button:focus {
+  outline-color: var(--border-color);
+}
+.logInDesc {
+  font-size: 1.2rem;
+}
+.logInDesc a {
+  text-decoration: underline;
+  transition: 0.4s;
+  outline: 1px solid transparent;
+}
+.logInDesc a:hover {
+  color: var(--primary-color);
+}
+.logInDesc a:active {
+  opacity: 0.8;
+}
+.logInDesc a:focus {
+  color: var(--primary-color);
+  opacity: 0.8;
+}
+form .inputCont {
+  width: 100%;
+  position: relative;
+}
+form input:user-invalid {
+  outline-color: var(--error);
+}
+form .error {
+  position: absolute;
+  top: calc(100% + 0.4rem);
+  color: var(--error);
+  font-size: 1.2rem;
+}
+.shake {
+  animation: shake 0.4s ease-in-out;
+}
+
+@keyframes shake {
+  0% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  50% {
+    transform: translateX(5px);
+  }
+  75% {
+    transform: translateX(-5px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+@media screen and (max-width: 375px) {
+  #signUpCont {
+    width: 100%;
+  }
+}

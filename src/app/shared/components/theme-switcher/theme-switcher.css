@@ -57,6 +57,9 @@
   justify-content: center;
   z-index: 1;
 }
+.themeToggle button span.sun {
+  color: #fff;
+}
 .themeToggle button span.sun.animate {
   animation: sun-move 1.2s ease-in-out forwards;
 }
