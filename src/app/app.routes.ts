@@ -5,16 +5,16 @@ import { Analytics } from './features/analytics/analytics';
 import { Settings } from './features/settings/settings';
 import { PageNotFoundComponent } from './features/page-not-found-component/page-not-found-component';
 import { BlankLayout } from './layouts/blank-layout/blank-layout';
-import { SingUp } from './features/auth/pages/sing-up/sing-up';
+import { SignIn } from './features/auth/pages/sign-in/sign-in';
 import { PublicLayout } from './layouts/public-layout/public-layout';
 import { AuthLayout } from './layouts/auth-layout/auth-layout';
 import { LandingHome } from './features/landing/pages/landing-home/landing-home';
 
 export const routes: Routes = [
   {
-    path: 'sign-up',
+    path: 'signups',
     component: BlankLayout,
-    children: [{ path: '', component: SingUp, title: 'Sign Up' }],
+    children: [{ path: '', component: SignIn, title: 'Sign In' }],
   },
   {
     path: '',
