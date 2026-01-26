@@ -21,28 +21,23 @@ export interface Profile {
 })
 export class SupabaseService {
   private supabase: SupabaseClient;
-  _session: AuthSession | null = null;
-
-  // private _currentUser = signal<User | null>(null);
-  // readonly currentUser = this._currentUser.asReadonly();
-  // readonly isAuthenticated = computed(() => !!this.currentUser());
+  private _session = signal<AuthSession | null>(null);
+  readonly session = this._session.asReadonly();
 
   constructor() {
     this.supabase = createClient(environment.supabaseUrl, environment.supabaseKey);
-    // this.supabase.auth.getUser().then(({ data }) => {
-    //   this._currentUser.set(data.user ?? null);
-    // });
-    // this.supabase.auth.onAuthStateChange((event, session) => {
-    //   console.log('Auth Event:', event); // Helpful for debugging
-    //   this._currentUser.set(session?.user ?? null);
-    // });
-  }
-
-  get session() {
-    this.supabase.auth.getSession().then(({ data }) => {
-      this._session = data.session;
+    this.initSession();
+    this.supabase.auth.onAuthStateChange((event, session) => {
+      this._session.set(session);
     });
-    return this._session;
+  }
+  private async initSession() {
+    const { data } = await this.supabase.auth.getSession();
+    this._session.set(data.session);
+  }
+  async isLoggedIn(): Promise<boolean> {
+    const { data } = await this.supabase.auth.getSession();
+    return !!data.session;
   }
 
   profile(user: User) {
