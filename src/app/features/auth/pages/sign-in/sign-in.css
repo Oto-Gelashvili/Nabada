@@ -169,12 +169,34 @@ form button {
   border-radius: 50rem;
   width: 100%;
   padding: 0.8rem 2.4rem;
-  /* height: 40px; */
+  height: 40px;
   outline: 1px solid transparent;
   border: 1px solid transparent;
   font-size: 1.6rem;
   transition: 0.4s;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+form button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 3px solid var(--border-color);
+  border-radius: 50%;
+  border-top-color: var(--primary-color);
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 form button:hover {

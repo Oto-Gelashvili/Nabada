@@ -69,7 +69,13 @@
       }
     </div>
 
-    <button type="submit" [class.shake]="isShaking()" i18n="@@signUpSubmit">Continue</button>
+    <button type="submit" [class.shake]="isShaking()" [disabled]="isLoading()">
+      @if (isLoading()) {
+        <div class="spinner"></div>
+      } @else {
+        <span i18n="@@signUpSubmit">Continue</span>
+      }
+    </button>
   </form>
   <p class="logInDesc">
     @if (isSignInMode()) {
