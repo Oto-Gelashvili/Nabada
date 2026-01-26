@@ -9,8 +9,6 @@
   flex: 1;
   position: relative;
   gap: 2.4rem;
-  /* sum of mains top and bottom padding values = 10.8 */
-  min-height: calc(100vh - 10.8rem);
 }
 #notFoundPage h1 {
   font-size: 2.4rem;

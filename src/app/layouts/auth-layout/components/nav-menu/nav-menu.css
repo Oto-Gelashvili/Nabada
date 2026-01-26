@@ -118,11 +118,10 @@
   .profileMenu {
     position: fixed;
     width: 250px;
-    /* 8.4rem is fixed height of header */
-    height: calc(100% - 8.4rem);
+    height: calc(100% - var(--fixed-header-height));
     top: 0;
     right: 0;
-    margin-top: 8.4rem;
+    margin-top: var(--fixed-header-height);
     justify-content: space-between;
     overflow-y: scroll;
     z-index: 10;

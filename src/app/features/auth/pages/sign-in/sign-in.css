@@ -301,7 +301,7 @@ form .error {
     width: 100%;
   }
   .custom-alert {
-    width: calc(100% - 4.8rem);
+    width: calc(100% - var(--total-padding-mobile));
     min-width: unset;
   }
 }
