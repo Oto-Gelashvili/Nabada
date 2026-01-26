@@ -1,6 +1,7 @@
 {
   "locale": "ka",
   "translations": {
+    "signInHeading": "კეთილი იყოს შენი დაბრუნება",
     "signUpHeading": "მოგესასალმებით ნაბადაში",
     "signUpDesc": "დარეგისტრირდი და მართე შენი სათამაშო დარბაზი.",
     "signUpGoogle": "შესვლა გუგლით",
@@ -9,7 +10,10 @@
     "signUpPlaceholder": "მიუთითეთ ელ. ფოსტა",
     "signUpError": "მიუთითეთ ვალიდური ელ. ფოსტა.",
     "signUpSubmit": "გაგრძელება",
-    "signUpRegistered": " უკვე დარეგისტრირდით? {$START_LINK}შესვლა{$CLOSE_LINK}",
+    "signUpNotRegistered": "არ გაქვთ ანგარიში?",
+    "signUpNotRegisteredLink": "დარეგისტრირება",
+    "signUpRegistered": " უკვე დარეგისტრირდით?",
+    "signUpRegisteredLink": "შესვლა",
     "notFoundPageHeading": "გვერდი ვერ მოიძებნა",
     "notFoundReasonsBrokenLink": "ბმული დაზიანებულია",
     "notFoundReasonsPageDeleted": "გვერდი გადატანილი ან წაშლილია",
@@ -22,6 +26,7 @@
     "sessionsLink": "სესიები",
     "productsLink": "პროდუქტები",
     "analyticsLink": "ანალიტიკა",
+    "HomePageLink": "მთავარი",
     "languageSwitcherBtn": "EN"
   }
 }

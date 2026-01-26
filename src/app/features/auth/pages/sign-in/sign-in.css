@@ -221,9 +221,12 @@ form .inputCont {
   width: 100%;
   position: relative;
 }
-form input:user-invalid {
+
+input.ng-invalid.ng-dirty.ng-touched,
+form.ng-submitted input.ng-invalid {
   outline-color: var(--error);
 }
+
 form .error {
   position: absolute;
   top: calc(100% + 0.4rem);
