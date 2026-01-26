@@ -7,7 +7,7 @@ import { Component, DOCUMENT, inject, signal } from '@angular/core';
   styleUrl: './theme-switcher.css',
 })
 export class ThemeSwitcher {
-  private document = inject(DOCUMENT);
+  private readonly document = inject(DOCUMENT);
   readonly isAnimating = signal<'sun' | 'moon' | null>(null);
 
   setTheme(theme: 'light' | 'dark' | 'system', icon: 'sun' | 'moon' | null) {

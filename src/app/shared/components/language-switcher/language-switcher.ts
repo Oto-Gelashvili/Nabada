@@ -8,7 +8,7 @@ import { Loader } from '../loader/loader';
   styleUrl: './language-switcher.css',
 })
 export class LanguageSwitcher {
-  private currentLocale = inject(LOCALE_ID);
+  private readonly currentLocale = inject(LOCALE_ID);
   readonly loading = signal(false);
 
   switchLang() {

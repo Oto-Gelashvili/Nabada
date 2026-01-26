@@ -1,19 +1,20 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { SupabaseService } from '../../../../core/services/supabase';
+import { Spinner } from '../../../../shared/components/spinner/spinner';
 
 @Component({
   selector: 'app-sign-ing',
-  imports: [FormsModule],
+  imports: [FormsModule, Spinner],
   templateUrl: './sign-in.html',
   styleUrl: './sign-in.css',
 })
 export class SignIn {
-  email = signal('');
-  isShaking = signal(false);
-  isLoading = signal(false);
-  isSignInMode = signal(false);
-  notification = signal<{ message: string; type: 'success' | 'error' } | null>(null);
+  readonly email = signal('');
+  readonly isShaking = signal(false);
+  readonly isLoading = signal(false);
+  readonly isSignInMode = signal(false);
+  readonly notification = signal<{ message: string; type: 'success' | 'error' } | null>(null);
   private readonly supabase = inject(SupabaseService);
   async submit(form: NgForm) {
     if (form.invalid) {
@@ -45,7 +46,7 @@ export class SignIn {
       }
     }
   }
-  triggerShake() {
+  private triggerShake() {
     this.isShaking.set(true);
     setTimeout(() => {
       this.isShaking.set(false);
@@ -55,7 +56,7 @@ export class SignIn {
   toggleSignInMode() {
     this.isSignInMode.update((mode) => !mode);
   }
-  showNotification(message: string, type: 'success' | 'error') {
+  private showNotification(message: string, type: 'success' | 'error') {
     this.notification.set({ message, type });
     setTimeout(() => {
       this.notification.set(null);

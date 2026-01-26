@@ -31,6 +31,27 @@
       <span class="material-symbols-outlined"> settings </span>
     </a>
     <app-theme-switcher></app-theme-switcher>
-    <div class="btnCont"><button i18n="@@logOutBtn" class="logOutBtn">Log out</button></div>
+    <div class="btnCont">
+      <button class="logOutBtn" (click)="signOut()">
+        @if (loading()) {
+          <app-spinner></app-spinner>
+        } @else {
+          <span i18n="@@logOutBtn">Log out</span>
+        }
+      </button>
+    </div>
+  </div>
+}
+@if (errorMsg() !== null) {
+  <div class="logOut-error" animate.enter="enter-animation-logOut-error">
+    <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M6 18L18 6M6 6l12 12"
+      />
+    </svg>
+    <span>{{ errorMsg() }}</span>
   </div>
 }

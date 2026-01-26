@@ -1,4 +1,4 @@
-import { computed, Injectable, signal } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
 import {
   AuthChangeEvent,
   AuthSession,
@@ -8,6 +8,7 @@ import {
   User,
 } from '@supabase/supabase-js';
 import { environment } from '../../environments/environments';
+import { Router } from '@angular/router';
 
 export interface Profile {
   id?: string;
@@ -20,15 +21,19 @@ export interface Profile {
   providedIn: 'root',
 })
 export class SupabaseService {
-  private supabase: SupabaseClient;
-  private _session = signal<AuthSession | null>(null);
+  private readonly supabase: SupabaseClient;
+  private readonly _session = signal<AuthSession | null>(null);
   readonly session = this._session.asReadonly();
+  private readonly router = inject(Router);
 
   constructor() {
     this.supabase = createClient(environment.supabaseUrl, environment.supabaseKey);
     this.initSession();
     this.supabase.auth.onAuthStateChange((event, session) => {
       this._session.set(session);
+      if (event === 'SIGNED_OUT') {
+        this.router.navigate(['/']);
+      }
     });
   }
   private async initSession() {

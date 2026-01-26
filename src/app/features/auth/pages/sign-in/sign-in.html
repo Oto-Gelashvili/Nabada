@@ -71,7 +71,7 @@
 
     <button type="submit" [class.shake]="isShaking()" [disabled]="isLoading()">
       @if (isLoading()) {
-        <div class="spinner"></div>
+        <app-spinner></app-spinner>
       } @else {
         <span i18n="@@signUpSubmit">Continue</span>
       }

@@ -55,6 +55,9 @@
   border: 1px solid transparent;
   cursor: pointer;
   transition: 0.4s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .profileMenu .logOutBtn:hover {
   background-color: var(--accent-color);
@@ -137,11 +140,45 @@
     align-items: center;
   }
 }
+.logOut-error {
+  position: fixed;
+  top: 2.4rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  padding: 0.8rem 2.4rem;
+  border-radius: 50rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  font-size: 1.4rem;
+  color: #fff;
+  min-width: 280px;
+  background-color: var(--error);
+}
+
+.enter-animation-logOut-error {
+  animation: slide-fade-logOut-error 1s;
+}
+@keyframes slide-fade-logOut-error {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50px);
+  }
+  to {
+    opacity: 1;
+  }
+}
 @media screen and (max-width: 475px) {
   .profileMenu {
     width: 100%;
     left: 0;
     border-radius: 0;
     right: unset;
+  }
+  .logOut-error {
+    width: calc(100% - var(--total-padding-mobile));
+    min-width: unset;
   }
 }

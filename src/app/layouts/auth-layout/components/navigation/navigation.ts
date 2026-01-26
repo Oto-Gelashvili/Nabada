@@ -18,10 +18,10 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 })
 export class Navigation implements AfterViewInit, OnDestroy {
   @ViewChild('nav', { static: false }) navRef!: ElementRef<HTMLElement>;
-  readonly bgElPosition = signal(0);
-  readonly bgElWidth = signal(0);
+  readonly bgElPosition = signal<number>(0);
+  readonly bgElWidth = signal<number>(0);
   private navRect!: DOMRect;
-  private document = inject(DOCUMENT);
+  private readonly document = inject(DOCUMENT);
 
   ngAfterViewInit() {
     // so what actually happes here is that yes DOM is ready, but external assets like ( styles, images, font families...) are not
@@ -38,7 +38,7 @@ export class Navigation implements AfterViewInit, OnDestroy {
     window.removeEventListener('resize', this.initialSetup);
   }
   // lexicly binds "this" to header instance so we dont have to use explicit binding inside events
-  private initialSetup = () => {
+  private readonly initialSetup = () => {
     this.navRect = this.navRef.nativeElement.getBoundingClientRect();
     this.bgReset();
   };
@@ -50,7 +50,7 @@ export class Navigation implements AfterViewInit, OnDestroy {
     this.bgElWidth.set(targetRect.width);
   }
 
-  bgReset = () => {
+  readonly bgReset = () => {
     const activeLink = this.navRef.nativeElement.querySelector<HTMLElement>('.active');
     if (!activeLink || !this.navRect) {
       this.bgElPosition.set(0);
@@ -61,7 +61,7 @@ export class Navigation implements AfterViewInit, OnDestroy {
       this.bgElWidth.set(activeLinkRect.width);
     }
   };
-  logoReset = () => {
+  readonly logoReset = () => {
     const homeLink = this.document.querySelector<HTMLElement>('.homeLink');
     if (homeLink) {
       const heomLinkWidth = homeLink.getBoundingClientRect().width;

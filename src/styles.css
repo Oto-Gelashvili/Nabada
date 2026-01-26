@@ -10,7 +10,8 @@
   --error: #dc2626;
   --success: #44bba4;
   --padding-inline: 4.8rem;
-  --total-padding-mobile: 4.8rem;
+  --padding-inline-mobile: 2.4rem;
+  --total-padding-mobile: calc(var(--padding-inline) * 2);
   --fixed-header-height: 8.4rem;
 }
 
@@ -203,6 +204,6 @@ main {
 
 @media screen and (max-width: 768px) {
   main {
-    padding-inline: 2.4rem;
+    padding-inline: var(--padding-inline-mobile);
   }
 }
