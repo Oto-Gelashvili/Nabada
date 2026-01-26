@@ -13,6 +13,7 @@ export class SignIn {
   isShaking = signal(false);
   isLoading = signal(false);
   isSignInMode = signal(false);
+  notification = signal<{ message: string; type: 'success' | 'error' } | null>(null);
   private readonly supabase = inject(SupabaseService);
   async submit(form: NgForm) {
     if (form.invalid) {
@@ -23,11 +24,11 @@ export class SignIn {
     try {
       const { error } = await this.supabase.signIn(this.email());
       if (error) throw error;
-      alert('Check your email for the login link!');
+      this.showNotification('Check your email for the login link!', 'success');
       form.resetForm();
     } catch (error) {
       if (error instanceof Error) {
-        alert(error.message);
+        this.showNotification(error.message, 'error');
       }
     } finally {
       this.isLoading.set(false);
@@ -39,7 +40,9 @@ export class SignIn {
       const { error } = await this.supabase.signInWithGoogle();
       if (error) throw error;
     } catch (error) {
-      console.error(error);
+      if (error instanceof Error) {
+        this.showNotification(error.message, 'error');
+      }
     }
   }
   triggerShake() {
@@ -51,5 +54,11 @@ export class SignIn {
 
   toggleSignInMode() {
     this.isSignInMode.update((mode) => !mode);
+  }
+  showNotification(message: string, type: 'success' | 'error') {
+    this.notification.set({ message, type });
+    setTimeout(() => {
+      this.notification.set(null);
+    }, 4000);
   }
 }
