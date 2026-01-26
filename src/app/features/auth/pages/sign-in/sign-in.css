@@ -190,11 +190,15 @@ form button:focus {
 }
 .logInDesc {
   font-size: 1.2rem;
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
 }
 .logInDesc a {
   text-decoration: underline;
   transition: 0.4s;
   outline: 1px solid transparent;
+  cursor: pointer;
 }
 .logInDesc a:hover {
   color: var(--primary-color);
@@ -240,6 +244,21 @@ form .error {
     transform: translateX(0);
   }
 }
+
+.enter-animation {
+  animation: slide-fade 1s;
+}
+@keyframes slide-fade {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 @media screen and (max-width: 375px) {
   #signUpCont {
     width: 100%;

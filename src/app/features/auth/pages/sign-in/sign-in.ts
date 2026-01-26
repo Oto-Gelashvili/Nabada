@@ -1,11 +1,10 @@
 import { Component, inject, signal } from '@angular/core';
-import { RouterLink } from '@angular/router';
 import { FormsModule, NgForm } from '@angular/forms';
 import { SupabaseService } from '../../../../core/services/supabase';
 
 @Component({
   selector: 'app-sign-ing',
-  imports: [RouterLink, FormsModule],
+  imports: [FormsModule],
   templateUrl: './sign-in.html',
   styleUrl: './sign-in.css',
 })
@@ -13,6 +12,7 @@ export class SignIn {
   email = signal('');
   isShaking = signal(false);
   isLoading = signal(false);
+  isSignInMode = signal(false);
   private readonly supabase = inject(SupabaseService);
   async submit(form: NgForm) {
     if (form.invalid) {
@@ -47,5 +47,9 @@ export class SignIn {
     setTimeout(() => {
       this.isShaking.set(false);
     }, 400);
+  }
+
+  toggleSignInMode() {
+    this.isSignInMode.update((mode) => !mode);
   }
 }
