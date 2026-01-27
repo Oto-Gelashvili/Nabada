@@ -13,9 +13,11 @@ import { ThemeSwitcher } from '../../../../shared/components/theme-switcher/them
 import { SupabaseService } from '../../../../core/services/supabase';
 import { Spinner } from '../../../../shared/components/spinner/spinner';
 import { UserProfile } from '../../../../models/userProfile';
+import { ErrorModal } from '../../../../shared/components/error-modal/error-modal';
+import { NotificationService } from '../../../../core/services/Notification';
 @Component({
   selector: 'app-nav-menu',
-  imports: [RouterLink, RouterLinkActive, ThemeSwitcher, Spinner],
+  imports: [RouterLink, RouterLinkActive, ThemeSwitcher, Spinner, ErrorModal],
   templateUrl: './nav-menu.html',
   styleUrl: './nav-menu.css',
 })
@@ -26,8 +28,7 @@ export class NavMenu implements OnInit, OnDestroy {
   private readonly document = inject(DOCUMENT);
   readonly open = signal(false);
   readonly loading = signal(false);
-  readonly errorMsg = signal<string | null>(null);
-
+  private readonly notify = inject(NotificationService);
   constructor() {
     effect(() => {
       if (this.open()) {
@@ -58,8 +59,7 @@ export class NavMenu implements OnInit, OnDestroy {
       this.open.set(false);
     } catch (error) {
       if (error instanceof Error) {
-        this.errorMsg.set(error.message);
-        setTimeout(() => this.errorMsg.set(null), 4000);
+        this.notify.showError(error.message);
       }
     } finally {
       this.loading.set(false);
@@ -74,7 +74,9 @@ export class NavMenu implements OnInit, OnDestroy {
         this.userProfile.set(profile as UserProfile);
       }
     } catch (error) {
-      console.error('Unexpected error:', error);
+      if (error instanceof Error) {
+        this.notify.showError(error.message);
+      }
     }
   }
 

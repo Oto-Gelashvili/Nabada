@@ -87,23 +87,4 @@
     }
   </p>
 </div>
-@if (notification(); as note) {
-  <div class="custom-alert" [class]="note.type" animate.enter="enter-animation-alert">
-    @if (note.type === 'success') {
-      <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-      </svg>
-    }
-    @if (note.type === 'error') {
-      <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M6 18L18 6M6 6l12 12"
-        />
-      </svg>
-    }
-    <span>{{ note.message }}</span>
-  </div>
-}
+<app-errorModal></app-errorModal>

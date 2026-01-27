@@ -13,7 +13,7 @@
       @if (userProfile(); as profile) {
         <p class="username">{{ profile.username }}</p>
         @if (profile.avatar_url) {
-          <img src="{{ profile.avatar_url }}" alt="users avatar" />
+          <img [src]="profile.avatar_url" alt="users avatar" />
         } @else {
           <div class="avatar-skeleton">{{ profile.username.slice(0, 1).toUpperCase() }}</div>
         }
@@ -58,16 +58,4 @@
     </div>
   </div>
 }
-@if (errorMsg() !== null) {
-  <div class="logOut-error" animate.enter="enter-animation-logOut-error">
-    <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="2"
-        d="M6 18L18 6M6 6l12 12"
-      />
-    </svg>
-    <span>{{ errorMsg() }}</span>
-  </div>
-}
+<app-errorModal></app-errorModal>
