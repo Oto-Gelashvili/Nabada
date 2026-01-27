@@ -9,19 +9,11 @@
     animate.enter="enter-animation"
     animate.leave="leave-animation"
   >
-    <div class="userInfo">
-      @if (userProfile(); as profile) {
-        <p class="username">{{ profile.username }}</p>
-        @if (profile.avatar_url) {
-          <img [src]="profile.avatar_url" alt="users avatar" />
-        } @else {
-          <div class="avatar-skeleton">{{ profile.username.slice(0, 1).toUpperCase() }}</div>
-        }
-      } @else {
-        <p class="username-skeleton">Nabada User</p>
-        <div class="avatar-skeleton"></div>
-      }
-    </div>
+    @if (userProfile(); as profile) {
+      <p class="username">{{ profile.username }}</p>
+    } @else {
+      <p class="username-skeleton">Nabada User</p>
+    }
     <a
       routerLink="/"
       routerLinkActive="active"
@@ -40,7 +32,11 @@
     </a>
     <a routerLink="/settings" routerLinkActive="active"
       ><p i18n="@@settingLink">Settings</p>
-      <span class="material-symbols-outlined"> settings </span>
+      @if (userProfile()?.avatar_url; as avatar) {
+        <img [src]="avatar" class="avatar" alt="users avatar" />
+      } @else {
+        <span class="material-symbols-outlined"> settings </span>
+      }
     </a>
     <a routerLink="/"
       ><p i18n="@@HomePageLink">Home</p>

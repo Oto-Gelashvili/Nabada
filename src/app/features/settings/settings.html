@@ -1,1 +1,80 @@
-<p>settings works!</p>
+<h1>Account Settings</h1>
+<div class="profileInfoCont">
+  <div class="profileInfoHeading">
+    <h2>Profile info</h2>
+    <button (click)="toggleEditingState()">
+      @if (isEditing()) {
+        <span class="material-symbols-outlined">cancel </span>
+        <p>Cancel</p>
+      } @else {
+        <span class="material-symbols-outlined">edit </span>
+        <p>Edit</p>
+      }
+    </button>
+  </div>
+  <form [formGroup]="profileForm" (ngSubmit)="updateProfile()">
+    <div class="formCard">
+      <div class="avatarCont">
+        @if (profileForm.get('avatar_url')?.value) {
+          <img [src]="profileForm.get('avatar_url')?.value" class="avatar-preview" />
+        } @else {
+          <div class="avatar-placeholder">
+            {{ profileForm.get('username')?.value?.slice(0, 1)?.toUpperCase() }}
+          </div>
+        }
+      </div>
+      <div class="textCont">
+        <div class="usernameCont">
+          <label for="username">Username</label>
+          <input
+            id="username"
+            type="text"
+            [readonly]="!isEditing()"
+            formControlName="username"
+            placeholder="Enter username"
+            [class.error-border]="
+              profileForm.get('username')?.invalid && profileForm.get('username')?.touched
+            "
+            [class.editableInput]="isEditing()"
+          />
+          @if (
+            profileForm.get('username')?.hasError('required') &&
+            profileForm.get('username')?.touched
+          ) {
+            <span class="error-msg">Username is required</span>
+          }
+          @if (
+            profileForm.get('username')?.hasError('minlength') &&
+            profileForm.get('username')?.touched
+          ) {
+            <span class="error-msg">Must be at least 3 characters</span>
+          }
+        </div>
+        <div class="emailCont">
+          <label for="email">Email</label>
+          <input
+            id="email"
+            type="email"
+            [readonly]="!isEditing()"
+            [class.editableInput]="isEditing()"
+            placeholder="Enter your email"
+          />
+        </div>
+      </div>
+    </div>
+    <button
+      type="submit"
+      class="btn-primary"
+      [disabled]="loading() || profileForm.invalid || profileForm.pristine"
+    >
+      @if (updating()) {
+        <app-spinner></app-spinner>
+      } @else {
+        <p>Save</p>
+      }
+    </button>
+  </form>
+</div>
+@if (loading()) {
+  <app-loader></app-loader>
+}

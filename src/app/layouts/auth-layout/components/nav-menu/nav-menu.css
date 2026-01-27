@@ -26,14 +26,8 @@
   font-size: 1.6rem;
   cursor: auto;
 }
-.userInfo {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-}
-.profileMenu .avatar-skeleton,
-.profileMenu img {
+
+.profileMenu .avatar {
   width: 24px;
   height: 24px;
   border-radius: 50%;

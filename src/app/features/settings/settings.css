@@ -1,0 +1,168 @@
+:host {
+  flex: 1;
+}
+h1 {
+  font-size: 2.4rem;
+  color: var(--secondary-color);
+  margin-bottom: 2.4rem;
+}
+.profileInfoCont {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  background-color: var(--hover-color);
+  padding: 1.2rem;
+  border-radius: 12px;
+  width: fit-content;
+}
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+}
+
+form img {
+  border-radius: 50%;
+  width: 84px;
+  height: 84px;
+}
+.textCont {
+  gap: 1.6rem;
+  display: flex;
+  flex-direction: column;
+}
+.usernameCont,
+.emailCont {
+  font-size: 1.4rem;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+.usernameCont label,
+.emailCont label {
+  color: var(--secondary-color);
+}
+
+.emailCont ::placeholder {
+  color: var(--text-color);
+}
+.usernameCont input,
+.emailCont input {
+  border-radius: 8px;
+  transition: 0.4s;
+  border: none;
+  outline: none;
+  padding: unset;
+  background: transparent;
+  color: var(--text-color);
+  font-size: 1.6rem;
+}
+.textCont input.editableInput {
+  padding: 0.8rem 1.6rem;
+  outline: 1px solid transparent;
+  border: 1px solid var(--border-color);
+  background: var(--background-color);
+}
+
+form input:hover {
+  outline-color: var(--primary-color);
+}
+
+form input:focus {
+  outline-color: var(--primary-color);
+}
+.profileInfoHeading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.profileInfoHeading h2 {
+  font-size: 1.8rem;
+}
+.profileInfoHeading button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.2rem 1.2rem;
+  font-size: 1.4rem;
+  border: 1px solid transparent;
+  outline: 1px solid var(--border-color);
+  color: var(--primary-color);
+  gap: 0.4rem;
+  transition: 0.4s;
+  cursor: pointer;
+  border-radius: 50rem;
+
+  background-color: var(--accent-color);
+  color: var(--text-color);
+}
+
+.profileInfoHeading button:hover {
+  outline-color: var(--primary-color);
+}
+
+.profileInfoHeading button:focus {
+  outline-color: var(--primary-color);
+}
+.profileInfoHeading button .material-symbols-outlined {
+  font-size: 1.8rem;
+}
+.btn-primary {
+  border-radius: 50rem;
+  font-size: 1.6rem;
+  background-color: var(--primary-color);
+  color: #fff;
+  transition: 0.4s;
+  border: 1px solid transparent;
+  outline: 1px solid var(--border-color);
+  padding: 0.4rem 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.btn-primary:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+.btn-primary:hover {
+  background-color: transparent;
+  border: 1px solid var(--primary-color);
+  color: var(--primary-color);
+}
+
+.btn-primary:focus {
+  background-color: transparent;
+  border: 1px solid var(--primary-color);
+  color: var(--primary-color);
+}
+.btn-primary:active {
+  background-color: var(--border-color);
+}
+.formCard {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap: 4.8rem;
+}
+.usernameCont input.error-border,
+.emailCont input.error-border {
+  border-color: var(--error);
+}
+.error-msg {
+  position: absolute;
+  top: 100%;
+  color: var(--error);
+  font-size: 1.2rem;
+}
+.avatar-placeholder {
+  border-radius: 50%;
+  width: 84px;
+  height: 84px;
+  background-color: var(--accent-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.4rem;
+  color: var(--secondary-color);
+}

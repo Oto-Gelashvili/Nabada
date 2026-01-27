@@ -9,13 +9,7 @@ import {
 } from '@supabase/supabase-js';
 import { environment } from '../../environments/environments';
 import { Router } from '@angular/router';
-
-export interface Profile {
-  id?: string;
-  username: string;
-  website: string;
-  avatar_url: string;
-}
+import { UserProfile } from '../../models/userProfile';
 
 @Injectable({
   providedIn: 'root',
@@ -67,7 +61,11 @@ export class SupabaseService {
   }
 
   profile(user: User) {
-    return this.supabase.from('profiles').select(`username, avatar_url`).eq('id', user.id).single();
+    return this.supabase
+      .from('profiles')
+      .select(`id, username, avatar_url`)
+      .eq('id', user.id)
+      .single();
   }
 
   authChanges(callback: (event: AuthChangeEvent, session: Session | null) => void) {
@@ -95,7 +93,7 @@ export class SupabaseService {
     return this.supabase.auth.signOut();
   }
 
-  updateProfile(profile: Profile) {
+  updateProfile(profile: UserProfile) {
     const update = {
       ...profile,
       updated_at: new Date(),

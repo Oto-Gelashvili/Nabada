@@ -166,7 +166,9 @@ app-root {
   min-height: 100vh;
   /* overflow: hidden; */
 }
-app-blank-layout {
+app-blank-layout,
+app-auth-layout,
+app-public-layout {
   display: flex;
   flex: 1;
 }
