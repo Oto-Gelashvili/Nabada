@@ -1,16 +1,27 @@
-import { Component, signal, effect, ElementRef, inject, OnDestroy, DOCUMENT } from '@angular/core';
+import {
+  Component,
+  signal,
+  effect,
+  ElementRef,
+  inject,
+  OnDestroy,
+  DOCUMENT,
+  OnInit,
+} from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { ThemeSwitcher } from '../../../../shared/components/theme-switcher/theme-switcher';
 import { SupabaseService } from '../../../../core/services/supabase';
 import { Spinner } from '../../../../shared/components/spinner/spinner';
+import { UserProfile } from '../../../../models/userProfile';
 @Component({
   selector: 'app-nav-menu',
   imports: [RouterLink, RouterLinkActive, ThemeSwitcher, Spinner],
   templateUrl: './nav-menu.html',
   styleUrl: './nav-menu.css',
 })
-export class NavMenu implements OnDestroy {
+export class NavMenu implements OnInit, OnDestroy {
   private readonly supabase = inject(SupabaseService);
+  readonly userProfile = signal<UserProfile | null>(null);
   private readonly elementRef = inject(ElementRef);
   private readonly document = inject(DOCUMENT);
   readonly open = signal(false);
@@ -27,6 +38,9 @@ export class NavMenu implements OnDestroy {
     });
   }
 
+  async ngOnInit() {
+    this.fetchProfile();
+  }
   private readonly clickChecker = (event: MouseEvent) => {
     // Check if click is outside the profileBtn
     if (!this.elementRef.nativeElement.contains(event.target)) {
@@ -49,6 +63,18 @@ export class NavMenu implements OnDestroy {
       }
     } finally {
       this.loading.set(false);
+    }
+  }
+
+  async fetchProfile() {
+    try {
+      const profile = await this.supabase.getCurrentProfile();
+
+      if (profile) {
+        this.userProfile.set(profile as UserProfile);
+      }
+    } catch (error) {
+      console.error('Unexpected error:', error);
     }
   }
 

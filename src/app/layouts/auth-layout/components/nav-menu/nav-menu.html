@@ -9,7 +9,19 @@
     animate.enter="enter-animation"
     animate.leave="leave-animation"
   >
-    <p class="username">Oto Gelashvili</p>
+    <div class="userInfo">
+      @if (userProfile(); as profile) {
+        <p class="username">{{ profile.username }}</p>
+        @if (profile.avatar_url) {
+          <img src="{{ profile.avatar_url }}" alt="users avatar" />
+        } @else {
+          <div class="avatar-skeleton">{{ profile.username.slice(0, 1).toUpperCase() }}</div>
+        }
+      } @else {
+        <p class="username-skeleton">Nabada User</p>
+        <div class="avatar-skeleton"></div>
+      }
+    </div>
     <a
       routerLink="/"
       routerLinkActive="active"

@@ -40,17 +40,34 @@ export class SupabaseService {
     const { data } = await this.supabase.auth.getSession();
     this._session.set(data.session);
   }
+
+  async getUser() {
+    return this.supabase.auth.getUser();
+  }
+  async getCurrentProfile() {
+    const {
+      data: { user },
+    } = await this.getUser();
+
+    if (!user) return null;
+
+    const { data, error } = await this.profile(user);
+
+    if (error) {
+      console.error('Error loading profile:', error);
+      return null;
+    }
+
+    return data;
+  }
+
   async isLoggedIn(): Promise<boolean> {
     const { data } = await this.supabase.auth.getSession();
     return !!data.session;
   }
 
   profile(user: User) {
-    return this.supabase
-      .from('profiles')
-      .select(`username, website, avatar_url`)
-      .eq('id', user.id)
-      .single();
+    return this.supabase.from('profiles').select(`username, avatar_url`).eq('id', user.id).single();
   }
 
   authChanges(callback: (event: AuthChangeEvent, session: Session | null) => void) {
