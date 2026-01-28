@@ -48,8 +48,7 @@ export class SupabaseService {
     const { data, error } = await this.profile(user);
 
     if (error) {
-      console.error('Error loading profile:', error);
-      return null;
+      throw error;
     }
     return { ...data, email: user.email };
   }
