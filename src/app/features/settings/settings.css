@@ -122,10 +122,9 @@ form input:focus {
   cursor: pointer;
 }
 .btn-primary:disabled {
-  opacity: 0.7;
   cursor: not-allowed;
 }
-.btn-primary:hover {
+.btn-primary:valid:hover {
   background-color: transparent;
   border: 1px solid var(--primary-color);
   color: var(--primary-color);

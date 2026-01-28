@@ -15,7 +15,8 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   font-size: 1.4rem;
   color: #fff;
-  min-width: 280px;
+  min-width: fit-content;
+  line-break: anywhere;
 }
 
 .custom-alert.success {
@@ -28,6 +29,9 @@
 .enter-animation-alert {
   animation: slide-fade-alert 1s;
 }
+.leave-animation-alert {
+  animation: slide-out-alert 1s;
+}
 @keyframes slide-fade-alert {
   from {
     opacity: 0;
@@ -35,6 +39,15 @@
   }
   to {
     opacity: 1;
+  }
+}
+@keyframes slide-out-alert {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    transform: translate(-50%, -50px);
   }
 }
 
