@@ -9,5 +9,5 @@ import { NotificationService } from '../../../core/services/Notification';
 })
 export class ErrorModal {
   private readonly notifyService = inject(NotificationService);
-  readonly notification = this.notifyService.notification;
+  readonly notifications = this.notifyService.notifications;
 }

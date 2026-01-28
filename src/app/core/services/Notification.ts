@@ -1,6 +1,7 @@
 import { Injectable, signal } from '@angular/core';
 
 export interface AppNotification {
+  id: number;
   message: string;
   type: 'success' | 'error';
 }
@@ -9,9 +10,11 @@ export interface AppNotification {
   providedIn: 'root',
 })
 export class NotificationService {
-  readonly notification = signal<AppNotification | null>(null);
-
-  private timeoutId: any;
+  readonly notifications = signal<AppNotification[]>([]);
+  // readonly notifications = signal<AppNotification[]>([
+  //   { id: 123123, message: ' erororeroror erororeroror eroror buddysa', type: 'error' },
+  //   { id: 123123, message: 'success buddysa', type: 'success' },
+  // ]);
 
   showError(message: string) {
     this.show(message, 'error');
@@ -21,13 +24,17 @@ export class NotificationService {
     this.show(message, 'success');
   }
 
+  remove(id: number) {
+    this.notifications.update((current) => current.filter((n) => n.id !== id));
+  }
+
   private show(message: string, type: 'success' | 'error') {
-    if (this.timeoutId) clearTimeout(this.timeoutId);
+    const id = Date.now() + Math.random();
 
-    this.notification.set({ message, type });
+    this.notifications.update((current) => [...current, { id, message, type }]);
 
-    this.timeoutId = setTimeout(() => {
-      this.notification.set(null);
+    setTimeout(() => {
+      this.remove(id);
     }, 4000);
   }
 }

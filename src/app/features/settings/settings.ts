@@ -28,6 +28,10 @@ export class Settings implements OnInit {
 
   async ngOnInit() {
     this.loadProfile();
+    this.notify.showSuccess('Profile updated!');
+    setTimeout(() => {
+      this.notify.showSuccess('Profile updated!');
+    }, 2000);
   }
 
   async loadProfile() {
@@ -64,13 +68,12 @@ export class Settings implements OnInit {
       if (this.profileForm.controls.username.dirty || this.profileForm.controls.avatar_url.dirty) {
         const { error } = await this.supabase.updateProfile(profileUpdates);
         if (error) throw error;
+        this.notify.showSuccess('Profile updated!');
       }
       if (this.profileForm.controls.email.dirty && this.profileForm.value.email) {
         const { error } = await this.supabase.updateEmail(this.profileForm.value.email);
         if (error) throw error;
         this.notify.showSuccess('Confirmation link sent to your new email!');
-      } else {
-        this.notify.showSuccess('Profile updated!');
       }
       this.profileForm.markAsPristine();
     } catch (error) {
