@@ -37,14 +37,10 @@
             "
             [class.editableInput]="isEditing()"
           />
+
           @if (
-            profileForm.get('username')?.hasError('required') &&
-            profileForm.get('username')?.touched
-          ) {
-            <span class="error-msg">Username is required</span>
-          }
-          @if (
-            profileForm.get('username')?.hasError('minlength') &&
+            (profileForm.get('username')?.hasError('minlength') ||
+              profileForm.get('username')?.hasError('required')) &&
             profileForm.get('username')?.touched
           ) {
             <span class="error-msg">Must be at least 3 characters</span>
@@ -56,9 +52,13 @@
             id="email"
             type="email"
             [readonly]="!isEditing()"
+            formControlName="email"
             [class.editableInput]="isEditing()"
             placeholder="Enter your email"
           />
+          @if (profileForm.get('email')?.hasError('invalid') && profileForm.get('email')?.touched) {
+            <span class="error-msg">Must be at least 3 characters</span>
+          }
         </div>
       </div>
     </div>

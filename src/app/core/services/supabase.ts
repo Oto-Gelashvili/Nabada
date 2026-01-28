@@ -51,8 +51,7 @@ export class SupabaseService {
       console.error('Error loading profile:', error);
       return null;
     }
-
-    return data;
+    return { ...data, email: user.email };
   }
 
   async isLoggedIn(): Promise<boolean> {
@@ -108,5 +107,9 @@ export class SupabaseService {
 
   uploadAvatar(filePath: string, file: File) {
     return this.supabase.storage.from('avatars').upload(filePath, file);
+  }
+
+  async updateEmail(email: string) {
+    return this.supabase.auth.updateUser({ email });
   }
 }

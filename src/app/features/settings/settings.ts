@@ -23,7 +23,7 @@ export class Settings implements OnInit {
   readonly profileForm = new FormGroup({
     username: new FormControl('', [Validators.required, Validators.minLength(3)]),
     avatar_url: new FormControl(''),
-    // email: new FormControl(''),
+    email: new FormControl('', [Validators.email]),
   });
 
   async ngOnInit() {
@@ -39,7 +39,7 @@ export class Settings implements OnInit {
         this.profileForm.patchValue({
           username: user.username,
           avatar_url: user.avatar_url,
-          // email: user.email,
+          email: user.email,
         });
       }
     } catch (error) {
@@ -56,17 +56,27 @@ export class Settings implements OnInit {
     try {
       this.updating.set(true);
 
-      const updates: UserProfile = {
+      const profileUpdates: UserProfile = {
         id: this.userId,
         username: this.profileForm.value.username as string,
         avatar_url: this.profileForm.value.avatar_url as string,
       };
-      const { error } = await this.supabase.updateProfile(updates);
-      if (error) throw error;
-      this.notify.showSuccess('Profile updated!');
+      if (this.profileForm.controls.username.dirty || this.profileForm.controls.avatar_url.dirty) {
+        const { error } = await this.supabase.updateProfile(profileUpdates);
+        if (error) throw error;
+      }
+      if (this.profileForm.controls.email.dirty && this.profileForm.value.email) {
+        const { error } = await this.supabase.updateEmail(this.profileForm.value.email);
+        if (error) throw error;
+        this.notify.showSuccess('Confirmation link sent to your new email!');
+      } else {
+        this.notify.showSuccess('Profile updated!');
+      }
       this.profileForm.markAsPristine();
     } catch (error) {
-      this.notify.showError('Error updating profile');
+      if (error instanceof Error) {
+        this.notify.showError(error.message);
+      }
     } finally {
       this.updating.set(false);
       this.isEditing.set(false);
