@@ -27,7 +27,9 @@ export class SignIn {
     try {
       const { error } = await this.supabase.signIn(this.email());
       if (error) throw error;
-      this.notify.showSuccess('Check your email for the login link!');
+      this.notify.showSuccess(
+        $localize`:@@signup.success.checkMail:Check your email for the login link!`,
+      );
       form.resetForm();
     } catch (error) {
       if (error instanceof Error) {

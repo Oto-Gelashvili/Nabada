@@ -108,6 +108,9 @@ export class SupabaseService {
     return this.supabase.storage.from('avatars').upload(filePath, file);
   }
 
+  getPublicUrl(path: string) {
+    return this.supabase.storage.from('avatars').getPublicUrl(path).data.publicUrl;
+  }
   async updateEmail(email: string) {
     return this.supabase.auth.updateUser({ email });
   }

@@ -1,14 +1,14 @@
-<h1>Account Settings</h1>
+<h1 i18n="@@settings.pageTitle">Account Settings</h1>
 <div class="profileInfoCont">
   <div class="profileInfoHeading">
-    <h2>Profile info</h2>
+    <h2 i18n="@@settings.profileInfo">Profile info</h2>
     <button (click)="toggleEditingState()">
       @if (isEditing()) {
         <span class="material-symbols-outlined">cancel </span>
-        <p>Cancel</p>
+        <p i18n="@@common.cancel">Cancel</p>
       } @else {
         <span class="material-symbols-outlined">edit </span>
-        <p>Edit</p>
+        <p i18n="@@common.edit">Edit</p>
       }
     </button>
   </div>
@@ -22,16 +22,26 @@
             {{ profileForm.get('username')?.value?.slice(0, 1)?.toUpperCase() }}
           </div>
         }
+
+        @if (isEditing()) {
+          <input
+            id="avatar"
+            type="file"
+            accept="image/png, image/jpeg, image/webp"
+            (change)="onAvatarSelected($event)"
+          />
+        }
       </div>
       <div class="textCont">
         <div class="usernameCont">
-          <label for="username">Username</label>
+          <label for="username" i18n="@@settings.label.username">Username</label>
           <input
             id="username"
             type="text"
             [readonly]="!isEditing()"
             formControlName="username"
             placeholder="Enter username"
+            i18n-placeholder="@@settings.placeholder.username"
             [class.error-border]="
               profileForm.get('username')?.invalid && profileForm.get('username')?.touched
             "
@@ -43,11 +53,13 @@
               profileForm.get('username')?.hasError('required')) &&
             profileForm.get('username')?.touched
           ) {
-            <span class="error-msg">Must be at least 3 characters</span>
+            <span class="error-msg" i18n="@@settings.error.minThreeChars"
+              >Must be at least 3 characters</span
+            >
           }
         </div>
         <div class="emailCont">
-          <label for="email">Email</label>
+          <label for="email" i18n="@@settings.label.email">Email</label>
           <input
             id="email"
             type="email"
@@ -55,9 +67,12 @@
             formControlName="email"
             [class.editableInput]="isEditing()"
             placeholder="Enter your email"
+            i18n-placeholder="@@settings.placeholder.email"
           />
           @if (profileForm.get('email')?.hasError('invalid') && profileForm.get('email')?.touched) {
-            <span class="error-msg">Must be at least 3 characters</span>
+            <span class="error-msg" i18n="@@settings.error.minThreeChars"
+              >Must be at least 3 characters</span
+            >
           }
         </div>
       </div>
@@ -70,7 +85,7 @@
       @if (updating()) {
         <app-spinner></app-spinner>
       } @else {
-        <p>Save</p>
+        <p i18n="@@common.save">Save</p>
       }
     </button>
   </form>
