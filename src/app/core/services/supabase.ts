@@ -10,6 +10,7 @@ import {
 import { environment } from '../../environments/environments';
 import { Router } from '@angular/router';
 import { UserProfile } from '../../models/userProfile';
+import { NotificationService } from './Notification';
 
 @Injectable({
   providedIn: 'root',
@@ -19,6 +20,7 @@ export class SupabaseService {
   private readonly _session = signal<AuthSession | null>(null);
   readonly session = this._session.asReadonly();
   private readonly router = inject(Router);
+  private readonly notify = inject(NotificationService);
 
   constructor() {
     this.supabase = createClient(environment.supabaseUrl, environment.supabaseKey);
@@ -113,5 +115,13 @@ export class SupabaseService {
   }
   async updateEmail(email: string) {
     return this.supabase.auth.updateUser({ email });
+  }
+
+  async deleteAccount() {
+    const { error } = await this.supabase.rpc('delete_own_account');
+
+    if (error) throw error;
+
+    await this.signOut();
   }
 }
