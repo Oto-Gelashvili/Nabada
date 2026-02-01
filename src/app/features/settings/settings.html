@@ -1,94 +1,109 @@
 <h1 i18n="@@settings.pageTitle">Account Settings</h1>
 <div class="profileInfoCont">
-  <div class="profileInfoHeading">
-    <h2 i18n="@@settings.profileInfo">Profile info</h2>
-    <button (click)="toggleEditingState()">
-      @if (isEditing()) {
-        <span class="material-symbols-outlined">cancel </span>
-        <p i18n="@@common.cancel">Cancel</p>
-      } @else {
-        <span class="material-symbols-outlined">edit </span>
-        <p i18n="@@common.edit">Edit</p>
-      }
-    </button>
-  </div>
-  <form [formGroup]="profileForm" (ngSubmit)="updateProfile()">
-    <div class="formCard">
-      <div class="avatarCont">
-        @if (profileForm.get('avatar_url')?.value) {
-          <img [src]="profileForm.get('avatar_url')?.value" class="avatar-preview" />
-        } @else {
-          <div class="avatar-placeholder">
-            {{ profileForm.get('username')?.value?.slice(0, 1)?.toUpperCase() }}
-          </div>
-        }
-
+  <div class="wrapper">
+    <div class="profileInfoHeading">
+      <h2 i18n="@@settings.profileInfo">Profile info</h2>
+      <button class="btn-secondary" (click)="toggleEditingState()">
         @if (isEditing()) {
-          <input
-            id="avatar"
-            type="file"
-            accept="image/png, image/jpeg, image/webp"
-            (change)="onAvatarSelected($event)"
-          />
+          <span class="material-symbols-outlined">cancel </span>
+          <p i18n="@@common.cancel">Cancel</p>
+        } @else {
+          <span class="material-symbols-outlined">edit </span>
+          <p i18n="@@common.edit">Edit</p>
         }
-      </div>
-      <div class="textCont">
-        <div class="usernameCont">
-          <label for="username" i18n="@@settings.label.username">Username</label>
-          <input
-            id="username"
-            type="text"
-            [readonly]="!isEditing()"
-            formControlName="username"
-            placeholder="Enter username"
-            i18n-placeholder="@@settings.placeholder.username"
-            [class.error-border]="
-              profileForm.get('username')?.invalid && profileForm.get('username')?.touched
-            "
-            [class.editableInput]="isEditing()"
-          />
-
-          @if (
-            (profileForm.get('username')?.hasError('minlength') ||
-              profileForm.get('username')?.hasError('required')) &&
-            profileForm.get('username')?.touched
-          ) {
-            <span class="error-msg" i18n="@@settings.error.minThreeChars"
-              >Must be at least 3 characters</span
-            >
-          }
-        </div>
-        <div class="emailCont">
-          <label for="email" i18n="@@settings.label.email">Email</label>
-          <input
-            id="email"
-            type="email"
-            [readonly]="!isEditing()"
-            formControlName="email"
-            [class.editableInput]="isEditing()"
-            placeholder="Enter your email"
-            i18n-placeholder="@@settings.placeholder.email"
-          />
-          @if (profileForm.get('email')?.hasError('invalid') && profileForm.get('email')?.touched) {
-            <span class="error-msg" i18n="@@settings.error.minThreeChars"
-              >Must be at least 3 characters</span
-            >
-          }
-        </div>
-      </div>
+      </button>
     </div>
-    <button
-      type="submit"
-      class="btn-primary"
-      [disabled]="loading() || profileForm.invalid || profileForm.pristine"
-    >
-      @if (updating()) {
-        <app-spinner></app-spinner>
-      } @else {
-        <p i18n="@@common.save">Save</p>
-      }
-    </button>
-  </form>
+    <form [formGroup]="profileForm" (ngSubmit)="updateProfile()">
+      <div class="formCard">
+        <div class="avatarCont">
+          @if (profileForm.get('avatar_url')?.value) {
+            <img [src]="profileForm.get('avatar_url')?.value" class="avatar-preview" />
+          } @else {
+            <div class="avatar-placeholder">
+              {{ profileForm.get('username')?.value?.slice(0, 1)?.toUpperCase() }}
+            </div>
+          }
+
+          @if (isEditing()) {
+            <input
+              id="avatar"
+              type="file"
+              accept="image/png, image/jpeg, image/webp"
+              (change)="onAvatarSelected($event)"
+            />
+          }
+        </div>
+        <div class="textCont">
+          <div class="usernameCont">
+            <label for="username" i18n="@@settings.label.username">Username</label>
+            <input
+              id="username"
+              type="text"
+              [readonly]="!isEditing()"
+              formControlName="username"
+              placeholder="Enter username"
+              i18n-placeholder="@@settings.placeholder.username"
+              [class.error-border]="
+                profileForm.get('username')?.invalid && profileForm.get('username')?.touched
+              "
+              [class.editableInput]="isEditing()"
+            />
+
+            @if (
+              (profileForm.get('username')?.hasError('minlength') ||
+                profileForm.get('username')?.hasError('required')) &&
+              profileForm.get('username')?.touched
+            ) {
+              <span class="error-msg" i18n="@@settings.error.minThreeChars"
+                >Must be at least 3 characters</span
+              >
+            }
+          </div>
+          <div class="emailCont">
+            <label for="email" i18n="@@settings.label.email">Email</label>
+            <input
+              id="email"
+              type="email"
+              [readonly]="!isEditing()"
+              formControlName="email"
+              [class.editableInput]="isEditing()"
+              placeholder="Enter your email"
+              i18n-placeholder="@@settings.placeholder.email"
+            />
+            @if (
+              profileForm.get('email')?.hasError('invalid') && profileForm.get('email')?.touched
+            ) {
+              <span class="error-msg" i18n="@@settings.error.minThreeChars"
+                >Must be at least 3 characters</span
+              >
+            }
+          </div>
+        </div>
+      </div>
+      <button
+        type="submit"
+        class="btn-primary"
+        [disabled]="loading() || profileForm.invalid || profileForm.pristine"
+      >
+        @if (updating()) {
+          <app-spinner></app-spinner>
+        } @else {
+          <p i18n="@@common.save">Save</p>
+        }
+      </button>
+    </form>
+  </div>
+  <div class="wrapper actionsCont">
+    <h2 i18n="@@settings.manage">Manage Account</h2>
+    <div class="subInfo">
+      <p class="subDesc" i18n="@@settings.subDesc">Subscription Tier:</p>
+      <p class="subTier">Free</p>
+      <a routerLink="/subscription"
+        ><button i18n="@@settings.subChange" class="btn-secondary">Change Tier</button></a
+      >
+    </div>
+    <button i18n="@@common.delete" class="btn-primary del">Delete</button>
+  </div>
 </div>
 @if (loading()) {
   <app-loader></app-loader>

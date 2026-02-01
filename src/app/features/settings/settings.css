@@ -6,13 +6,19 @@ h1 {
   color: var(--secondary-color);
   margin-bottom: 2.4rem;
 }
-.profileInfoCont {
+.wrapper {
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
   background-color: var(--hover-color);
   padding: 1.2rem;
   border-radius: 12px;
+  width: fit-content;
+}
+.profileInfoCont {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.2rem;
   width: fit-content;
 }
 form {
@@ -70,11 +76,12 @@ form input:focus {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 5.4rem;
 }
-.profileInfoHeading h2 {
+h2 {
   font-size: 1.8rem;
 }
-.profileInfoHeading button {
+.btn-secondary {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -87,19 +94,22 @@ form input:focus {
   transition: 0.4s;
   cursor: pointer;
   border-radius: 50rem;
-
+  font-size: 1.6rem;
   background-color: var(--accent-color);
   color: var(--text-color);
 }
 
-.profileInfoHeading button:hover {
+.btn-secondary:hover {
   outline-color: var(--primary-color);
 }
 
-.profileInfoHeading button:focus {
+.btn-secondary:focus {
   outline-color: var(--primary-color);
 }
-.profileInfoHeading button .material-symbols-outlined {
+.btn-primary:active {
+  transform: scaleX(1.03);
+}
+.btn-secondary .material-symbols-outlined {
   font-size: 1.8rem;
 }
 .btn-primary {
@@ -187,4 +197,66 @@ form input:focus {
   opacity: 0;
   z-index: 10;
   cursor: pointer;
+}
+.subDesc {
+  font-size: 1.6rem;
+}
+.subTier {
+  font-size: 1.6rem;
+  color: var(--secondary-color);
+}
+
+.subInfo {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  justify-content: space-around;
+  gap: 1.2rem;
+  flex: 1;
+}
+.subInfo .btn-secondary {
+  width: 100%;
+}
+.actionsCont {
+  justify-content: space-between;
+  gap: 2.4rem;
+  width: 100%;
+  gap: 1.2rem;
+}
+.actionsCont .btn-secondary {
+  padding: 0.4rem 1.2rem;
+}
+.del.btn-primary {
+  background-color: var(--error);
+  color: #fff;
+}
+@media screen and (max-width: 768px) {
+  .profileInfoCont {
+    grid-template-columns: 1fr;
+    justify-items: stretch;
+    place-items: center;
+  }
+  :host {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+}
+
+@media screen and (max-width: 475px) {
+  .formCard {
+    gap: 2.4rem;
+  }
+}
+@media screen and (max-width: 375px) {
+  .formCard {
+    flex-direction: column;
+  }
+  .profileInfoCont {
+    width: 100%;
+  }
+  .wrapper {
+    width: 100%;
+  }
 }

@@ -5,10 +5,11 @@ import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { Loader } from '../../shared/components/loader/loader';
 import { Spinner } from '../../shared/components/spinner/spinner';
 import { UserProfile } from '../../models/userProfile';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-settings',
-  imports: [ReactiveFormsModule, Loader, Spinner],
+  imports: [ReactiveFormsModule, Loader, Spinner, RouterLink],
   templateUrl: './settings.html',
   styleUrl: './settings.css',
 })
