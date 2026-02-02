@@ -17,9 +17,13 @@
       <div class="formCard">
         <div class="avatarCont">
           @if (profileForm.get('avatar_url')?.value) {
-            <img [src]="profileForm.get('avatar_url')?.value" class="avatar-preview" />
+            <img
+              [src]="profileForm.get('avatar_url')?.value"
+              class="avatar-preview"
+              animate.enter="show-animated-enter"
+            />
           } @else {
-            <div class="avatar-placeholder">
+            <div class="avatar-placeholder" [class.data-loading]="loading()">
               {{ profileForm.get('username')?.value?.slice(0, 1)?.toUpperCase() }}
             </div>
           }
@@ -36,19 +40,19 @@
         <div class="textCont">
           <div class="usernameCont">
             <label for="username" i18n="@@settings.label.username">Username</label>
-            <input
-              id="username"
-              type="text"
-              [readonly]="!isEditing()"
-              formControlName="username"
-              placeholder="Enter username"
-              i18n-placeholder="@@settings.placeholder.username"
-              [class.error-border]="
-                profileForm.get('username')?.invalid && profileForm.get('username')?.touched
-              "
-              [class.editableInput]="isEditing()"
-            />
-
+            <div class="inputCont" [class.data-loading]="loading()">
+              <input
+                id="username"
+                type="text"
+                [readonly]="!isEditing()"
+                formControlName="username"
+                [class.error-border]="
+                  profileForm.get('username')?.invalid && profileForm.get('username')?.touched
+                "
+                [class.editableInput]="isEditing()"
+                animate.enter="show-animated-enter"
+              />
+            </div>
             @if (
               (profileForm.get('username')?.hasError('minlength') ||
                 profileForm.get('username')?.hasError('required')) &&
@@ -61,15 +65,17 @@
           </div>
           <div class="emailCont">
             <label for="email" i18n="@@settings.label.email">Email</label>
-            <input
-              id="email"
-              type="email"
-              [readonly]="!isEditing()"
-              formControlName="email"
-              [class.editableInput]="isEditing()"
-              placeholder="Enter your email"
-              i18n-placeholder="@@settings.placeholder.email"
-            />
+
+            <div class="inputCont" [class.data-loading]="loading()">
+              <input
+                id="email"
+                type="email"
+                [readonly]="!isEditing()"
+                formControlName="email"
+                [class.editableInput]="isEditing()"
+                animate.enter="show-animated-enter"
+              />
+            </div>
             @if (
               profileForm.get('email')?.hasError('invalid') && profileForm.get('email')?.touched
             ) {
@@ -107,12 +113,10 @@
     </button>
   </div>
 </div>
-@if (loading()) {
-  <app-loader></app-loader>
-}
+
 @if (showConfirmation()) {
   <div class="confirmCont">
-    <div class="notyCont wrapper" animate.enter="enter-animation-noty">
+    <div class="notyCont wrapper" animate.enter="show-animated-enter">
       <h2 i18n="@@common.delete">Delete Account</h2>
       <div class="btnsCont">
         <button class="btn-secondary yes" (click)="yesDelete()" i18n="@@common.yes">yes</button>

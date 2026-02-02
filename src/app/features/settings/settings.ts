@@ -2,14 +2,13 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { SupabaseService } from '../../core/services/supabase';
 import { NotificationService } from '../../core/services/Notification';
 import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Loader } from '../../shared/components/loader/loader';
 import { Spinner } from '../../shared/components/spinner/spinner';
 import { UserProfile } from '../../models/userProfile';
 import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-settings',
-  imports: [ReactiveFormsModule, Loader, Spinner, RouterLink],
+  imports: [ReactiveFormsModule, Spinner, RouterLink],
   templateUrl: './settings.html',
   styleUrl: './settings.css',
 })
@@ -32,12 +31,16 @@ export class Settings implements OnInit {
   });
 
   async ngOnInit() {
-    this.loadProfile();
+    this.loadProfile('load');
   }
 
-  async loadProfile() {
+  async loadProfile(resetOrLoad: 'load' | 'reset') {
     try {
-      this.loading.set(true);
+      if (resetOrLoad === 'load') {
+        this.loading.set(true);
+      } else {
+        this.updating.set(true);
+      }
       const user = await this.supabase.getCurrentProfile();
 
       if (user) {
@@ -53,7 +56,11 @@ export class Settings implements OnInit {
         this.notify.showError(error.message);
       }
     } finally {
-      this.loading.set(false);
+      if (resetOrLoad === 'load') {
+        this.loading.set(false);
+      } else {
+        this.updating.set(false);
+      }
     }
   }
 
@@ -139,7 +146,7 @@ export class Settings implements OnInit {
 
     if (!this.isEditing()) {
       this.pendingAvatarFile.set(null);
-      this.loadProfile();
+      this.loadProfile('reset');
       this.profileForm.markAsPristine();
     }
   }

@@ -50,26 +50,22 @@ form {
 .usernameCont input,
 .emailCont input {
   transition: 0.4s;
-  border: none;
-  outline: none;
+  border: 1px solid transparent;
+  outline: 1px solid transparent;
   padding: unset;
-  background: transparent;
+  background-color: transparent;
   color: var(--text-color);
   font-size: 1.6rem;
+  border-radius: 4px;
 }
 .textCont input.editableInput {
   padding: 0.8rem 1.6rem;
   border-radius: 8px;
-  outline: 1px solid transparent;
-  border: 1px solid var(--border-color);
-  background: var(--background-color);
+  border-color: var(--border-color);
+  background-color: var(--accent-color);
 }
 
-form input:hover {
-  outline-color: var(--primary-color);
-}
-
-form input:focus {
+.textCont input.editableInput:focus {
   outline-color: var(--primary-color);
 }
 .profileInfoHeading {
@@ -113,6 +109,8 @@ h2 {
   font-size: 1.8rem;
 }
 .btn-primary {
+  --spinner-border-color: var(--accent-color);
+  --spinner-primary-color: var(--secondary-color);
   border-radius: 50rem;
   font-size: 1.6rem;
   background-color: var(--primary-color);
@@ -125,11 +123,16 @@ h2 {
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  min-height: 3.4rem;
 }
+
 .btn-primary:disabled {
   cursor: not-allowed;
 }
 .btn-primary:valid:hover {
+  --spinner-border-color: var(--primary-color);
+  --spinner-primary-color: var(--background-color);
+
   background-color: transparent;
   border: 1px solid var(--primary-color);
   color: var(--primary-color);
@@ -170,6 +173,24 @@ h2 {
   font-size: 2.4rem;
   color: var(--secondary-color);
 }
+.data-loading {
+  background: linear-gradient(
+    90deg,
+    var(--border-color) 25%,
+    var(--accent-color) 50%,
+    var(--border-color) 75%
+  );
+  background-size: 400% 100%;
+  animation: shimmer 3s infinite linear;
+}
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
 .avatarCont {
   position: relative;
   width: 84px;
@@ -183,6 +204,7 @@ h2 {
   object-fit: cover;
   transition: 0.4s;
   cursor: pointer;
+  border-radius: 50%;
 }
 .avatarCont:has(input):hover img,
 .avatarCont img:hover {
@@ -248,9 +270,10 @@ h2 {
   width: 260px;
   text-align: center;
 }
-.enter-animation-noty {
-  animation: slide-in-noty 1s;
+.show-animated-enter {
+  animation: show-animated-enter 2s;
 }
+
 .btnsCont {
   display: flex;
   align-items: center;
@@ -266,7 +289,7 @@ h2 {
 .btnsCont .no {
   background-color: var(--primary-color);
 }
-@keyframes slide-in-noty {
+@keyframes show-animated-enter {
   from {
     opacity: 0;
   }
