@@ -12,12 +12,15 @@ export class LanguageSwitcher {
   readonly loading = signal(false);
 
   switchLang() {
-    const pathname = window.location.pathname;
     this.loading.set(true);
+    const pathname = window.location.pathname;
 
     if (this.currentLocale === 'ka') {
-      window.location.href = pathname.replace('/ka', '/en');
+      localStorage.setItem('preferred-locale', 'en');
+      const newPath = pathname.replace('/ka', '') || '/';
+      window.location.href = newPath;
     } else {
+      localStorage.setItem('preferred-locale', 'ka');
       window.location.href = pathname.replace('/en', '/ka');
     }
   }
