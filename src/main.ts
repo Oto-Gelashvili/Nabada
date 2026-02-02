@@ -13,8 +13,7 @@ if (savedTheme) {
 const savedLocale = localStorage.getItem('preferred-locale');
 const pathname = window.location.pathname;
 
-if (savedLocale === 'ka' && !pathname.startsWith('/ka')) {
-  const cleanPath = pathname.replace('/en', '');
-  const targetPath = cleanPath === '/' ? '' : cleanPath;
+if (savedLocale === 'ka' && !pathname.startsWith('/ka') && !pathname.startsWith('/en')) {
+  const targetPath = pathname === '/' ? '' : pathname;
   window.location.replace(`/ka${targetPath}`);
 }
