@@ -1,1 +1,48 @@
-<p>sessions works!</p>
+<div class="heading">
+  <div class="dateCont">
+    <h3>{{ currentDate() | date: 'MMMM d' }}</h3>
+    <div class="arrowsCont">
+      <span class="material-symbols-outlined" tabindex="0"> chevron_backward </span
+      ><span class="material-symbols-outlined" tabindex="0"> chevron_forward </span>
+    </div>
+  </div>
+  <button class="createSessionBtn">create session</button>
+</div>
+<div class="scheduler-container">
+  <div class="header-row">
+    <div class="label-column empty-corner">
+      <button>
+        <p>edit</p>
+        <span class="material-symbols-outlined"> edit </span>
+      </button>
+    </div>
+    <div class="timeline-track">
+      @for (hour of hours; track hour) {
+        <div class="hour-marker">{{ hour }}:00</div>
+      }
+    </div>
+  </div>
+
+  @for (station of stations(); track station.id) {
+    <div class="station-row">
+      <div class="label-column">
+        {{ station.name }}
+      </div>
+
+      <div class="timeline-track grid-lines">
+        @for (session of getSessionsForStation(station.id); track session.id) {
+          <div
+            class="session-card"
+            [style.left.px]="calculateLeft(session.start_time)"
+            [style.width.px]="calculateWidth(session.start_time, session.end_time)"
+          >
+            <span class="session-time">
+              {{ session.start_time | date: 'HH:mm' }} -
+              {{ session.end_time ? (session.end_time | date: 'HH:mm') : '...' }}
+            </span>
+          </div>
+        }
+      </div>
+    </div>
+  }
+</div>

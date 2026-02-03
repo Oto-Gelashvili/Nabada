@@ -11,6 +11,7 @@ import { environment } from '../../environments/environments';
 import { Router } from '@angular/router';
 import { UserProfile } from '../../models/userProfile';
 import { NotificationService } from './Notification';
+import { ServiceSession, Station } from '../../models/sessions';
 
 @Injectable({
   providedIn: 'root',
@@ -123,5 +124,31 @@ export class SupabaseService {
     if (error) throw error;
 
     await this.signOut();
+  }
+  async getStations(): Promise<Station[]> {
+    const { data, error } = await this.supabase
+      .from('stations')
+      .select('*')
+      .order('display_order', { ascending: true });
+
+    if (error) throw error;
+    return data || [];
+  }
+
+  async getSessions(date: Date): Promise<ServiceSession[]> {
+    const startOfDay = new Date(date);
+    startOfDay.setHours(0, 0, 0, 0);
+
+    const endOfDay = new Date(date);
+    endOfDay.setHours(23, 59, 59, 999);
+
+    const { data, error } = await this.supabase
+      .from('sessions')
+      .select('*')
+      .gte('start_time', startOfDay.toISOString())
+      .lte('start_time', endOfDay.toISOString());
+
+    if (error) throw error;
+    return data || [];
   }
 }

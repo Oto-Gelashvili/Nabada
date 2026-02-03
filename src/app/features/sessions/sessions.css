@@ -1,0 +1,162 @@
+:host {
+  flex: 1;
+  overflow-x: auto;
+}
+.heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2.4rem;
+  width: 100%;
+  margin-bottom: 2.4rem;
+}
+.dateCont {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+.arrowsCont {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.arrowsCont span {
+  border-radius: 50%;
+  padding: 1.6rem;
+  font-size: 3.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid transparent;
+  outline: 1px solid transparent;
+  transition: 0.4s;
+  cursor: pointer;
+  user-select: none;
+}
+.arrowsCont span:hover {
+  background-color: var(--hover-color);
+}
+.arrowsCont span:active {
+  color: var(--primary-color);
+}
+.arrowsCont span:focus {
+  outline-color: var(--primary-color);
+}
+.heading h3 {
+  font-size: 1.8rem;
+}
+.createSessionBtn {
+  border-radius: 50rem;
+  font-size: 1.6rem;
+  background-color: var(--primary-color);
+  color: #fff;
+  transition: 0.4s;
+  border: 1px solid transparent;
+  outline: 1px solid transparent;
+  padding: 0.4rem 1.2rem;
+  cursor: pointer;
+}
+.createSessionBtn:hover {
+  background-color: var(--hover-color);
+  color: var(--primary-color);
+}
+.createSessionBtn:active {
+  border-color: var(--primary-color);
+}
+.createSessionBtn:focus {
+  background-color: var(--hover-color);
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.scheduler-container {
+  overflow-x: auto;
+  width: 100%;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  background-color: var(--accent-color);
+}
+
+.header-row,
+.station-row {
+  display: flex;
+  border-bottom: 1px solid var(--border-color);
+  width: fit-content;
+}
+
+.label-column.empty-corner {
+  background-color: var(--hover-color);
+  flex-direction: column;
+}
+.empty-corner button {
+  border: 1px solid transparent;
+  outline: 1px solid transparent;
+  background-color: var(--primary-color);
+  color: #fff;
+  padding: 0.4rem 1.2rem;
+  border-radius: 50rem;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.label-column {
+  width: var(--hour-width);
+  flex-shrink: 0;
+  background: var(--hover-color);
+  padding: 0.8rem;
+  position: sticky;
+  left: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  gap: 0.2rem;
+}
+
+.timeline-track {
+  position: relative;
+  display: flex;
+  width: calc(24 * var(--hour-width));
+  user-select: none;
+}
+
+.grid-lines {
+  background-image: linear-gradient(to right, var(--border-color) 1px, transparent 1px);
+  background-size: var(--hour-width) 100%;
+}
+.hour-marker {
+  width: var(--hour-width);
+  font-size: 1.4rem;
+  border-left: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.session-card {
+  position: absolute;
+  height: 100%;
+  background-color: var(--primary-color);
+  color: #fff;
+  border-radius: 4px;
+  font-size: 1.4rem;
+  padding: 0.4rem;
+  overflow: hidden;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  user-select: none;
+  cursor: pointer;
+  transition: 0.4s;
+}
+.session-time {
+  display: block;
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-align: center;
+}
