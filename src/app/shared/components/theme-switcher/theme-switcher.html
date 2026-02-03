@@ -4,6 +4,7 @@
     <div class="themeBackgroundElement"></div>
     <button (click)="setTheme('light', 'sun')">
       <span
+        tabindex="0"
         class="material-symbols-outlined sun"
         [class.animate]="isAnimating() === 'sun'"
         (animationend)="onAnimationEnd()"
@@ -13,6 +14,7 @@
     </button>
     <button (click)="setTheme('dark', 'moon')">
       <span
+        tabindex="0"
         class="material-symbols-outlined moon"
         [class.animate]="isAnimating() === 'moon'"
         (animationend)="onAnimationEnd()"

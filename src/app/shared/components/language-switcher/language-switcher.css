@@ -14,3 +14,6 @@
 .langSwitcher:active {
   color: var(--primary-color);
 }
+.langSwitcher:focus {
+  border-color: var(--primary-color);
+}

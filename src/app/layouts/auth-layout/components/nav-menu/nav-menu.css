@@ -55,6 +55,9 @@
   color: var(--secondary-color);
 }
 
+.profileMenu a:focus {
+  color: var(--primary-color);
+}
 .profileMenu .btnCont {
   padding: 0.8rem 1.6rem;
   width: 100%;
@@ -81,7 +84,11 @@
   color: var(--primary-color);
   border-color: var(--primary-color);
 }
-
+.profileMenu .logOutBtn:focus {
+  background-color: var(--accent-color);
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+}
 .profileMenu a {
   display: flex;
   width: 100%;
