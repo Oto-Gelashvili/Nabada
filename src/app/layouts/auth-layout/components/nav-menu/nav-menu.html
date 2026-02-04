@@ -15,22 +15,23 @@
       <p class="username-skeleton">Nabada User</p>
     }
     <a
-      routerLink="/"
+      routerLink="/sessions"
       routerLinkActive="active"
       [routerLinkActiveOptions]="{ exact: true }"
+      (click)="toggleState()"
       class="mobile"
       ><p i18n="@@sessionsLink">Sessions</p>
       <span class="material-symbols-outlined"> work </span>
     </a>
-    <a routerLink="/products" routerLinkActive="active" class="mobile"
+    <a routerLink="/products" routerLinkActive="active" (click)="toggleState()" class="mobile"
       ><p i18n="@@productsLink">Products</p>
       <span class="material-symbols-outlined"> box_add </span>
     </a>
-    <a routerLink="/analytics" routerLinkActive="active" class="mobile"
+    <a routerLink="/analytics" routerLinkActive="active" (click)="toggleState()" class="mobile"
       ><p i18n="@@analyticsLink">Analytics</p>
       <span class="material-symbols-outlined"> analytics </span>
     </a>
-    <a routerLink="/settings" routerLinkActive="active"
+    <a routerLink="/settings" routerLinkActive="active" (click)="toggleState()"
       ><p i18n="@@settingLink">Settings</p>
       @if (userProfile()?.avatar_url; as avatar) {
         <img [src]="avatar" class="avatar" alt="users avatar" />
@@ -38,7 +39,7 @@
         <span class="material-symbols-outlined"> settings </span>
       }
     </a>
-    <a routerLink="/"
+    <a routerLink="/" (click)="toggleState()"
       ><p i18n="@@HomePageLink">Home</p>
       <span class="material-symbols-outlined"> home </span>
     </a>
