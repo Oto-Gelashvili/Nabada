@@ -17,9 +17,14 @@ export class Sessions implements OnInit {
   readonly stations = signal<Station[]>([]);
   readonly sessions = signal<ServiceSession[]>([]);
   readonly hours = Array.from({ length: 24 }, (_, i) => i);
+  readonly now = signal(Date.now());
 
   ngOnInit() {
     this.loadData();
+
+    setInterval(() => {
+      this.now.set(Date.now());
+    }, 60000);
   }
 
   async loadData() {
@@ -63,19 +68,16 @@ export class Sessions implements OnInit {
     const hours = date.getHours();
     const minutes = date.getMinutes();
 
-    // Logic: (Hours * 100) + (Minutes * (100/60))
     return hours * this.pixelsPerHour + minutes * (this.pixelsPerHour / 60);
   }
 
   calculateWidth(startStr: string, endStr: string | null): number {
-    if (!endStr) return 100; // Default width for "Open" sessions
-
     const start = new Date(startStr).getTime();
-    const end = new Date(endStr).getTime();
 
-    // Difference in hours
-    const durationInHours = (end - start) / (1000 * 60 * 60);
+    const end = endStr ? new Date(endStr).getTime() : this.now();
 
-    return durationInHours * this.pixelsPerHour;
+    const durationHours = (end - start) / (1000 * 60 * 60);
+
+    return durationHours * this.pixelsPerHour;
   }
 }
