@@ -50,11 +50,17 @@ nav li a {
   transition: 0.4s;
   padding: 0.4rem 1.2rem;
   z-index: 2;
+  border-radius: 50rem;
+  border: 1px solid transparent;
 }
 nav li a:hover {
   color: var(--secondary-color);
 }
 nav li a:active {
+  color: var(--primary-color);
+}
+nav li a:focus {
+  border-color: var(--primary-color);
   color: var(--primary-color);
 }
 
