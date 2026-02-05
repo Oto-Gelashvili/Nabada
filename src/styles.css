@@ -15,7 +15,7 @@
   --padding-inline-mobile: 2.4rem;
   --total-padding-mobile: calc(var(--padding-inline) * 2);
   --fixed-header-height: 8.4rem;
-  --hour-width: 100px;
+  --hour-width: 70px;
 }
 
 @media (prefers-color-scheme: light) {
@@ -41,6 +41,7 @@
   --hover-color: #ebebeb;
   --border-color: #e1e1e1;
   --accent-color: #fff;
+  --light-gray: #f5f6f8;
   --error: #dc2626;
   --success: #44bba4;
   --active-color: #cfdbd5;
@@ -57,6 +58,7 @@
   --border-color: #2d2d2d;
   --hover-color: #1f1f1f;
   --active-color: #cfdbd5;
+  --light-gray: #131313;
   --error: #dc2626;
   --success: #44bba4;
   --leftPostition: calc(100% - 26px);
@@ -211,5 +213,8 @@ main {
 @media screen and (max-width: 768px) {
   main {
     padding-inline: var(--padding-inline-mobile);
+  }
+  main:has(#sessions) {
+    padding-inline: unset;
   }
 }

@@ -12,7 +12,7 @@ import { NotificationService } from '../../core/services/Notification';
 export class Sessions implements OnInit {
   private readonly supabase = inject(SupabaseService);
   private readonly notify = inject(NotificationService);
-  private readonly pixelsPerHour = 100;
+  private readonly pixelsPerHour = 70;
   readonly currentDate = signal<Date>(new Date());
   readonly stations = signal<Station[]>([]);
   readonly sessions = signal<ServiceSession[]>([]);
