@@ -15,7 +15,7 @@
   --padding-inline-mobile: 2.4rem;
   --total-padding-mobile: calc(var(--padding-inline) * 2);
   --fixed-header-height: 8.4rem;
-  --hour-width: 70px;
+  --hour-width: 100px;
 }
 
 @media (prefers-color-scheme: light) {

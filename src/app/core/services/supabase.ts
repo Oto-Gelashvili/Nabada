@@ -103,6 +103,13 @@ export class SupabaseService {
     return this.supabase.from('profiles').upsert(update);
   }
 
+  async updateStationName(id: number, newName: string): Promise<void> {
+    const { error } = await this.supabase.from('stations').update({ name: newName }).eq('id', id);
+
+    if (error) {
+      throw new Error(error.message);
+    }
+  }
   downLoadImage(path: string) {
     return this.supabase.storage.from('avatars').download(path);
   }
