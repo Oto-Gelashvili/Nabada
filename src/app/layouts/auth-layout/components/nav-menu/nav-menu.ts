@@ -13,11 +13,10 @@ import { ThemeSwitcher } from '../../../../shared/components/theme-switcher/them
 import { SupabaseService } from '../../../../core/services/supabase';
 import { Spinner } from '../../../../shared/components/spinner/spinner';
 import { UserProfile } from '../../../../models/userProfile';
-import { ErrorModal } from '../../../../shared/components/error-modal/error-modal';
 import { NotificationService } from '../../../../core/services/Notification';
 @Component({
   selector: 'app-nav-menu',
-  imports: [RouterLink, RouterLinkActive, ThemeSwitcher, Spinner, ErrorModal],
+  imports: [RouterLink, RouterLinkActive, ThemeSwitcher, Spinner],
   templateUrl: './nav-menu.html',
   styleUrl: './nav-menu.css',
 })
