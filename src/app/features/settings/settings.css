@@ -217,7 +217,7 @@ h2 {
   width: 100%;
   height: 100%;
   opacity: 0;
-  z-index: 10;
+  z-index: var(--header-z);
   cursor: pointer;
 }
 .subDesc {
@@ -262,7 +262,7 @@ h2 {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 9999;
+  z-index: var(--most-z);
   font-size: 1.6rem;
   background-color: #00000080;
 }

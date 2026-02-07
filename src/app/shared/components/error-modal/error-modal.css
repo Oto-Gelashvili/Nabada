@@ -9,11 +9,11 @@
   top: 2.4rem;
   left: 50%;
   transform: translateX(-50%);
-  z-index: 10;
+  z-index: var(--most-z);
 }
 .custom-alert {
   position: relative;
-  z-index: 10;
+  z-index: var(--most-z);
   display: flex;
   align-items: center;
   gap: 1.2rem;

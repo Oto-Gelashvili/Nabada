@@ -147,7 +147,7 @@
     margin-top: var(--fixed-header-height);
     justify-content: space-between;
     overflow-y: scroll;
-    z-index: 10;
+    z-index: var(--header-z);
   }
   .profileMenu a,
   .profileMenu .themeCont {
