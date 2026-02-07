@@ -1,13 +1,20 @@
 <section id="sessions">
   <div class="heading">
     <div class="dateCont">
-      <h3>{{ currentDate() | date: 'MMMM d' }}</h3>
-      <div class="arrowsCont">
-        <span class="material-symbols-outlined" tabindex="0"> chevron_backward </span
-        ><span class="material-symbols-outlined" tabindex="0"> chevron_forward </span>
-      </div>
+      @if (editMode()) {
+        <button class="headerBtn cancelBtn" (click)="closeEditMode()">
+          <p>cancel</p>
+          <span class="material-symbols-outlined"> cancel </span>
+        </button>
+      } @else {
+        <h3>{{ currentDate() | date: 'MMMM d' }}</h3>
+        <div class="arrowsCont">
+          <span class="material-symbols-outlined" tabindex="0"> chevron_backward </span
+          ><span class="material-symbols-outlined" tabindex="0"> chevron_forward </span>
+        </div>
+      }
     </div>
-    <button class="createSessionBtn">
+    <button class="headerBtn createSessionBtn">
       <p>create session</p>
       <span class="material-symbols-outlined"> add </span>
     </button>
@@ -28,6 +35,7 @@
           }
         </button>
       </div>
+
       <div class="timeline-track">
         @for (hour of hours; track hour) {
           <div class="hour-marker">{{ hour }}:00</div>
@@ -35,18 +43,27 @@
       </div>
     </div>
 
-    @for (station of stations(); track station.id) {
+    @for (station of allStations(); track station.id) {
       <div class="station-row">
         <div class="label-column">
           <input
             type="text"
             [readonly]="!editMode()"
             [class.editableInput]="editMode()"
-            animate.enter="show-animated-enter"
+            animate.enter="show-animated-enter-row"
             [(ngModel)]="station.name"
             required
             [class.error-border]="!station.name"
           />
+          @if (editMode()) {
+            <span
+              class="material-symbols-outlined removeIcon"
+              animate.enter="show-animated-enter-removeIcon"
+              (click)="removeStation(station.id)"
+            >
+              remove
+            </span>
+          }
           @if (!station.name) {
             <div class="error-msg">Required</div>
           }
@@ -68,14 +85,15 @@
         </div>
       </div>
     }
+
     @if (editMode()) {
       <div
         class="station-row add-row"
         animate.enter="show-animated-enter-row"
         animate.leave="show-animated-leave-row"
       >
-        <div class="label-column">
-          <span class="material-symbols-outlined"> add </span>
+        <div class="label-column" (click)="addStation()">
+          <span class="material-symbols-outlined addIcon"> add </span>
         </div>
         <div class="timeline-track grid-lines"></div>
       </div>

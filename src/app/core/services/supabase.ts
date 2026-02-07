@@ -1,4 +1,4 @@
-import { computed, inject, Injectable, signal } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import {
   AuthChangeEvent,
   AuthSession,
@@ -10,7 +10,6 @@ import {
 import { environment } from '../../environments/environments';
 import { Router } from '@angular/router';
 import { UserProfile } from '../../models/userProfile';
-import { NotificationService } from './Notification';
 import { ServiceSession, Station } from '../../models/sessions';
 
 @Injectable({
@@ -21,7 +20,6 @@ export class SupabaseService {
   private readonly _session = signal<AuthSession | null>(null);
   readonly session = this._session.asReadonly();
   private readonly router = inject(Router);
-  private readonly notify = inject(NotificationService);
 
   constructor() {
     this.supabase = createClient(environment.supabaseUrl, environment.supabaseKey);
@@ -103,13 +101,6 @@ export class SupabaseService {
     return this.supabase.from('profiles').upsert(update);
   }
 
-  async updateStationName(id: number, newName: string): Promise<void> {
-    const { error } = await this.supabase.from('stations').update({ name: newName }).eq('id', id);
-
-    if (error) {
-      throw new Error(error.message);
-    }
-  }
   downLoadImage(path: string) {
     return this.supabase.storage.from('avatars').download(path);
   }
@@ -136,6 +127,7 @@ export class SupabaseService {
     const { data, error } = await this.supabase
       .from('stations')
       .select('*')
+      .eq('is_active', true)
       .order('display_order', { ascending: true });
 
     if (error) throw error;
@@ -157,5 +149,41 @@ export class SupabaseService {
 
     if (error) throw error;
     return data || [];
+  }
+  async updateStationName(id: number, newName: string): Promise<void> {
+    const { error } = await this.supabase.from('stations').update({ name: newName }).eq('id', id);
+
+    if (error) {
+      throw new Error(error.message);
+    }
+  }
+
+  async createStation(station: { name: string; display_order: number }): Promise<Station> {
+    const { data, error } = await this.supabase
+      .from('stations')
+      .insert({
+        name: station.name,
+        display_order: station.display_order,
+      })
+      .select()
+      .single();
+
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    return data as Station;
+  }
+
+  async removeStation(id: number): Promise<void> {
+    const { error } = await this.supabase
+      .from('stations')
+      .update({
+        is_active: false,
+      })
+      .eq('id', id);
+    if (error) {
+      throw new Error(error.message);
+    }
   }
 }

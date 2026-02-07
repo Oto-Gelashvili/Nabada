@@ -214,7 +214,4 @@ main {
   main {
     padding-inline: var(--padding-inline-mobile);
   }
-  main:has(#sessions) {
-    padding-inline: unset;
-  }
 }

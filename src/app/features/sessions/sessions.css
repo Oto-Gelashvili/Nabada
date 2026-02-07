@@ -53,7 +53,7 @@
 .heading h3 {
   font-size: 1.8rem;
 }
-.createSessionBtn {
+.headerBtn {
   border-radius: 50rem;
   font-size: 1.6rem;
   background-color: var(--primary-color);
@@ -64,7 +64,17 @@
   padding: 0.4rem 1.2rem;
   cursor: pointer;
 }
-
+.createSessionBtn {
+  background-color: var(--primary-color);
+}
+.cancelBtn {
+  background-color: var(--error);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  width: calc(var(--hour-width) + 10px);
+  justify-content: center;
+}
 .scheduler-container {
   overflow-x: auto;
   width: 100%;
@@ -73,11 +83,9 @@
   border-radius: 12px;
   background-color: var(--border-color);
   background-color: var(--light-gray);
-
   display: flex;
   flex-direction: column;
   min-height: calc(100% - 8.4rem);
-
   scrollbar-width: thin;
   scrollbar-color: var(--primary-color) var(--accent-color);
 }
@@ -88,7 +96,7 @@
   border-bottom: 1px solid var(--border-color);
   width: fit-content;
   flex: 1;
-  /* max-height: 60px; */
+  min-height: 40px;
 }
 
 .label-column.empty-corner {
@@ -128,6 +136,10 @@
   background-color: var(--hover-color);
   color: var(--primary-color);
 }
+.cancelBtn:hover {
+  background-color: var(--hover-color);
+  color: var(--error);
+}
 
 .createSessionBtn:focus,
 .empty-corner button:not(.submitBtn):focus {
@@ -135,9 +147,20 @@
   color: var(--primary-color);
   border-color: var(--primary-color);
 }
+.cancelBtn:focus {
+  border-color: var(--error);
+  background-color: var(--hover-color);
+  color: var(--error);
+}
+
 .createSessionBtn:active {
   border-color: #fff;
   color: #fff;
+}
+.cancelBtn:active {
+  border-color: var(--error);
+  background-color: var(--hover-color);
+  color: var(--error);
 }
 .empty-corner button:not(.submitBtn):active {
   border-color: #fff;
@@ -156,6 +179,9 @@
 
 .show-animated-leave-row {
   animation: show-animated-leave-row 1s;
+}
+.show-animated-enter-removeIcon {
+  animation: show-animated-enter-removeIcon 1s;
 }
 
 @keyframes show-animated-enter-row {
@@ -187,8 +213,20 @@
     opacity: 0;
   }
 }
+
+@keyframes show-animated-enter-removeIcon {
+  from {
+    opacity: 0;
+    transform: translateX(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0px);
+  }
+}
 .label-column {
-  width: var(--hour-width);
+  /* add 10 px so removeBtn looks better */
+  width: calc(var(--hour-width) + 10px);
   flex-shrink: 0;
   background: var(--hover-color);
   padding: 0.8rem;
@@ -237,6 +275,17 @@
   color: var(--error);
   font-size: 1.2rem;
   pointer-events: none;
+}
+.label-column .removeIcon {
+  color: var(--error);
+  cursor: pointer;
+  transition: 0.4s;
+  width: 16px;
+  height: 16px;
+  font-size: 1.6rem;
+}
+.label-column .removeIcon:hover {
+  transform: scale(1.4);
 }
 .timeline-track {
   position: relative;
@@ -293,10 +342,8 @@
 .add-row {
   cursor: pointer;
 }
+
 @media screen and (max-width: 768px) {
-  .heading {
-    padding-inline: var(--padding-inline-mobile);
-  }
   .createSessionBtn span {
     display: block;
   }
