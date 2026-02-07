@@ -9,10 +9,11 @@
   top: 2.4rem;
   left: 50%;
   transform: translateX(-50%);
+  z-index: var(--most-z);
 }
 .custom-alert {
   position: relative;
-  z-index: 10;
+  z-index: var(--most-z);
   display: flex;
   align-items: center;
   gap: 1.2rem;
@@ -58,7 +59,7 @@
 }
 
 @media screen and (max-width: 375px) {
-  .custom-alert {
+  .notification-modal-cont {
     width: calc(100% - var(--total-padding-mobile));
     min-width: unset;
   }

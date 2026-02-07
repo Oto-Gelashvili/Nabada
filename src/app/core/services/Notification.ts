@@ -11,10 +11,6 @@ export interface AppNotification {
 })
 export class NotificationService {
   readonly notifications = signal<AppNotification[]>([]);
-  // readonly notifications = signal<AppNotification[]>([
-  //   { id: 123123, message: ' erororeroror erororeroror eroror buddysa', type: 'error' },
-  //   { id: 123123, message: 'success buddysa', type: 'success' },
-  // ]);
 
   showError(message: string) {
     this.show(message, 'error');

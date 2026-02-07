@@ -38,18 +38,17 @@ nav .bgEl {
   width: 88px;
   height: 3.2rem;
   border-radius: 50rem;
-  z-index: 1;
   transition: 0.4s ease-in-out;
   pointer-events: none;
 }
 nav li {
-  z-index: 2;
+  z-index: var(--header-z);
 }
 nav li a {
   cursor: pointer;
   transition: 0.4s;
   padding: 0.4rem 1.2rem;
-  z-index: 2;
+  z-index: var(--header-z);
   border-radius: 50rem;
   border: 1px solid transparent;
 }

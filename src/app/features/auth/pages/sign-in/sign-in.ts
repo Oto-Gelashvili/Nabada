@@ -2,12 +2,11 @@ import { Component, inject, signal } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { SupabaseService } from '../../../../core/services/supabase';
 import { Spinner } from '../../../../shared/components/spinner/spinner';
-import { ErrorModal } from '../../../../shared/components/error-modal/error-modal';
 import { NotificationService } from '../../../../core/services/Notification';
 
 @Component({
   selector: 'app-sign-ing',
-  imports: [FormsModule, Spinner, ErrorModal],
+  imports: [FormsModule, Spinner],
   templateUrl: './sign-in.html',
   styleUrl: './sign-in.css',
 })

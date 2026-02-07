@@ -12,10 +12,14 @@
   --spinner-border-color: var(--border-color);
   --spinner-primary-color: var(--primary-color);
   --padding-inline: 4.8rem;
-  --padding-inline-mobile: 2.4rem;
-  --total-padding-mobile: calc(var(--padding-inline) * 2);
+  --padding-inline-mobile: 1.6rem;
+  --total-padding-mobile: calc(var(--padding-inline-mobile) * 2);
   --fixed-header-height: 8.4rem;
   --hour-width: 100px;
+
+  /* z index priorities */
+  --header-z: 2;
+  --most-z: 100;
 }
 
 @media (prefers-color-scheme: light) {
