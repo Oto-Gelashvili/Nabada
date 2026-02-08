@@ -4,9 +4,10 @@ import { SupabaseService } from '../../core/services/supabase';
 import { ServiceSession, Station } from '../../models/sessions';
 import { NotificationService } from '../../core/services/Notification';
 import { FormsModule } from '@angular/forms';
+import { Spinner } from '../../shared/components/spinner/spinner';
 @Component({
   selector: 'app-sessions',
-  imports: [DatePipe, FormsModule],
+  imports: [DatePipe, FormsModule, Spinner],
   templateUrl: './sessions.html',
   styleUrl: './sessions.css',
 })
@@ -23,18 +24,25 @@ export class Sessions implements OnInit {
   readonly hours = Array.from({ length: 24 }, (_, i) => i);
   readonly now = signal(Date.now());
   private originalData = new Map<number, string>();
+  loading = signal(false);
+  resetting = signal(false);
   editMode = signal(false);
 
   ngOnInit() {
-    this.loadData();
+    this.loadData('initLoad');
 
     setInterval(() => {
       this.now.set(Date.now());
     }, 60000);
   }
 
-  async loadData() {
+  async loadData(action: 'initLoad' | 'reset') {
     try {
+      if (action === 'initLoad') {
+        this.loading.set(true);
+      } else if (action === 'reset') {
+        this.resetting.set(true);
+      }
       const stationsData = await this.supabase.getStations();
       this.stations.set(stationsData);
 
@@ -42,6 +50,12 @@ export class Sessions implements OnInit {
     } catch (error) {
       if (error instanceof Error) {
         this.notify.showError(error.message);
+      }
+    } finally {
+      if (action === 'initLoad') {
+        this.loading.set(false);
+      } else if (action === 'reset') {
+        this.resetting.set(false);
       }
     }
   }
@@ -111,7 +125,7 @@ export class Sessions implements OnInit {
   }
   closeEditMode() {
     this.editMode.set(false);
-    this.loadData();
+    this.loadData('reset');
   }
 
   async saveAllChanges(): Promise<boolean> {
@@ -140,7 +154,7 @@ export class Sessions implements OnInit {
     const deletePromises = removedStationsIds.map((id) =>
       this.supabase.removeStation(id).catch((err) => {
         this.notify.showError('Failed to delete');
-        this.loadData();
+        this.loadData('reset');
       }),
     );
 
@@ -150,13 +164,14 @@ export class Sessions implements OnInit {
     }
 
     try {
+      this.resetting.set(true);
       await Promise.all([...updatePromises, ...createPromises, ...deletePromises]);
 
       this.notify.showSuccess(`Saved`);
       // CLEANUP AND RELOAD
       this.removedStationsIds.set([]);
       this.addedStations.set([]);
-      await this.loadData();
+      await this.loadData('reset');
       return true;
     } catch (error) {
       if (error instanceof Error) {
@@ -164,6 +179,8 @@ export class Sessions implements OnInit {
       }
       // THIS KEEPS EDIT MODE OPEN ON FAIL
       return false;
+    } finally {
+      this.resetting.set(false);
     }
   }
   addStation() {

@@ -20,72 +20,78 @@
     </button>
   </div>
   <div class="scheduler-container">
-    <div class="header-row">
-      <div class="label-column empty-corner">
-        <button
-          (click)="toggleEditMode()"
-          [class.submitBtn]="editMode()"
-          [disabled]="editMode() && hasInvalidStations()"
-          [class.disabled-btn]="editMode() && hasInvalidStations()"
-        >
-          @if (editMode()) {
-            <span class="material-symbols-outlined"> check </span>
-          } @else {
-            <span class="material-symbols-outlined editIcon"> edit </span>
-          }
-        </button>
-      </div>
-
-      <div class="timeline-track">
-        @for (hour of hours; track hour) {
-          <div class="hour-marker">{{ hour }}:00</div>
-        }
-      </div>
-    </div>
-
-    @for (station of allStations(); track station.id) {
-      <div class="station-row">
-        <div class="label-column">
-          <input
-            type="text"
-            [readonly]="!editMode()"
-            [class.editableInput]="editMode()"
-            animate.enter="show-animated-enter-row"
-            [(ngModel)]="station.name"
-            required
-            [class.error-border]="!station.name"
-          />
-          @if (editMode()) {
-            <span
-              class="material-symbols-outlined removeIcon"
-              animate.enter="show-animated-enter-removeIcon"
-              (click)="removeStation(station.id)"
-            >
-              remove
-            </span>
-          }
-          @if (!station.name) {
-            <div class="error-msg">Required</div>
-          }
+    @if (loading()) {
+      <div class="loadingTemplate"></div>
+    } @else {
+      <div class="header-row">
+        <div class="label-column empty-corner">
+          <button
+            (click)="toggleEditMode()"
+            [class.submitBtn]="editMode()"
+            [disabled]="editMode() && hasInvalidStations()"
+            [class.disabled-btn]="editMode() && hasInvalidStations()"
+          >
+            @if (resetting()) {
+              <app-spinner></app-spinner>
+            } @else if (editMode()) {
+              <span class="material-symbols-outlined"> check </span>
+            } @else {
+              <span class="material-symbols-outlined editIcon"> edit </span>
+            }
+          </button>
         </div>
 
-        <div class="timeline-track grid-lines">
-          @for (session of getSessionsForStation(station.id); track session.id) {
-            <div
-              class="session-card"
-              [style.left.px]="calculateLeft(session.start_time)"
-              [style.width.px]="calculateWidth(session.start_time, session.end_time)"
-            >
-              <span class="session-time">
-                {{ session.start_time | date: 'HH:mm' }} -
-                {{ session.end_time ? (session.end_time | date: 'HH:mm') : '...' }}
+        <div class="timeline-track">
+          @for (hour of hours; track hour) {
+            <div class="hour-marker">{{ hour }}:00</div>
+          }
+        </div>
+      </div>
+      @for (station of allStations(); track station.id) {
+        <div class="station-row">
+          <div class="label-column">
+            <input
+              [attr.id]="'station-name-' + station.id"
+              [attr.name]="'station-name-' + station.id"
+              type="text"
+              [readonly]="!editMode()"
+              [class.editableInput]="editMode()"
+              animate.enter="show-animated-enter-row"
+              [(ngModel)]="station.name"
+              required
+              [class.error-border]="!station.name"
+            />
+            @if (editMode()) {
+              <span
+                class="material-symbols-outlined removeIcon"
+                animate.enter="show-animated-enter-removeIcon"
+                (click)="removeStation(station.id)"
+              >
+                remove
               </span>
-            </div>
-          }
-        </div>
-      </div>
-    }
+            }
+            @if (!station.name) {
+              <div class="error-msg">Required</div>
+            }
+          </div>
 
+          <div class="timeline-track grid-lines">
+            @for (session of getSessionsForStation(station.id); track session.id) {
+              <div
+                class="session-card"
+                [style.left.px]="calculateLeft(session.start_time)"
+                [style.width.px]="calculateWidth(session.start_time, session.end_time)"
+              >
+                <span class="session-time">
+                  {{ session.start_time | date: 'HH:mm' }} -
+                  {{ session.end_time ? (session.end_time | date: 'HH:mm') : '...' }}
+                </span>
+              </div>
+            }
+          </div>
+        </div>
+      }
+    }
     @if (editMode()) {
       <div
         class="station-row add-row"

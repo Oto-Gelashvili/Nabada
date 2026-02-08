@@ -76,6 +76,7 @@
   justify-content: center;
 }
 .scheduler-container {
+  position: relative;
   overflow-x: auto;
   width: 100%;
   max-width: fit-content;
@@ -88,6 +89,13 @@
   min-height: calc(100% - 8.4rem);
   scrollbar-width: thin;
   scrollbar-color: var(--primary-color) var(--accent-color);
+}
+.scheduler-container:has(.loadingTemplate) {
+  max-width: unset;
+}
+.scheduler-container:has(.show-animated-enter-row),
+.scheduler-container:has(.show-animated-leave-row) {
+  overflow-y: hidden;
 }
 
 .header-row,
@@ -224,6 +232,7 @@
     transform: translateX(0px);
   }
 }
+
 .label-column {
   /* add 10 px so removeBtn looks better */
   width: calc(var(--hour-width) + 10px);
@@ -240,6 +249,7 @@
   color: var(--secondary-color);
   gap: 0.2rem;
 }
+
 .label-column input {
   width: 100%;
   transition: 0.4s;
@@ -271,7 +281,9 @@
 .label-column .error-msg {
   position: absolute;
   top: 50%;
-  transform: translateY(-50%);
+  transform: translate(-50%, -50%);
+  /* 9 px comes from 8 padding + 1 border */
+  left: calc(50% - 9px);
   color: var(--error);
   font-size: 1.2rem;
   pointer-events: none;
@@ -342,7 +354,28 @@
 .add-row {
   cursor: pointer;
 }
+.loadingTemplate {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    var(--border-color) 25%,
+    var(--accent-color) 50%,
+    var(--border-color) 75%
+  );
+  background-size: 400% 100%;
+  animation: show-animated-template 3s infinite linear;
+  z-index: var(--header-z);
+}
 
+@keyframes show-animated-template {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
 @media screen and (max-width: 768px) {
   .createSessionBtn span {
     display: block;
