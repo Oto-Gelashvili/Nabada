@@ -7,10 +7,26 @@
           <span class="material-symbols-outlined"> cancel </span>
         </button>
       } @else {
-        <h3>{{ currentDate() | date: 'MMMM d' }}</h3>
+        <h3>{{ selectedDate() | date: 'MMMM d' }}</h3>
         <div class="arrowsCont">
-          <span class="material-symbols-outlined" tabindex="0"> chevron_backward </span
-          ><span class="material-symbols-outlined" tabindex="0"> chevron_forward </span>
+          <span
+            class="material-symbols-outlined"
+            tabindex="0"
+            (keydown.enter)="changeDay('decrease')"
+            (keydown.space)="changeDay('decrease')"
+            (click)="changeDay('decrease')"
+          >
+            chevron_backward </span
+          ><span
+            class="material-symbols-outlined"
+            tabindex="0"
+            [class.disabled-arrow]="isToday()"
+            (keydown.enter)="changeDay('increase')"
+            (keydown.space)="changeDay('increase')"
+            (click)="changeDay('increase')"
+          >
+            chevron_forward
+          </span>
         </div>
       }
     </div>
@@ -79,6 +95,7 @@
             @for (session of getSessionsForStation(station.id); track session.id) {
               <div
                 class="session-card"
+                [class]="getSessionOverlapClass(session)"
                 [style.left.px]="calculateLeft(session.start_time)"
                 [style.width.px]="calculateWidth(session.start_time, session.end_time)"
               >

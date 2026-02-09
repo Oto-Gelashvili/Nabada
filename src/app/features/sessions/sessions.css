@@ -367,7 +367,6 @@
   animation: show-animated-template 3s infinite linear;
   z-index: var(--header-z);
 }
-
 @keyframes show-animated-template {
   0% {
     background-position: -200% 0;
@@ -375,6 +374,22 @@
   100% {
     background-position: 200% 0;
   }
+}
+
+.disabled-arrow {
+  opacity: 0.3;
+  pointer-events: none;
+}
+.session-card.overflow-left {
+  border-radius: unset;
+  border-top-right-radius: 50rem;
+  border-bottom-right-radius: 50rem;
+}
+
+.session-card.overflow-right {
+  border-radius: unset;
+  border-top-left-radius: 50rem;
+  border-bottom-left-radius: 50rem;
 }
 @media screen and (max-width: 768px) {
   .createSessionBtn span {

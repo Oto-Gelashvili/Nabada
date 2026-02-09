@@ -15,7 +15,8 @@ export class Sessions implements OnInit {
   private readonly supabase = inject(SupabaseService);
   private readonly notify = inject(NotificationService);
   private readonly pixelsPerHour = 100;
-  readonly currentDate = signal<Date>(new Date());
+  readonly today = new Date();
+  selectedDate = signal<Date>(new Date());
   readonly stations = signal<Station[]>([]);
   readonly addedStations = signal<Station[]>([]);
   readonly allStations = computed(() => [...this.stations(), ...this.addedStations()]);
@@ -24,6 +25,7 @@ export class Sessions implements OnInit {
   readonly hours = Array.from({ length: 24 }, (_, i) => i);
   readonly now = signal(Date.now());
   private originalData = new Map<number, string>();
+  overlapingSessions = signal([]);
   loading = signal(false);
   resetting = signal(false);
   editMode = signal(false);
@@ -61,7 +63,8 @@ export class Sessions implements OnInit {
   }
   async fetchSessionsForCurrentDate() {
     try {
-      const data = await this.supabase.getSessions(this.currentDate());
+      const data = await this.supabase.getSessions(this.selectedDate());
+
       this.sessions.set(data);
     } catch (error) {
       if (error instanceof Error) {
@@ -74,31 +77,74 @@ export class Sessions implements OnInit {
     return this.sessions().filter((s) => s.station_id === stationId);
   }
 
-  changeDate(days: number) {
-    this.currentDate.update((d) => {
-      const newDate = new Date(d);
-      newDate.setDate(newDate.getDate() + days);
-      return newDate;
-    });
-    this.fetchSessionsForCurrentDate();
-  }
+  // changeDate(days: number) {
+  //   this.currentDate.update((d) => {
+  //     const newDate = new Date(d);
+  //     newDate.setDate(newDate.getDate() + days);
+  //     return newDate;
+  //   });
+  //   this.fetchSessionsForCurrentDate();
+  // }
 
+  // for calculating we use viewStart/viewEnd that represend current days start and end
+  // this helps us deal with sssions lapping over multiple days
   calculateLeft(startTimeStr: string): number {
+    const sessionStart = new Date(startTimeStr).getTime();
+
+    const viewStart = new Date(this.selectedDate());
+    viewStart.setHours(0, 0, 0, 0);
+
+    // If session started before today, it should start at 0px (Left edge)
+    if (sessionStart < viewStart.getTime()) {
+      return 0;
+    }
+
     const date = new Date(startTimeStr);
     const hours = date.getHours();
     const minutes = date.getMinutes();
-
     return hours * this.pixelsPerHour + minutes * (this.pixelsPerHour / 60);
   }
 
   calculateWidth(startStr: string, endStr: string | null): number {
-    const start = new Date(startStr).getTime();
+    const sessionStart = new Date(startStr).getTime();
+    const sessionEnd = endStr ? new Date(endStr).getTime() : this.now();
 
-    const end = endStr ? new Date(endStr).getTime() : this.now();
+    const viewStart = new Date(this.selectedDate());
+    viewStart.setHours(0, 0, 0, 0);
 
-    const durationHours = (end - start) / (1000 * 60 * 60);
+    const viewEnd = new Date(this.selectedDate());
+    viewEnd.setHours(24, 0, 0, 0);
 
-    return durationHours * this.pixelsPerHour;
+    const effectiveStart = Math.max(sessionStart, viewStart.getTime());
+    const effectiveEnd = Math.min(sessionEnd, viewEnd.getTime());
+
+    const durationHours = (effectiveEnd - effectiveStart) / (1000 * 60 * 60);
+
+    return Math.max(0, durationHours * this.pixelsPerHour);
+  }
+
+  // checks overlapping sessions and we assing classes to them later to give special UI
+  getSessionOverlapClass(session: ServiceSession): string {
+    const start = new Date(session.start_time).getTime();
+    const end = session.end_time ? new Date(session.end_time).getTime() : this.now();
+
+    const viewStart = new Date(this.selectedDate());
+    viewStart.setHours(0, 0, 0, 0);
+
+    const viewEnd = new Date(this.selectedDate());
+    viewEnd.setHours(24, 0, 0, 0);
+
+    const classes = [];
+
+    if (start < viewStart.getTime()) {
+      classes.push('overflow-left');
+    }
+
+    if (end > viewEnd.getTime()) {
+      classes.push('overflow-right');
+    }
+
+    return classes.join(' ');
   }
 
   hasInvalidStations(): boolean {
@@ -209,5 +255,30 @@ export class Sessions implements OnInit {
 
       this.removedStationsIds.update((current) => [...current, stationId]);
     }
+  }
+
+  changeDay(change: 'increase' | 'decrease') {
+    const newDate = new Date(this.selectedDate());
+    if (change === 'decrease') {
+      newDate.setDate(newDate.getDate() - 1);
+    } else {
+      newDate.setDate(newDate.getDate() + 1);
+      if (newDate > this.today) {
+        return;
+      }
+    }
+    this.selectedDate.set(newDate);
+    this.fetchSessionsForCurrentDate();
+  }
+
+  isToday(): boolean {
+    const selected = this.selectedDate();
+    const today = this.today;
+
+    return (
+      selected.getDate() === today.getDate() &&
+      selected.getMonth() === today.getMonth() &&
+      selected.getFullYear() === today.getFullYear()
+    );
   }
 }

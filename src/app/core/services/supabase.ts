@@ -144,11 +144,16 @@ export class SupabaseService {
     const { data, error } = await this.supabase
       .from('sessions')
       .select('*')
-      .gte('start_time', startOfDay.toISOString())
-      .lte('start_time', endOfDay.toISOString());
+      .lte('start_time', endOfDay.toISOString())
+      //  The session must end AFTER the day started OR be still active (null)
+      //  with this rule we also get session that continiue to next day
+      .or(`end_time.gte.${startOfDay.toISOString()},end_time.is.null`);
 
-    if (error) throw error;
-    return data || [];
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    return data as ServiceSession[];
   }
   async updateStationName(id: number, newName: string): Promise<void> {
     const { error } = await this.supabase.from('stations').update({ name: newName }).eq('id', id);
