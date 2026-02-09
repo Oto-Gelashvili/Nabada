@@ -1,4 +1,4 @@
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, ElementRef, inject, OnInit, signal, ViewChild } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { SupabaseService } from '../../core/services/supabase';
 import { ServiceSession, Station } from '../../models/sessions';
@@ -29,6 +29,7 @@ export class Sessions implements OnInit {
   loading = signal(false);
   resetting = signal(false);
   editMode = signal(false);
+  @ViewChild('datePickerInput') datePickerInput!: ElementRef<HTMLInputElement>;
 
   ngOnInit() {
     this.loadData('initLoad');
@@ -66,15 +67,6 @@ export class Sessions implements OnInit {
   getSessionsForStation(stationId: number): ServiceSession[] {
     return this.sessions().filter((s) => s.station_id === stationId);
   }
-
-  // changeDate(days: number) {
-  //   this.currentDate.update((d) => {
-  //     const newDate = new Date(d);
-  //     newDate.setDate(newDate.getDate() + days);
-  //     return newDate;
-  //   });
-  //   this.fetchSessionsForCurrentDate();
-  // }
 
   // for calculating we use viewStart/viewEnd that represend current days start and end
   // this helps us deal with sssions lapping over multiple days
@@ -274,5 +266,30 @@ export class Sessions implements OnInit {
       selected.getMonth() === today.getMonth() &&
       selected.getFullYear() === today.getFullYear()
     );
+  }
+  openDatePicker() {
+    try {
+      this.datePickerInput.nativeElement.showPicker();
+    } catch (err) {
+      this.datePickerInput.nativeElement.click();
+    }
+  }
+  onDatePicked(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (!input.value) return;
+
+    const [year, month, day] = input.value.split('-').map(Number);
+
+    const newDate = new Date(year, month - 1, day);
+
+    this.selectedDate.set(newDate);
+    this.loadData('reset');
+  }
+
+  get dateInputValue(): string {
+    return this.selectedDate().toISOString().split('T')[0];
+  }
+  get maxDate(): string {
+    return this.today.toISOString().split('T')[0];
   }
 }

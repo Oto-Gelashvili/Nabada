@@ -7,7 +7,19 @@
           <span class="material-symbols-outlined"> cancel </span>
         </button>
       } @else {
-        <h3>{{ selectedDate() | date: 'MMMM d' }}</h3>
+        <div class="datePickerCont">
+          <h3 (click)="openDatePicker()" title="Change Date">
+            {{ selectedDate() | date: 'MMMM d, y' }}
+          </h3>
+          <input
+            #datePickerInput
+            type="date"
+            [value]="dateInputValue"
+            [max]="maxDate"
+            (change)="onDatePicked($event)"
+            class="hidden-picker"
+          />
+        </div>
         <div class="arrowsCont">
           <span
             class="material-symbols-outlined"
