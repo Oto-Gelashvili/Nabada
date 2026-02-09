@@ -142,8 +142,12 @@ export class Sessions implements OnInit {
   }
 
   async toggleEditMode() {
+    if (!this.isToday()) {
+      this.notify.showError('Can not edit past stations');
+      return;
+    }
+
     if (this.editMode()) {
-      // only close mode when
       const success = await this.saveAllChanges();
       if (success) {
         this.editMode.set(false);
