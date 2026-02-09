@@ -45,10 +45,11 @@ export class Sessions implements OnInit {
       } else if (action === 'reset') {
         this.resetting.set(true);
       }
-      const stationsData = await this.supabase.getStations();
+      const stationsData = await this.supabase.getStations(this.selectedDate());
       this.stations.set(stationsData);
 
-      await this.fetchSessionsForCurrentDate();
+      const sessionsData = await this.supabase.getSessions(this.selectedDate());
+      this.sessions.set(sessionsData);
     } catch (error) {
       if (error instanceof Error) {
         this.notify.showError(error.message);
@@ -58,17 +59,6 @@ export class Sessions implements OnInit {
         this.loading.set(false);
       } else if (action === 'reset') {
         this.resetting.set(false);
-      }
-    }
-  }
-  async fetchSessionsForCurrentDate() {
-    try {
-      const data = await this.supabase.getSessions(this.selectedDate());
-
-      this.sessions.set(data);
-    } catch (error) {
-      if (error instanceof Error) {
-        this.notify.showError(error.message);
       }
     }
   }
@@ -268,7 +258,7 @@ export class Sessions implements OnInit {
       }
     }
     this.selectedDate.set(newDate);
-    this.fetchSessionsForCurrentDate();
+    this.loadData('reset');
   }
 
   isToday(): boolean {

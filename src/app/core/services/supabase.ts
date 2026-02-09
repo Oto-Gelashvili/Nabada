@@ -123,15 +123,30 @@ export class SupabaseService {
 
     await this.signOut();
   }
-  async getStations(): Promise<Station[]> {
+  async getStations(date?: Date): Promise<Station[]> {
+    if (!date) {
+      const { data, error } = await this.supabase
+        .from('stations')
+        .select('*')
+        .is('deleted_at', null)
+        .order('display_order', { ascending: true });
+
+      if (error) throw error;
+      return data as Station[];
+    }
+
+    const endOfDay = new Date(date);
+    endOfDay.setHours(23, 59, 59, 999);
+
     const { data, error } = await this.supabase
       .from('stations')
       .select('*')
-      .eq('is_active', true)
-      .order('display_order', { ascending: true });
+      .lte('created_at', endOfDay.toISOString())
+      .or(`deleted_at.is.null,deleted_at.gte.${endOfDay.toISOString()}`)
+      .order('display_order');
 
     if (error) throw error;
-    return data || [];
+    return data as Station[];
   }
 
   async getSessions(date: Date): Promise<ServiceSession[]> {
@@ -185,6 +200,7 @@ export class SupabaseService {
       .from('stations')
       .update({
         is_active: false,
+        deleted_at: new Date().toISOString(),
       })
       .eq('id', id);
     if (error) {

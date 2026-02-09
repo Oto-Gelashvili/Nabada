@@ -123,6 +123,7 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  min-height: 34px;
   transition: 0.4s;
 }
 .empty-corner button.submitBtn {
