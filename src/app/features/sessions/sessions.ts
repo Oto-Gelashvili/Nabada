@@ -1,42 +1,53 @@
-import { Component, computed, ElementRef, inject, OnInit, signal, ViewChild } from '@angular/core';
+import { Component, computed, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { DatePipe } from '@angular/common';
-import { SupabaseService } from '../../core/services/supabase';
-import { ServiceSession, Station } from '../../models/sessions';
-import { NotificationService } from '../../core/services/Notification';
 import { FormsModule } from '@angular/forms';
 import { Spinner } from '../../shared/components/spinner/spinner';
+
+import { NotificationService } from '../../core/services/Notification';
+import { ServiceSession, Station } from '../../models/sessions';
+import { SessionsHeaderComponent } from './components/sessions-header/sessions-header';
+import { StationsService } from '../../core/services/station.service';
+import { DateUtils } from '../../shared/components/utils/date.utils';
+
 @Component({
   selector: 'app-sessions',
-  imports: [DatePipe, FormsModule, Spinner],
+  standalone: true,
+  imports: [DatePipe, FormsModule, Spinner, SessionsHeaderComponent],
   templateUrl: './sessions.html',
   styleUrl: './sessions.css',
 })
 export class Sessions implements OnInit {
-  private readonly supabase = inject(SupabaseService);
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly stationsService = inject(StationsService);
   private readonly notify = inject(NotificationService);
+
   private readonly pixelsPerHour = 100;
-  readonly today = new Date();
+
+  // Signals
   selectedDate = signal<Date>(new Date());
+  editMode = signal(false);
+  loading = signal(false);
+  resetting = signal(false);
+  now = signal(Date.now());
+
+  // Data
   readonly stations = signal<Station[]>([]);
   readonly addedStations = signal<Station[]>([]);
   readonly allStations = computed(() => [...this.stations(), ...this.addedStations()]);
   readonly removedStationsIds = signal<number[]>([]);
   readonly sessions = signal<ServiceSession[]>([]);
   readonly hours = Array.from({ length: 24 }, (_, i) => i);
-  readonly now = signal(Date.now());
+
   private originalData = new Map<number, string>();
-  overlapingSessions = signal([]);
-  loading = signal(false);
-  resetting = signal(false);
-  editMode = signal(false);
-  @ViewChild('datePickerInput') datePickerInput!: ElementRef<HTMLInputElement>;
 
   ngOnInit() {
     this.loadData('initLoad');
 
-    setInterval(() => {
+    const intervalId = setInterval(() => {
       this.now.set(Date.now());
     }, 60000);
+
+    this.destroyRef.onDestroy(() => clearInterval(intervalId));
   }
 
   async loadData(action: 'initLoad' | 'reset') {
@@ -46,10 +57,12 @@ export class Sessions implements OnInit {
       } else if (action === 'reset') {
         this.resetting.set(true);
       }
-      const stationsData = await this.supabase.getStations(this.selectedDate());
+
+      this.clearTempState();
+      const stationsData = await this.stationsService.getStations(this.selectedDate());
       this.stations.set(stationsData);
 
-      const sessionsData = await this.supabase.getSessions(this.selectedDate());
+      const sessionsData = await this.stationsService.getSessions(this.selectedDate());
       this.sessions.set(sessionsData);
     } catch (error) {
       if (error instanceof Error) {
@@ -64,19 +77,34 @@ export class Sessions implements OnInit {
     }
   }
 
+  // === HELPER TO CLEAN STATE ===
+  private clearTempState() {
+    this.addedStations.set([]);
+    this.removedStationsIds.set([]);
+    this.originalData.clear();
+  }
+
+  // === HEADER EVENTS ===
+
+  async onDateChange() {
+    this.loadData('reset');
+  }
+
+  async onCreateSession() {
+    this.notify.showSuccess('Open Create Session Modal');
+  }
+
+  // === HELPERS ===
+
   getSessionsForStation(stationId: number): ServiceSession[] {
     return this.sessions().filter((s) => s.station_id === stationId);
   }
 
-  // for calculating we use viewStart/viewEnd that represend current days start and end
-  // this helps us deal with sssions lapping over multiple days
   calculateLeft(startTimeStr: string): number {
     const sessionStart = new Date(startTimeStr).getTime();
-
     const viewStart = new Date(this.selectedDate());
     viewStart.setHours(0, 0, 0, 0);
 
-    // If session started before today, it should start at 0px (Left edge)
     if (sessionStart < viewStart.getTime()) {
       return 0;
     }
@@ -105,7 +133,6 @@ export class Sessions implements OnInit {
     return Math.max(0, durationHours * this.pixelsPerHour);
   }
 
-  // checks overlapping sessions and we assing classes to them later to give special UI
   getSessionOverlapClass(session: ServiceSession): string {
     const start = new Date(session.start_time).getTime();
     const end = session.end_time ? new Date(session.end_time).getTime() : this.now();
@@ -133,6 +160,12 @@ export class Sessions implements OnInit {
     return this.allStations().some((s) => !s.name || s.name.trim() === '');
   }
 
+  isToday(): boolean {
+    return DateUtils.isToday(this.selectedDate());
+  }
+
+  // === EDIT MODE ===
+
   async toggleEditMode() {
     if (!this.isToday()) {
       this.notify.showError('Can not edit past stations');
@@ -149,48 +182,44 @@ export class Sessions implements OnInit {
       this.editMode.set(true);
     }
   }
+
   private captureSnapshot() {
     this.originalData.clear();
     this.stations().forEach((s) => {
       this.originalData.set(s.id, s.name);
     });
   }
+
   closeEditMode() {
     this.editMode.set(false);
     this.loadData('reset');
   }
 
   async saveAllChanges(): Promise<boolean> {
-    //  PREPARE UPDATES
     const changedStations = this.stations().filter((station) => {
       const originalName = this.originalData.get(station.id);
       return station.name !== originalName;
     });
 
     const updatePromises = changedStations.map((station) =>
-      this.supabase.updateStationName(station.id, station.name),
+      this.stationsService.updateStationName(station.id, station.name),
     );
 
-    //  PREPARE CREATES
     const newStations = this.addedStations();
-
     const createPromises = newStations.map((station) =>
-      this.supabase.createStation({
+      this.stationsService.createStation({
         name: station.name,
         display_order: station.display_order,
       }),
     );
 
-    // PREPARE DELETES
     const removedStationsIds = this.removedStationsIds();
     const deletePromises = removedStationsIds.map((id) =>
-      this.supabase.removeStation(id).catch((err) => {
+      this.stationsService.removeStation(id).catch((err) => {
         this.notify.showError('Failed to delete');
-        this.loadData('reset');
       }),
     );
 
-    // CHECK IF ANYTHING NEW
     if (updatePromises.length === 0 && createPromises.length === 0 && deletePromises.length === 0) {
       return true;
     }
@@ -200,7 +229,6 @@ export class Sessions implements OnInit {
       await Promise.all([...updatePromises, ...createPromises, ...deletePromises]);
 
       this.notify.showSuccess(`Saved`);
-      // CLEANUP AND RELOAD
       this.removedStationsIds.set([]);
       this.addedStations.set([]);
       await this.loadData('reset');
@@ -209,14 +237,15 @@ export class Sessions implements OnInit {
       if (error instanceof Error) {
         this.notify.showError(error.message);
       }
-      // THIS KEEPS EDIT MODE OPEN ON FAIL
       return false;
     } finally {
       this.resetting.set(false);
     }
   }
+
+  // === STATION ACTIONS ===
+
   addStation() {
-    // we find highest display order to avoid future collision
     const maxOrder = this.allStations().reduce((max, station) => {
       return Math.max(max, station.display_order);
     }, 0);
@@ -230,66 +259,14 @@ export class Sessions implements OnInit {
     };
     this.addedStations.update((current) => [...current, newStation]);
   }
+
   removeStation(stationId: number) {
-    // if removing newly added station
     const isNew = this.addedStations().some((s) => s.id === stationId);
     if (isNew) {
       this.addedStations.update((current) => current.filter((s) => s.id !== stationId));
     } else {
-      // if removing existing(db) station
       this.stations.update((current) => current.filter((s) => s.id !== stationId));
-
       this.removedStationsIds.update((current) => [...current, stationId]);
     }
-  }
-
-  changeDay(change: 'increase' | 'decrease') {
-    const newDate = new Date(this.selectedDate());
-    if (change === 'decrease') {
-      newDate.setDate(newDate.getDate() - 1);
-    } else {
-      newDate.setDate(newDate.getDate() + 1);
-      if (newDate > this.today) {
-        return;
-      }
-    }
-    this.selectedDate.set(newDate);
-    this.loadData('reset');
-  }
-
-  isToday(): boolean {
-    const selected = this.selectedDate();
-    const today = this.today;
-
-    return (
-      selected.getDate() === today.getDate() &&
-      selected.getMonth() === today.getMonth() &&
-      selected.getFullYear() === today.getFullYear()
-    );
-  }
-  openDatePicker() {
-    try {
-      this.datePickerInput.nativeElement.showPicker();
-    } catch (err) {
-      this.datePickerInput.nativeElement.click();
-    }
-  }
-  onDatePicked(event: Event) {
-    const input = event.target as HTMLInputElement;
-    if (!input.value) return;
-
-    const [year, month, day] = input.value.split('-').map(Number);
-
-    const newDate = new Date(year, month - 1, day);
-
-    this.selectedDate.set(newDate);
-    this.loadData('reset');
-  }
-
-  get dateInputValue(): string {
-    return this.selectedDate().toISOString().split('T')[0];
-  }
-  get maxDate(): string {
-    return this.today.toISOString().split('T')[0];
   }
 }

@@ -1,0 +1,138 @@
+:host {
+  display: contents;
+}
+.heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2.4rem;
+  width: 100%;
+  margin-bottom: 2.4rem;
+  max-width: calc(var(--hour-width) * 25);
+}
+.dateCont {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+.arrowsCont {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.arrowsCont span {
+  border-radius: 50%;
+  padding: 1.6rem;
+  font-size: 3.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid transparent;
+  outline: 1px solid transparent;
+  transition: 0.4s;
+  cursor: pointer;
+  user-select: none;
+}
+.arrowsCont span:hover {
+  background-color: var(--hover-color);
+}
+.arrowsCont span:active {
+  color: var(--primary-color);
+}
+.arrowsCont span:focus {
+  outline-color: var(--primary-color);
+}
+.datePickerCont {
+  position: relative;
+}
+.heading h3 {
+  font-size: 1.8rem;
+  cursor: pointer;
+  user-select: none;
+  transition: 0.4s;
+}
+.heading h3:hover {
+  color: var(--primary-color);
+}
+.hidden-picker {
+  position: absolute;
+  top: 200%;
+  left: 0;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  pointer-events: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+.headerBtn {
+  border-radius: 50rem;
+  font-size: 1.6rem;
+  background-color: var(--primary-color);
+  color: #fff;
+  transition: 0.4s;
+  border: 1px solid transparent;
+  outline: 1px solid transparent;
+  padding: 0.4rem 1.2rem;
+  cursor: pointer;
+}
+.createSessionBtn {
+  background-color: var(--primary-color);
+}
+.cancelBtn {
+  background-color: var(--error);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  width: calc(var(--hour-width) + 10px);
+  justify-content: center;
+}
+.cancelBtn:hover {
+  background-color: var(--hover-color);
+  color: var(--error);
+}
+.createSessionBtn:hover {
+  background-color: var(--hover-color);
+  color: var(--primary-color);
+}
+
+.createSessionBtn:focus {
+  background-color: var(--hover-color);
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+.cancelBtn:focus {
+  border-color: var(--error);
+  background-color: var(--hover-color);
+  color: var(--error);
+}
+
+.createSessionBtn:active {
+  border-color: #fff;
+  color: #fff;
+}
+.cancelBtn:active {
+  border-color: var(--error);
+  background-color: var(--hover-color);
+  color: var(--error);
+}
+.createSessionBtn span {
+  display: none;
+}
+.disabled-arrow {
+  opacity: 0.3;
+  pointer-events: none;
+}
+@media screen and (max-width: 768px) {
+  .createSessionBtn span {
+    display: block;
+  }
+  .createSessionBtn {
+    border-radius: 50%;
+    padding: 0.2rem;
+  }
+  .createSessionBtn p {
+    display: none;
+  }
+}

@@ -1,52 +1,11 @@
 <section id="sessions">
-  <div class="heading">
-    <div class="dateCont">
-      @if (editMode()) {
-        <button class="headerBtn cancelBtn" (click)="closeEditMode()">
-          <p>cancel</p>
-          <span class="material-symbols-outlined"> cancel </span>
-        </button>
-      } @else {
-        <div class="datePickerCont">
-          <h3 (click)="openDatePicker()" title="Change Date">
-            {{ selectedDate() | date: 'MMMM d, y' }}
-          </h3>
-          <input
-            #datePickerInput
-            type="date"
-            [value]="dateInputValue"
-            [max]="maxDate"
-            (change)="onDatePicked($event)"
-            class="hidden-picker"
-          />
-        </div>
-        <div class="arrowsCont">
-          <span
-            class="material-symbols-outlined"
-            tabindex="0"
-            (keydown.enter)="changeDay('decrease')"
-            (keydown.space)="changeDay('decrease')"
-            (click)="changeDay('decrease')"
-          >
-            chevron_backward </span
-          ><span
-            class="material-symbols-outlined"
-            tabindex="0"
-            [class.disabled-arrow]="isToday()"
-            (keydown.enter)="changeDay('increase')"
-            (keydown.space)="changeDay('increase')"
-            (click)="changeDay('increase')"
-          >
-            chevron_forward
-          </span>
-        </div>
-      }
-    </div>
-    <button class="headerBtn createSessionBtn">
-      <p>create session</p>
-      <span class="material-symbols-outlined"> add </span>
-    </button>
-  </div>
+  <app-sessions-header
+    [(date)]="selectedDate"
+    [editMode]="editMode()"
+    (dateChange)="onDateChange()"
+    (cancelEdit)="closeEditMode()"
+    (createClick)="onCreateSession()"
+  ></app-sessions-header>
   <div class="scheduler-container">
     @if (loading()) {
       <div class="loadingTemplate"></div>
