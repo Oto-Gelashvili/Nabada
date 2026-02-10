@@ -84,13 +84,15 @@ export class StationsService {
     const endOfDay = new Date(date);
     endOfDay.setHours(23, 59, 59, 999);
 
+    const startStr = startOfDay.toISOString();
+    const endStr = endOfDay.toISOString();
+
     const { data, error } = await this.supabase
       .from('sessions')
       .select('*')
-      .lte('start_time', endOfDay.toISOString())
-      //  The session must end AFTER the day started OR be still active (null)
-      //  with this rule we also get session that continiue to next day
-      .or(`end_time.gte.${startOfDay.toISOString()},end_time.is.null`);
+      .or(
+        `and(start_time.gte.${startStr},start_time.lte.${endStr}),and(end_time.gte.${startStr},end_time.lte.${endStr})`,
+      );
 
     if (error) {
       throw new Error(error.message);

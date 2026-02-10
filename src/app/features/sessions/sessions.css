@@ -107,7 +107,18 @@
 .show-animated-enter-removeIcon {
   animation: show-animated-enter-removeIcon 1s;
 }
-
+.show-animated-enter-session {
+  animation: show-animated-enter-session 1s;
+}
+@keyframes show-animated-enter-session {
+  from {
+    opacity: 0;
+    width: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
 @keyframes show-animated-enter-row {
   from {
     flex: 0;
@@ -252,6 +263,18 @@
   cursor: pointer;
   transition: 0.4s;
 }
+.session-card.overflow-left {
+  border-radius: unset;
+  border-top-right-radius: 50rem;
+  border-bottom-right-radius: 50rem;
+}
+
+.session-card.overflow-right {
+  border-radius: unset;
+  border-top-left-radius: 50rem;
+  border-bottom-left-radius: 50rem;
+}
+
 .session-time {
   display: block;
   width: 100%;
@@ -284,16 +307,4 @@
   100% {
     background-position: 200% 0;
   }
-}
-
-.session-card.overflow-left {
-  border-radius: unset;
-  border-top-right-radius: 50rem;
-  border-bottom-right-radius: 50rem;
-}
-
-.session-card.overflow-right {
-  border-radius: unset;
-  border-top-left-radius: 50rem;
-  border-bottom-left-radius: 50rem;
 }
