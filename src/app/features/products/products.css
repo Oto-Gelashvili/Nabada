@@ -1,0 +1,59 @@
+:host {
+  display: contents;
+}
+#productsPage {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2.4rem;
+  width: 100%;
+  margin-bottom: 2.4rem;
+}
+.heading h2 {
+  font-size: 1.8rem;
+}
+.createProductsBtn {
+  border-radius: 50rem;
+  font-size: 1.6rem;
+  background-color: var(--primary-color);
+  color: #fff;
+  transition: 0.4s;
+  border: 1px solid transparent;
+  outline: 1px solid transparent;
+  padding: 0.4rem 1.2rem;
+  cursor: pointer;
+}
+.createProductsBtn span {
+  display: none;
+}
+.createProductsBtn:hover {
+  background-color: var(--hover-color);
+  color: var(--primary-color);
+}
+
+.createProductsBtn:focus {
+  background-color: var(--hover-color);
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+.createProductsBtn:active {
+  border-color: #fff;
+  border-color: var(--primary-color);
+}
+@media screen and (max-width: 768px) {
+  .createProductsBtn span {
+    display: block;
+  }
+  .createProductsBtn {
+    border-radius: 50%;
+    padding: 0.2rem;
+  }
+  .createProductsBtn p {
+    display: none;
+  }
+}

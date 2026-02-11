@@ -1,1 +1,16 @@
-<p>products works!</p>
+<section id="productsPage">
+  <div class="heading">
+    <h2>Products</h2>
+    <button class="createProductsBtn">
+      <p>create session</p>
+      <span class="material-symbols-outlined"> add </span>
+    </button>
+  </div>
+  <div class="products-container"></div>
+  @for (product of products(); track product.id) {
+    <div class="productsCard">
+      <h3>{{ product.name }}</h3>
+      <h3>{{ product.price }}</h3>
+    </div>
+  }
+</section>
