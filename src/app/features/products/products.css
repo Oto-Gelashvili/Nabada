@@ -15,7 +15,8 @@
   margin-bottom: 2.4rem;
 }
 .heading h2 {
-  font-size: 1.8rem;
+  font-size: 2.4rem;
+  color: var(--secondary-color);
 }
 .createProductsBtn {
   border-radius: 50rem;
@@ -24,7 +25,7 @@
   color: #fff;
   transition: 0.4s;
   border: 1px solid transparent;
-  outline: 1px solid transparent;
+  outline: 0;
   padding: 0.4rem 1.2rem;
   cursor: pointer;
 }
@@ -45,7 +46,136 @@
   border-color: #fff;
   border-color: var(--primary-color);
 }
+.products-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2.4rem;
+  width: 100%;
+}
+
+.productsCard {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  background-color: var(--hover-color);
+  padding: 1.2rem;
+  border-radius: 12px;
+  width: 100%;
+  height: fit-content;
+}
+.productsCardHeading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.2rem;
+}
+.productsCard h3 {
+  font-size: 1.8rem;
+  color: var(--secondary-color);
+  width: fit-content;
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.priceCont,
+.nameCont {
+  display: flex;
+  gap: 1.2rem;
+  align-items: center;
+  font-size: 1.4rem;
+  justify-content: space-between;
+}
+.nameCont:has(.error-msg),
+.priceCont:has(.error-msg) {
+  margin-bottom: 1.2rem;
+}
+.productsCard label {
+  font-weight: bold;
+  font-size: 1.6rem;
+  width: 100px;
+}
+
+.productsCard input {
+  transition: 0.4s;
+  border: 1px solid transparent;
+  outline: 0;
+  padding: unset;
+  background-color: transparent;
+  color: var(--text-color);
+  font-size: 1.6rem;
+  border-radius: 4px;
+  width: 100%;
+}
+.productsCard input.editableInput {
+  padding: 0.8rem 1.6rem;
+  border-radius: 8px;
+  border-color: var(--border-color);
+  background-color: var(--accent-color);
+}
+
+.productsCard input.editableInput:focus {
+  border-color: var(--primary-color);
+}
+.btn-primary:not(.del) {
+  background-color: var(--accent-color);
+  color: var(--text-color);
+}
+.inputCont {
+  position: relative;
+  width: 100%;
+}
+.error-msg {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  color: var(--error);
+  font-size: 1.2rem;
+}
+.productsCard input.editableInput.error-input {
+  border: 1px solid var(--error);
+}
+.show-animated-enter-cards {
+  animation: show-animated-enter-cards 1s;
+}
+.show-animated-enter-error {
+  animation: show-animated-enter-error 0.4s;
+}
+.btn-primary.saving {
+  background-size: 100% 100%;
+  color: #fff !important;
+}
+
+@keyframes show-animated-enter-cards {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes show-animated-enter-error {
+  from {
+    opacity: 0;
+    top: 80%;
+  }
+  to {
+    opacity: 1;
+    top: 100%;
+  }
+}
 @media screen and (max-width: 768px) {
+  .products-container {
+    justify-items: center;
+  }
+  .productsCard {
+    max-width: 350px;
+  }
+}
+@media screen and (max-width: 475px) {
+  .products-container {
+    grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+  }
   .createProductsBtn span {
     display: block;
   }
