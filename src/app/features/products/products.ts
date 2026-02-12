@@ -18,10 +18,11 @@ export class Products implements OnInit {
   readonly products = signal<Product[]>([]);
   isLoading = signal(false);
   editingId = signal<number | null>(null);
-  showConfirmation = signal(false);
+  // showConfirmation = signal(false);
   isUpdating = signal(false);
-  deleteId = signal<number | null>(null);
+  // deleteId = signal<number | null>(null);
   actionType = signal<'update' | 'delete' | null>(null);
+
   ngOnInit() {
     this.loadProducts('init');
   }
@@ -81,34 +82,26 @@ export class Products implements OnInit {
 
     await new Promise((resolve) => setTimeout(resolve, 400));
 
-    this.actionType.set(null);
-    this.showConfirmation.set(true);
-    this.deleteId.set(productId);
-  }
-  noDelete() {
-    this.showConfirmation.set(false);
-    this.deleteId.set(null);
-  }
+    const confirmed = await this.notify.confirm(
+      $localize`:@@common.confirmDelete:Are you sure you want to delete this product?`,
+    );
 
-  async yesDelete() {
+    if (!confirmed) {
+      this.actionType.set(null);
+      return;
+    }
+
     try {
       this.isLoading.set(true);
-      const idToDelete = this.deleteId();
-      if (!idToDelete) return;
-      await this.productsService.deleteProduct(idToDelete);
-      this.products.update((currentProducts) =>
-        currentProducts.filter((p) => p.id !== this.deleteId()),
-      );
+      await this.productsService.deleteProduct(productId);
 
+      this.products.update((current) => current.filter((p) => p.id !== productId));
       this.notify.showSuccess($localize`:@@common.deleted:Deleted`);
     } catch (error) {
-      if (error instanceof Error) {
-        this.notify.showError(error.message);
-      }
+      if (error instanceof Error) this.notify.showError(error.message);
     } finally {
       this.isLoading.set(false);
-      this.deleteId.set(null);
-      this.showConfirmation.set(false);
+      this.actionType.set(null);
     }
   }
 }

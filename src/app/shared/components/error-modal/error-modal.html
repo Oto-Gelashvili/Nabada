@@ -30,3 +30,18 @@
     </div>
   }
 </div>
+
+@if (confirmation(); as request) {
+  <div class="confirm-backdrop" animate.enter="fade-in">
+    <div class="confirm-box" animate.enter="scale-in">
+      <h3>Confirmation</h3>
+      <p>{{ request.message }}</p>
+
+      <div class="confirm-actions">
+        <button class="btn-cancel" (click)="resolveConfirm(false)">Cancel</button>
+
+        <button class="btn-confirm" (click)="resolveConfirm(true)">Confirm</button>
+      </div>
+    </div>
+  </div>
+}
