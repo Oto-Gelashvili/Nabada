@@ -48,7 +48,7 @@
 }
 .products-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 2.4rem;
   width: 100%;
 }
@@ -144,6 +144,7 @@
 .btn-primary.saving {
   background-size: 100% 100%;
   color: #fff !important;
+  transition: background-size 0.8s ease-in-out;
 }
 
 @keyframes show-animated-enter-cards {

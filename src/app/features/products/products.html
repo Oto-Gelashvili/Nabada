@@ -6,117 +6,106 @@
       <span class="material-symbols-outlined"> add </span>
     </button>
   </div>
+  @if (isLoading()) {
+    <app-loader></app-loader>
+  } @else {
+    <div class="products-container" [class.loading]="isLoading()">
+      @for (product of products(); track product.id) {
+        <div class="productsCard" animate.enter="show-animated-enter-cards">
+          <div class="productsCardHeading">
+            <h3>{{ product.name }}</h3>
 
-  <div class="products-container" [class.loading]="isLoading()">
-    @if (isLoading()) {
-      <app-loader></app-loader>
-    }
-    @for (product of products(); track product.id) {
-      <div class="productsCard" animate.enter="show-animated-enter-cards">
-        <div class="productsCardHeading">
-          <h3>{{ product.name }}</h3>
-
-          <button class="btn-secondary" (click)="toggleEditingState(product.id)">
-            @if (editingId() === product.id) {
-              @if (isUpdating()) {
-                <app-spinner></app-spinner>
+            <button class="btn-secondary" (click)="toggleEditingState(product.id)">
+              @if (editingId() === product.id) {
+                @if (isUpdating()) {
+                  <app-spinner></app-spinner>
+                } @else {
+                  <span class="material-symbols-outlined">cancel</span>
+                  <p i18n="@@common.cancel">Cancel</p>
+                }
               } @else {
-                <span class="material-symbols-outlined">cancel</span>
-                <p i18n="@@common.cancel">Cancel</p>
+                <span class="material-symbols-outlined">edit</span>
+                <p i18n="@@common.edit">Edit</p>
               }
-            } @else {
-              <span class="material-symbols-outlined">edit</span>
-              <p i18n="@@common.edit">Edit</p>
-            }
+            </button>
+          </div>
+
+          <div class="nameCont">
+            <label [for]="'name-' + product.id">Product:</label>
+            <div class="inputCont">
+              <input
+                [id]="'name-' + product.id"
+                name="productName"
+                type="text"
+                [readonly]="editingId() !== product.id"
+                [class.editableInput]="editingId() === product.id"
+                [class.error-input]="editingId() === product.id && !product.name"
+                [(ngModel)]="product.name"
+              />
+              @if (editingId() === product.id && !product.name) {
+                <span class="error-msg" animate.enter="show-animated-enter-error"
+                  >Can't be empty</span
+                >
+              }
+            </div>
+          </div>
+
+          <div class="priceCont">
+            <label [for]="'price-' + product.id">Price:</label>
+            <div class="inputCont">
+              <input
+                [id]="'price-' + product.id"
+                name="price"
+                type="number"
+                [readonly]="editingId() !== product.id"
+                [class.editableInput]="editingId() === product.id"
+                [class.error-input]="
+                  editingId() === product.id && (product.price === null || product.price < 0)
+                "
+                [(ngModel)]="product.price"
+                min="0"
+              />
+              @if (editingId() === product.id) {
+                @if (product.price === null) {
+                  <span class="error-msg" animate.enter="show-animated-enter-error"
+                    >Price required</span
+                  >
+                } @else if (product.price < 0) {
+                  <span class="error-msg" animate.enter="show-animated-enter-error"
+                    >Can't be negative</span
+                  >
+                }
+              }
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            class="btn-primary"
+            [disabled]="
+              isLoading() ||
+              editingId() !== product.id ||
+              !product.name ||
+              !product.price ||
+              product.price < 0
+            "
+            [class.saving]="isUpdating() && editingId() === product.id && actionType() === 'update'"
+            [class.disabled-btn]="editingId() !== product.id"
+            (click)="updateProduct(product)"
+          >
+            <p i18n="@@common.save">Save</p>
+          </button>
+
+          <button
+            i18n="@@common.delete"
+            class="btn-primary del"
+            [class.saving]="actionType() === 'delete'"
+            (click)="onDelete(product.id)"
+          >
+            Delete Product
           </button>
         </div>
-
-        <div class="nameCont">
-          <label [for]="'name-' + product.id">Product:</label>
-          <div class="inputCont">
-            <input
-              [id]="'name-' + product.id"
-              name="productName"
-              type="text"
-              [readonly]="editingId() !== product.id"
-              [class.editableInput]="editingId() === product.id"
-              [class.error-input]="editingId() === product.id && !product.name"
-              [(ngModel)]="product.name"
-            />
-            @if (editingId() === product.id && !product.name) {
-              <span class="error-msg" animate.enter="show-animated-enter-error"
-                >Can't be empty</span
-              >
-            }
-          </div>
-        </div>
-
-        <div class="priceCont">
-          <label [for]="'price-' + product.id">Price:</label>
-          <div class="inputCont">
-            <input
-              [id]="'price-' + product.id"
-              name="price"
-              type="number"
-              [readonly]="editingId() !== product.id"
-              [class.editableInput]="editingId() === product.id"
-              [class.error-input]="
-                editingId() === product.id && (product.price === null || product.price < 0)
-              "
-              [(ngModel)]="product.price"
-              min="0"
-            />
-            @if (editingId() === product.id) {
-              @if (product.price === null) {
-                <span class="error-msg" animate.enter="show-animated-enter-error"
-                  >Price required</span
-                >
-              } @else if (product.price < 0) {
-                <span class="error-msg" animate.enter="show-animated-enter-error"
-                  >Can't be negative</span
-                >
-              }
-            }
-          </div>
-        </div>
-
-        <button
-          type="submit"
-          class="btn-primary"
-          [disabled]="
-            isLoading() ||
-            editingId() !== product.id ||
-            !product.name ||
-            !product.price ||
-            product.price < 0
-          "
-          [class.saving]="isUpdating() && editingId() === product.id && actionType() === 'update'"
-          [class.disabled-btn]="editingId() !== product.id"
-          (click)="updateProduct(product)"
-        >
-          <p i18n="@@common.save">Save</p>
-        </button>
-
-        <button
-          i18n="@@common.delete"
-          class="btn-primary del"
-          [class.saving]="actionType() === 'delete'"
-          (click)="onDelete(product.id)"
-        >
-          Delete Product
-        </button>
-      </div>
-    }
-  </div>
-</section>
-<!-- @if (showConfirmation()) {
-  <div class="confirmCont">
-    <div class="notyCont wrapper" animate.enter="show-animated-enter-cards">
-      <h2 i18n="@@common.delete">Delete Account</h2>
-      <div class="btnsCont">
-        <button class="btn-secondary yes" (click)="yesDelete()" i18n="@@common.yes">yes</button>
-        <button class="btn-secondary no" (click)="noDelete()" i18n="@@common.no">no</button>
-      </div>
+      }
     </div>
-  </div>
-} -->
+  }
+</section>

@@ -64,88 +64,108 @@
     min-width: unset;
   }
 }
-/* Dark Overlay Backdrop */
 .confirm-backdrop {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.5); /* Dim background */
-  z-index: 9999; /* Higher than everything */
+  z-index: var(--most-z);
   display: flex;
   align-items: center;
   justify-content: center;
-  backdrop-filter: blur(2px);
+  backdrop-filter: blur(3px);
 }
 
-/* The White Box */
 .confirm-box {
-  background: white;
-  padding: 2rem;
+  background: var(--hover-color);
+  padding: 2.4rem;
   border-radius: 12px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-  min-width: 300px;
-  max-width: 90%;
+  width: clamp(260px, 300px, 90%);
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1.6rem;
   text-align: center;
+  font-size: 1.4rem;
+  color: var(--text-color);
+  background-color: var(--accent-color);
 }
 
 .confirm-box h3 {
-  margin: 0;
-  color: #333;
-  font-size: 1.2rem;
+  color: var(--secondary-color);
+  font-size: 1.6rem;
 }
 
 .confirm-actions {
   display: flex;
-  gap: 1rem;
+  gap: 1.2rem;
   justify-content: center;
-  margin-top: 0.5rem;
 }
 
-/* Buttons */
 .confirm-actions button {
   padding: 0.6rem 1.2rem;
   border-radius: 6px;
-  border: none;
+  border: 1px solid transparent;
   cursor: pointer;
-  font-weight: 500;
-  transition: transform 0.1s;
+  transition: 0.4s;
 }
-
+.confirm-actions button.btn-cancel:hover {
+  background-color: transparent;
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
+.confirm-actions button.btn-confirm:hover {
+  background-color: transparent;
+  border-color: var(--error);
+  color: var(--error);
+}
+.confirm-actions button.btn-cancel:focus {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
+.confirm-actions button.btn-confirm:focus {
+  border-color: var(--error);
+  color: var(--error);
+  background-color: var(--hover-color);
+}
 .confirm-actions button:active {
-  transform: scale(0.95);
+  transform: scale(0.9);
 }
 
 .btn-cancel {
-  background: #f0f0f0;
-  color: #333;
+  background: var(--hover-color);
 }
 
 .btn-confirm {
-  background: var(--error, #e74c3c); /* Use your error variable */
-  color: white;
+  background: var(--error);
+  color: #fff;
 }
 
-/* Animations */
+.fade-in {
+  animation: fade-in 1s;
+}
+.fade-out {
+  animation: fade-out 1s;
+}
+
 @keyframes fade-in {
   from {
     opacity: 0;
+    transform: scale(0.9);
   }
   to {
     opacity: 1;
+    transform: scale(1);
   }
 }
-@keyframes scale-in {
+@keyframes fade-out {
   from {
-    transform: scale(0.9);
-    opacity: 0;
+    opacity: 1;
+    transform: scale(1);
   }
   to {
-    transform: scale(1);
-    opacity: 1;
+    opacity: 0;
+    transform: scale(0.9);
   }
 }

@@ -18,9 +18,7 @@ export class Products implements OnInit {
   readonly products = signal<Product[]>([]);
   isLoading = signal(false);
   editingId = signal<number | null>(null);
-  // showConfirmation = signal(false);
   isUpdating = signal(false);
-  // deleteId = signal<number | null>(null);
   actionType = signal<'update' | 'delete' | null>(null);
 
   ngOnInit() {
@@ -64,7 +62,7 @@ export class Products implements OnInit {
       this.actionType.set('update');
       this.isUpdating.set(true);
       // for adding btn animation
-      const minDelay = new Promise((resolve) => setTimeout(resolve, 400));
+      const minDelay = new Promise((resolve) => setTimeout(resolve, 800));
       const apiCall = this.productsService.updateProducts(product);
       await Promise.all([apiCall, minDelay]);
       this.notify.showSuccess($localize`:@@commoont.updated:Updated`);
@@ -80,10 +78,10 @@ export class Products implements OnInit {
   async onDelete(productId: number) {
     this.actionType.set('delete');
 
-    await new Promise((resolve) => setTimeout(resolve, 400));
+    await new Promise((resolve) => setTimeout(resolve, 800));
 
     const confirmed = await this.notify.confirm(
-      $localize`:@@common.confirmDelete:Are you sure you want to delete this product?`,
+      $localize`:@@common.deleteProduct:This product will be deleted`,
     );
 
     if (!confirmed) {

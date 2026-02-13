@@ -262,6 +262,11 @@ main {
   background-size: 0% 100%;
   background-repeat: no-repeat;
   background-position: left center;
+  transition:
+    color 0.4s,
+    background-color 0.4s,
+    border-color 0.4s,
+    background-size 0s;
 }
 .btn-primary.del {
   background-image: linear-gradient(to right, var(--error), var(--error));
