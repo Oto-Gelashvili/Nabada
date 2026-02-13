@@ -59,8 +59,11 @@
     "common.submit": "გაგზავნა",
     "common.errorOccurred": "დაფიქსირდა ხარეზი. მოგვიანებით სცადეთ",
     "commoont.updated": "განახლდა",
-    "common.deleteProduct": "ეს პროდუქტი წაიშლება",
+    "products.deleteProduct": "Delete Product",
+    "common.deleteProductDesc": "ეს პროდუქტი წაიშლება",
     "common.deleted": "წაიშალა",
-    "common.created": "პროდუქტი შეიქმნა"
+    "common.created": "პროდუქტი შეიქმნა",
+    "common.confirmation": "თანხმობა",
+    "common.confirm": " დადასტურება "
   }
 }

@@ -34,13 +34,17 @@
 @if (confirmation(); as request) {
   <div class="confirm-backdrop" animate.enter="fade-in" animate.leave="fade-out">
     <div class="confirm-box">
-      <h3>Confirmation</h3>
+      <h3 i18n="@@common.confirmation">Confirmation</h3>
       <p>{{ request.message }}</p>
 
       <div class="confirm-actions">
-        <button class="btn-cancel" (click)="resolveConfirm(false)">Cancel</button>
+        <button class="btn-cancel" (click)="resolveConfirm(false)" i18n="@@common.cancel">
+          Cancel
+        </button>
 
-        <button class="btn-confirm" (click)="resolveConfirm(true)">Confirm</button>
+        <button class="btn-confirm" (click)="resolveConfirm(true)" i18n="@@common.confirm">
+          Confirm
+        </button>
       </div>
     </div>
   </div>

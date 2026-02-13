@@ -22,7 +22,6 @@ export class Settings implements OnInit {
   readonly loading = signal(false);
   readonly updating = signal(false);
   readonly isEditing = signal(false);
-  readonly showConfirmation = signal(false);
 
   readonly profileForm = new FormGroup({
     username: new FormControl('', [Validators.required, Validators.minLength(3)]),
@@ -174,24 +173,25 @@ export class Settings implements OnInit {
     input.value = '';
   }
 
-  onDelete() {
-    this.showConfirmation.set(true);
-  }
-  noDelete() {
-    this.showConfirmation.set(false);
-  }
+  async onDelete() {
+    const confirmed = await this.notify.confirm(
+      $localize`:@@common.deleteProductDesc:This product will be deleted`,
+    );
 
-  async yesDelete() {
+    if (!confirmed) {
+      return;
+    }
     try {
       this.loading.set(true);
       await this.supabase.deleteAccount();
     } catch (error) {
       if (error instanceof Error) {
-        this.notify.showError(error.message);
+        this.notify.showError(
+          $localize`:@@common.errorOccurred:An error occurred. Please try again.`,
+        );
       }
     } finally {
       this.loading.set(false);
-      this.showConfirmation.set(false);
     }
   }
 }

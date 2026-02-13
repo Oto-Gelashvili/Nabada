@@ -94,7 +94,7 @@ export class Products implements OnInit {
     await new Promise((resolve) => setTimeout(resolve, 800));
 
     const confirmed = await this.notify.confirm(
-      $localize`:@@common.deleteProduct:This product will be deleted`,
+      $localize`:@@common.deleteProductDesc:This product will be deleted`,
     );
 
     if (!confirmed) {
