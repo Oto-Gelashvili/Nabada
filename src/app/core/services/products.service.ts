@@ -40,4 +40,21 @@ export class ProductsService {
       throw new Error(error.message);
     }
   }
+
+  async createProduct(product: { name: string; price: number }): Promise<Product> {
+    const { data, error } = await this.supabase
+      .from('products')
+      .insert({
+        name: product.name,
+        price: product.price,
+      })
+      .select()
+      .single();
+
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    return data as Product;
+  }
 }

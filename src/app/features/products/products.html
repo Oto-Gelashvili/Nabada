@@ -1,8 +1,8 @@
 <section id="productsPage">
   <div class="heading">
-    <h2>Products</h2>
-    <button class="createProductsBtn">
-      <p>add product</p>
+    <h2 i18n="@@products.title">Products</h2>
+    <button class="createProductsBtn" (click)="openAddModal()">
+      <p i18n="@@products.addProduct">add product</p>
       <span class="material-symbols-outlined"> add </span>
     </button>
   </div>
@@ -31,7 +31,7 @@
           </div>
 
           <div class="nameCont">
-            <label [for]="'name-' + product.id">Product:</label>
+            <label i18n="@@products.labelName" [for]="'name-' + product.id">Product:</label>
             <div class="inputCont">
               <input
                 [id]="'name-' + product.id"
@@ -43,7 +43,10 @@
                 [(ngModel)]="product.name"
               />
               @if (editingId() === product.id && !product.name) {
-                <span class="error-msg" animate.enter="show-animated-enter-error"
+                <span
+                  i18n="@@error.empty"
+                  class="error-msg"
+                  animate.enter="show-animated-enter-error"
                   >Can't be empty</span
                 >
               }
@@ -51,7 +54,7 @@
           </div>
 
           <div class="priceCont">
-            <label [for]="'price-' + product.id">Price:</label>
+            <label i18n="@@products.labelPrice" [for]="'price-' + product.id">Price:</label>
             <div class="inputCont">
               <input
                 [id]="'price-' + product.id"
@@ -67,11 +70,17 @@
               />
               @if (editingId() === product.id) {
                 @if (product.price === null) {
-                  <span class="error-msg" animate.enter="show-animated-enter-error"
+                  <span
+                    i18n="@@error.priceReq"
+                    class="error-msg"
+                    animate.enter="show-animated-enter-error"
                     >Price required</span
                   >
                 } @else if (product.price < 0) {
-                  <span class="error-msg" animate.enter="show-animated-enter-error"
+                  <span
+                    i18n="@@error.negative"
+                    class="error-msg"
+                    animate.enter="show-animated-enter-error"
                     >Can't be negative</span
                   >
                 }
@@ -101,11 +110,97 @@
             class="btn-primary del"
             [class.saving]="actionType() === 'delete'"
             (click)="onDelete(product.id)"
+            i18n="@@products.deleteProduct"
           >
-            Delete Product
+            Delete
           </button>
         </div>
       }
     </div>
   }
 </section>
+@if (showAddModal()) {
+  <div
+    class="confirm-backdrop"
+    animate.enter="scale-in-animation"
+    animate.leave="scale-out-animation"
+  >
+    <div class="confirm-box add-modal-box">
+      <div class="modal-header">
+        <h3 i18n="@@products.addProduct">Add Product</h3>
+        <button class="close-btn" (click)="closeAddModal()">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="input-group">
+          <label for="new-name" i18n="@@common.name">Name</label>
+          <input
+            id="new-name"
+            type="text"
+            [(ngModel)]="newProduct.name"
+            [class.error-input]="showFormErrors() && !newProduct.name"
+            placeholder="Product name"
+          />
+          @if (showFormErrors() && !newProduct.name) {
+            <span
+              class="error-msg"
+              animate.enter="show-animated-enter-error"
+              animate.leave="error-hide-animation"
+              i18n="@@error.empty"
+            >
+              Can't be empty
+            </span>
+          }
+        </div>
+
+        <div class="input-group">
+          <label for="new-price" i18n="@@common.price">Price</label>
+          <input
+            id="new-price"
+            type="number"
+            [(ngModel)]="newProduct.price"
+            [class.error-input]="
+              showFormErrors() && (newProduct.price === null || newProduct.price < 0)
+            "
+            min="0"
+            placeholder="0.00"
+          />
+          @if (showFormErrors()) {
+            @if (newProduct.price === null) {
+              <span
+                class="error-msg"
+                animate.enter="show-animated-enter-error"
+                animate.leave="error-hide-animation"
+                i18n="@@error.priceReq"
+              >
+                Price required
+              </span>
+            } @else if (newProduct.price < 0) {
+              <span
+                class="error-msg"
+                animate.enter="show-animated-enter-error"
+                animate.leave="error-hide-animation"
+                i18n="@@error.negative"
+              >
+                Can't be negative
+              </span>
+            }
+          }
+        </div>
+      </div>
+
+      <div class="confirm-actions">
+        <button
+          i18n="@@common.submit"
+          class="btn-primary"
+          (click)="onAddProduct()"
+          [class.saving]="isCreating()"
+        >
+          Submit
+        </button>
+      </div>
+    </div>
+  </div>
+}

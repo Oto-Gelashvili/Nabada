@@ -20,6 +20,13 @@ export class Products implements OnInit {
   editingId = signal<number | null>(null);
   isUpdating = signal(false);
   actionType = signal<'update' | 'delete' | null>(null);
+  showAddModal = signal(false);
+  isCreating = signal(false);
+  showFormErrors = signal(false);
+  newProduct = {
+    name: '',
+    price: null as number | null,
+  };
 
   ngOnInit() {
     this.loadProducts('init');
@@ -37,7 +44,9 @@ export class Products implements OnInit {
       this.products.set(productsData);
     } catch (error) {
       if (error instanceof Error) {
-        this.notify.showError(error.message);
+        this.notify.showError(
+          $localize`:@@common.errorOccurred:An error occurred. Please try again.`,
+        );
       }
     } finally {
       if (action === 'init') {
@@ -68,7 +77,11 @@ export class Products implements OnInit {
       this.notify.showSuccess($localize`:@@commoont.updated:Updated`);
       this.editingId.set(null);
     } catch (error) {
-      if (error instanceof Error) this.notify.showError(error.message);
+      if (error instanceof Error) {
+        this.notify.showError(
+          $localize`:@@common.errorOccurred:An error occurred. Please try again.`,
+        );
+      }
     } finally {
       this.actionType.set(null);
       this.isUpdating.set(false);
@@ -96,10 +109,51 @@ export class Products implements OnInit {
       this.products.update((current) => current.filter((p) => p.id !== productId));
       this.notify.showSuccess($localize`:@@common.deleted:Deleted`);
     } catch (error) {
-      if (error instanceof Error) this.notify.showError(error.message);
+      if (error instanceof Error) {
+        this.notify.showError(
+          $localize`:@@common.errorOccurred:An error occurred. Please try again.`,
+        );
+      }
     } finally {
       this.isLoading.set(false);
       this.actionType.set(null);
+    }
+  }
+  openAddModal() {
+    this.newProduct = { name: '', price: null };
+    this.showFormErrors.set(false);
+    this.showAddModal.set(true);
+  }
+
+  closeAddModal() {
+    this.showAddModal.set(false);
+  }
+
+  async onAddProduct() {
+    const isValidName = !!this.newProduct.name;
+    const isValidPrice = this.newProduct.price !== null && this.newProduct.price >= 0;
+    if (!isValidName || !isValidPrice) {
+      this.showFormErrors.set(true);
+      return;
+    }
+    try {
+      this.isCreating.set(true);
+
+      await new Promise((resolve) => setTimeout(resolve, 800));
+
+      const createdProduct = await this.productsService.createProduct({
+        name: this.newProduct.name,
+        price: this.newProduct.price as number,
+      });
+
+      this.products.update((current) => [...current, createdProduct]);
+
+      this.notify.showSuccess($localize`:@@common.created:Product created`);
+      this.closeAddModal();
+    } catch (error) {
+      if (error instanceof Error) this.notify.showError(error.message);
+    } finally {
+      this.isCreating.set(false);
     }
   }
 }

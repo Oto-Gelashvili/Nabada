@@ -46,6 +46,21 @@
     "productsLink": "პროდუქტები",
     "analyticsLink": "ანალიტიკა",
     "HomePageLink": "მთავარი",
-    "languageSwitcherBtn": "EN"
+    "languageSwitcherBtn": "EN",
+    "products.title": "პროდუქტები",
+    "products.addProduct": "დაამატე პროდუქტი",
+    "products.labelName": "პროდუქტი:",
+    "error.empty": "ცარიელია",
+    "products.labelPrice": "ფასი:",
+    "error.priceReq": "აუცილებელია",
+    "error.negative": "უარყოფითია",
+    "common.name": "სახელი",
+    "common.price": "ფასი",
+    "common.submit": "გაგზავნა",
+    "common.errorOccurred": "დაფიქსირდა ხარეზი. მოგვიანებით სცადეთ",
+    "commoont.updated": "განახლდა",
+    "common.deleteProduct": "ეს პროდუქტი წაიშლება",
+    "common.deleted": "წაიშალა",
+    "common.created": "პროდუქტი შეიქმნა"
   }
 }

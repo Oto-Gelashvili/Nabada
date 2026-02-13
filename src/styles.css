@@ -301,6 +301,18 @@ main {
   color: #fff !important;
 }
 
+.confirm-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: var(--most-z);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(3px);
+}
 @media screen and (max-width: 768px) {
   main {
     padding-inline: var(--padding-inline-mobile);

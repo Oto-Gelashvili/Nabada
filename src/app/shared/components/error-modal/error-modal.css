@@ -64,21 +64,8 @@
     min-width: unset;
   }
 }
-.confirm-backdrop {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: var(--most-z);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  backdrop-filter: blur(3px);
-}
 
 .confirm-box {
-  background: var(--hover-color);
   padding: 2.4rem;
   border-radius: 12px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
