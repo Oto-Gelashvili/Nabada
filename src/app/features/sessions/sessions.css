@@ -87,8 +87,7 @@
 }
 
 .empty-corner button:not(.submitBtn):active {
-  border-color: #fff;
-  color: #fff;
+  background-color: var(--accent-color);
 }
 .empty-corner button.submitBtn:hover {
   color: #000;

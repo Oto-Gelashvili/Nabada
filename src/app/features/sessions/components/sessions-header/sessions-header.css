@@ -109,8 +109,7 @@
 }
 
 .createSessionBtn:active {
-  border-color: #fff;
-  color: #fff;
+  background-color: var(--accent-color);
 }
 .cancelBtn:active {
   border-color: var(--error);
