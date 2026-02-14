@@ -253,7 +253,7 @@
   border-radius: 50rem;
   font-size: 1.4rem;
   padding: 0.4rem;
-  overflow: hidden;
+  overflow: visible;
   white-space: nowrap;
   display: flex;
   align-items: center;
@@ -262,6 +262,7 @@
   cursor: pointer;
   transition: 0.4s;
 }
+
 .session-card.overflow-left {
   border-radius: unset;
   border-top-right-radius: 50rem;
@@ -273,6 +274,15 @@
   border-top-left-radius: 50rem;
   border-bottom-left-radius: 50rem;
 }
+.session-card.finished {
+  background-color: var(--success);
+}
+.session-card.active {
+  background-color: var(--primary-color);
+}
+.session-card.activeOpen {
+  background-color: var(--hover-color);
+}
 
 .session-time {
   display: block;
@@ -282,7 +292,38 @@
   text-overflow: ellipsis;
   text-align: center;
 }
+.hover-tooltip {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-8px);
+  background-color: var(--border-color);
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  font-size: 1.2rem;
+  white-space: nowrap;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.4s ease-in-out;
+  pointer-events: none;
+  z-index: var(--most-z);
+}
+.hover-tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: var(--border-color) transparent transparent transparent;
+}
 
+.session-card:hover .hover-tooltip {
+  opacity: 1;
+  visibility: visible;
+}
 .add-row {
   cursor: pointer;
 }

@@ -66,7 +66,7 @@
             @for (session of getSessionsForStation(station.id); track session.id) {
               <div
                 class="session-card"
-                [class]="getSessionOverlapClass(session)"
+                [ngClass]="[getSessionOverlapClass(session), getStateClass(session)]"
                 [style.left.px]="calculateLeft(session.start_time)"
                 [style.width.px]="calculateWidth(session.start_time, session.end_time)"
                 animate.enter="show-animated-enter-session"
@@ -75,6 +75,10 @@
                   {{ session.start_time | date: 'HH:mm' }} -
                   {{ session.end_time ? (session.end_time | date: 'HH:mm') : '...' }}
                 </span>
+                <div class="hover-tooltip">
+                  {{ session.start_time | date: 'HH:mm' }} -
+                  {{ session.end_time ? (session.end_time | date: 'HH:mm') : '...' }}
+                </div>
               </div>
             }
           </div>

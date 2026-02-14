@@ -1,5 +1,5 @@
 import { Component, computed, DestroyRef, inject, OnInit, signal } from '@angular/core';
-import { DatePipe } from '@angular/common';
+import { DatePipe, NgClass } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Spinner } from '../../shared/components/spinner/spinner';
 
@@ -12,7 +12,7 @@ import { DateUtils } from '../../shared/components/utils/date.utils';
 @Component({
   selector: 'app-sessions',
   standalone: true,
-  imports: [DatePipe, FormsModule, Spinner, SessionsHeaderComponent],
+  imports: [DatePipe, FormsModule, Spinner, SessionsHeaderComponent, NgClass],
   templateUrl: './sessions.html',
   styleUrl: './sessions.css',
 })
@@ -154,6 +154,19 @@ export class Sessions implements OnInit {
     }
 
     return classes.join(' ');
+  }
+  getStateClass(session: ServiceSession): string {
+    const now = new Date().getTime();
+
+    if (session.end_time && new Date(session.end_time).getTime() < now) {
+      return 'finished';
+    }
+
+    if (!session.end_time) {
+      return 'activeOpen';
+    }
+
+    return 'active';
   }
 
   hasInvalidStations(): boolean {
