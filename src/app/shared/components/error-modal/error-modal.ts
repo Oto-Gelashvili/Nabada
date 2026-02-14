@@ -10,4 +10,9 @@ import { NotificationService } from '../../../core/services/Notification';
 export class ErrorModal {
   private readonly notifyService = inject(NotificationService);
   readonly notifications = this.notifyService.notifications;
+  readonly confirmation = this.notifyService.confirmation;
+
+  resolveConfirm(result: boolean) {
+    this.notifyService.resolveConfirm(result);
+  }
 }

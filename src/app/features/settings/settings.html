@@ -113,15 +113,3 @@
     </button>
   </div>
 </div>
-
-@if (showConfirmation()) {
-  <div class="confirmCont">
-    <div class="notyCont wrapper" animate.enter="show-animated-enter">
-      <h2 i18n="@@common.delete">Delete Account</h2>
-      <div class="btnsCont">
-        <button class="btn-secondary yes" (click)="yesDelete()" i18n="@@common.yes">yes</button>
-        <button class="btn-secondary no" (click)="noDelete()" i18n="@@common.no">no</button>
-      </div>
-    </div>
-  </div>
-}

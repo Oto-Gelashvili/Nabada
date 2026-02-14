@@ -5,12 +5,16 @@ export interface AppNotification {
   message: string;
   type: 'success' | 'error';
 }
-
+interface ConfirmationRequest {
+  message: string;
+  resolve: (result: boolean) => void;
+}
 @Injectable({
   providedIn: 'root',
 })
 export class NotificationService {
   readonly notifications = signal<AppNotification[]>([]);
+  readonly confirmation = signal<ConfirmationRequest | null>(null);
 
   showError(message: string) {
     this.show(message, 'error');
@@ -18,6 +22,20 @@ export class NotificationService {
 
   showSuccess(message: string) {
     this.show(message, 'success');
+  }
+
+  confirm(message: string): Promise<boolean> {
+    return new Promise((resolve) => {
+      this.confirmation.set({ message, resolve });
+    });
+  }
+
+  resolveConfirm(result: boolean) {
+    const request = this.confirmation();
+    if (request) {
+      request.resolve(result);
+      this.confirmation.set(null);
+    }
   }
 
   remove(id: number) {

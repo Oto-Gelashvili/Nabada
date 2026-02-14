@@ -1,0 +1,337 @@
+:host {
+  display: contents;
+}
+#productsPage {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2.4rem;
+  width: 100%;
+  margin-bottom: 2.4rem;
+}
+.heading h2 {
+  font-size: 2.4rem;
+  color: var(--secondary-color);
+}
+.createProductsBtn {
+  border-radius: 50rem;
+  font-size: 1.6rem;
+  background-color: var(--primary-color);
+  color: #fff;
+  transition: 0.4s;
+  border: 1px solid transparent;
+  outline: 0;
+  padding: 0.4rem 1.2rem;
+  cursor: pointer;
+}
+.createProductsBtn span {
+  display: none;
+}
+.createProductsBtn:hover {
+  background-color: var(--hover-color);
+  color: var(--primary-color);
+}
+
+.createProductsBtn:focus {
+  background-color: var(--hover-color);
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+.createProductsBtn:active {
+  border-color: #fff;
+  border-color: var(--primary-color);
+}
+.products-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2.4rem;
+  width: 100%;
+}
+.btn-secondary {
+  min-height: 30px;
+}
+
+.productsCard {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  background-color: var(--hover-color);
+  padding: 1.2rem;
+  border-radius: 12px;
+  width: 100%;
+  height: fit-content;
+}
+.productsCardHeading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.2rem;
+}
+.productsCard h3 {
+  font-size: 1.8rem;
+  color: var(--secondary-color);
+  width: fit-content;
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.priceCont,
+.nameCont {
+  display: flex;
+  gap: 1.2rem;
+  align-items: center;
+  font-size: 1.4rem;
+  justify-content: space-between;
+}
+.nameCont:has(.error-msg),
+.priceCont:has(.error-msg) {
+  margin-bottom: 1.2rem;
+}
+.productsCard label {
+  font-weight: bold;
+  font-size: 1.6rem;
+  width: 100px;
+}
+
+.productsCard input {
+  transition: 0.4s;
+  border: 1px solid transparent;
+  outline: 0;
+  padding: unset;
+  background-color: transparent;
+  color: var(--text-color);
+  font-size: 1.6rem;
+  border-radius: 4px;
+  width: 100%;
+}
+.productsCard input.editableInput {
+  padding: 0.8rem 1.6rem;
+  border-radius: 8px;
+  border-color: var(--border-color);
+  background-color: var(--accent-color);
+}
+
+.productsCard input.editableInput:focus {
+  border-color: var(--primary-color);
+}
+.btn-primary:not(.del) {
+  background-color: var(--accent-color);
+  color: var(--text-color);
+}
+.inputCont {
+  position: relative;
+  width: 100%;
+}
+.error-msg {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  color: var(--error);
+  font-size: 1.2rem;
+}
+.productsCard input.editableInput.error-input,
+.input-group input.error-input {
+  border: 1px solid var(--error);
+}
+.show-animated-enter-cards {
+  animation: show-animated-enter-cards 1s;
+}
+.show-animated-enter-error {
+  animation: show-animated-enter-error 0.4s;
+}
+.btn-primary.saving {
+  background-size: 100% 100%;
+  color: #fff !important;
+  transition: background-size 0.8s ease-in-out;
+}
+
+@keyframes show-animated-enter-cards {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes show-animated-enter-error {
+  from {
+    opacity: 0;
+    top: 80%;
+  }
+  to {
+    opacity: 1;
+    top: 100%;
+  }
+}
+
+.add-modal-box {
+  background: var(--hover-color);
+  padding: 2.4rem;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  width: clamp(260px, 300px, 90%);
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+  text-align: left;
+  font-size: 1.4rem;
+  color: var(--text-color);
+  background-color: var(--accent-color);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 1.2rem;
+  margin-bottom: 0.4rem;
+}
+
+.modal-header h3 {
+  font-size: 1.8rem;
+  color: var(--primary-color);
+}
+
+.close-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-color);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.4rem;
+  border-radius: 50%;
+  transition: 0.4s;
+  border: 1px solid transparent;
+}
+
+.close-btn:hover {
+  background-color: var(--hover-color);
+  color: var(--error);
+}
+.close-btn:focus {
+  border: 1px solid var(--error);
+  color: var(--error);
+}
+
+.modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+.input-group .error-msg {
+  position: relative;
+}
+
+.input-group label {
+  font-size: 1.4rem;
+  font-weight: 500;
+  color: var(--text-color);
+  margin-bottom: 0.4rem;
+}
+
+.input-group input {
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  color: var(--text-color);
+  background-color: var(--accent-color);
+  font-size: 1.4rem;
+  outline: none;
+  transition: 0.4s;
+  cursor: pointer;
+}
+
+.input-group input:focus {
+  border-color: var(--primary-color);
+}
+.confirm-actions .btn-primary {
+  background-image: linear-gradient(to right, var(--success), var(--success));
+  background-color: var(--primary-color);
+  background-size: 0% 100%;
+  color: #fff;
+  width: 100%;
+}
+.confirm-actions .btn-primary.saving {
+  background-size: 100% 100%;
+  transition: background-size 0.8s ease-in-out;
+  border-color: var(--success);
+}
+.scale-in-animation {
+  animation: scale-in 1s;
+}
+.scale-out-animation {
+  animation: scale-out 1s;
+}
+.error-hide-animation {
+  animation: error-hide 0.1s;
+}
+@keyframes error-hide {
+  from {
+    opacity: 1;
+    min-height: 0;
+    height: auto;
+  }
+  to {
+    opacity: 0;
+    min-height: 0;
+    height: 0;
+  }
+}
+@keyframes scale-in {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+@keyframes scale-out {
+  from {
+    transform: scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+}
+@media screen and (max-width: 768px) {
+  .products-container {
+    justify-items: center;
+  }
+  .productsCard {
+    max-width: 350px;
+  }
+}
+@media screen and (max-width: 475px) {
+  .products-container {
+    grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+  }
+  .createProductsBtn span {
+    display: block;
+  }
+  .createProductsBtn {
+    border-radius: 50%;
+    padding: 0.2rem;
+  }
+  .createProductsBtn p {
+    display: none;
+  }
+}
