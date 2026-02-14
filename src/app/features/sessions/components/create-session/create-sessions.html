@@ -1,0 +1,42 @@
+<div id="createSessionModal" class="add-modal-box">
+  <div class="modal-header">
+    <h3>Create Session</h3>
+    <button class="close-btn" (click)="onCancel()">
+      <span class="material-symbols-outlined">close</span>
+    </button>
+  </div>
+  <form [formGroup]="createSessionForm" (ngSubmit)="onSubmit()" class="modal-body">
+    <div class="time-row">
+      <div class="input-group">
+        <label>Start Time</label>
+        <input type="datetime-local" formControlName="startTime" />
+      </div>
+
+      <div class="input-group">
+        <label>End Time</label>
+        <input type="datetime-local" formControlName="endTime" />
+      </div>
+    </div>
+    <div class="optionsRow">
+      <div class="input-group">
+        <label>Station</label>
+        <select formControlName="stationId">
+          <option [ngValue]="null">Select Station</option>
+          <option value="1">Station 1</option>
+          <option value="2">Station 2</option>
+        </select>
+      </div>
+      <div class="input-group">
+        <label>Products</label>
+        <select multiple formControlName="productIds">
+          <option value="101">Coca Cola</option>
+          <option value="102">Snickers</option>
+        </select>
+      </div>
+    </div>
+
+    <button type="submit" class="btn-primary">
+      {{ isSubmitting() ? 'Creating...' : 'Create Session' }}
+    </button>
+  </form>
+</div>

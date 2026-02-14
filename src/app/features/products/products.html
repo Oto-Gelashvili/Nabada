@@ -121,6 +121,7 @@
 @if (showAddModal()) {
   <div
     class="confirm-backdrop"
+    id="addProductModal"
     animate.enter="scale-in-animation"
     animate.leave="scale-out-animation"
   >
@@ -190,16 +191,14 @@
         </div>
       </div>
 
-      <div class="confirm-actions">
-        <button
-          i18n="@@common.submit"
-          class="btn-primary"
-          (click)="onAddProduct()"
-          [class.saving]="isCreating()"
-        >
-          Submit
-        </button>
-      </div>
+      <button
+        i18n="@@common.submit"
+        class="btn-primary"
+        (click)="onAddProduct()"
+        [class.saving]="isCreating()"
+      >
+        Submit
+      </button>
     </div>
   </div>
 }

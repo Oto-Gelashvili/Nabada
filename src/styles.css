@@ -213,6 +213,9 @@ main {
   padding: calc(var(--fixed-header-height) + 2.4rem) 4.8rem 2.4rem 4.8rem;
   overflow: hidden;
 }
+/* global shared styles */
+
+/* buttons */
 .btn-secondary {
   display: flex;
   align-items: center;
@@ -301,6 +304,73 @@ main {
   color: #fff !important;
 }
 
+/* animations */
+.scale-in-animation {
+  animation: scale-in 1s;
+}
+.scale-out-animation {
+  animation: scale-out 1s;
+}
+.show-animated-enter-error {
+  animation: show-animated-enter-error 0.4s;
+}
+.error-hide-animation {
+  animation: error-hide 0.1s;
+}
+@keyframes scale-in {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+@keyframes scale-out {
+  from {
+    transform: scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+}
+
+@keyframes show-animated-enter-error {
+  from {
+    opacity: 0;
+    top: 80%;
+  }
+  to {
+    opacity: 1;
+    top: 100%;
+  }
+}
+
+@keyframes error-hide {
+  from {
+    opacity: 1;
+    min-height: 0;
+    height: auto;
+  }
+  to {
+    opacity: 0;
+    min-height: 0;
+    height: 0;
+  }
+}
+/* error msg */
+.error-msg {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  color: var(--error);
+  font-size: 1.2rem;
+}
+
+/* static modal */
 .confirm-backdrop {
   position: fixed;
   top: 0;
@@ -313,6 +383,123 @@ main {
   justify-content: center;
   backdrop-filter: blur(3px);
 }
+
+/* create sessions/add products shared styles */
+
+#addProductModal .add-modal-box,
+#createSessionModal.add-modal-box {
+  background: var(--hover-color);
+  padding: 2.4rem;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  width: clamp(260px, 300px, 90%);
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+  text-align: left;
+  font-size: 1.4rem;
+  color: var(--text-color);
+  background-color: var(--accent-color);
+}
+#addProductModal .modal-header,
+#createSessionModal .modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 1.2rem;
+  margin-bottom: 0.4rem;
+}
+
+#addProductModal .modal-header h3,
+#createSessionModal .modal-header h3 {
+  font-size: 1.8rem;
+  color: var(--primary-color);
+}
+
+#addProductModal .close-btn,
+#createSessionModal .close-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-color);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.4rem;
+  border-radius: 50%;
+  transition: 0.4s;
+  border: 1px solid transparent;
+}
+
+#addProductModal .close-btn:hover,
+#createSessionModal .close-btn:hover {
+  background-color: var(--hover-color);
+  color: var(--error);
+}
+#addProductModal .close-btn:focus,
+#createSessionModal .close-btn:focus {
+  border: 1px solid var(--error);
+  color: var(--error);
+}
+
+#addProductModal .modal-body,
+#createSessionModal .modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+#addProductModal .input-group,
+#createSessionModal .input-group {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+#addProductModal .input-group .error-msg,
+#createSessionModal .input-group .error-msg {
+  position: relative;
+}
+
+#addProductModal .input-group label,
+#createSessionModal .input-group label {
+  font-size: 1.4rem;
+  font-weight: 500;
+  color: var(--text-color);
+  margin-bottom: 0.4rem;
+}
+
+#addProductModal .input-group input,
+#createSessionModal .input-group input {
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  color: var(--text-color);
+  background-color: var(--accent-color);
+  font-size: 1.4rem;
+  outline: none;
+  transition: 0.4s;
+  cursor: pointer;
+}
+
+#addProductModal .input-group input:focus,
+#createSessionModal .input-group input:focus {
+  border-color: var(--primary-color);
+}
+#addProductModal .btn-primary:not(:hover),
+#createSessionModal .btn-primary:not(:hover) {
+  background-color: var(--primary-color);
+  color: #fff;
+  width: 100%;
+}
+#addProductModal .btn-primary.saving,
+#createSessionModal .btn-primary.saving {
+  background-size: 0% 100%;
+  background-image: linear-gradient(to right, var(--success), var(--success));
+  background-size: 100% 100%;
+  transition: background-size 0.8s ease-in-out;
+  border-color: var(--success);
+}
+
 @media screen and (max-width: 768px) {
   main {
     padding-inline: var(--padding-inline-mobile);

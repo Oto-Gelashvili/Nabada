@@ -8,11 +8,19 @@ import { ServiceSession, Station } from '../../models/sessions';
 import { SessionsHeaderComponent } from './components/sessions-header/sessions-header';
 import { StationsService } from '../../core/services/station.service';
 import { DateUtils } from '../../shared/components/utils/date.utils';
+import { CreateSessionComponent } from './components/create-session/create-sessions';
 
 @Component({
   selector: 'app-sessions',
   standalone: true,
-  imports: [DatePipe, FormsModule, Spinner, SessionsHeaderComponent, NgClass],
+  imports: [
+    DatePipe,
+    FormsModule,
+    Spinner,
+    SessionsHeaderComponent,
+    NgClass,
+    CreateSessionComponent,
+  ],
   templateUrl: './sessions.html',
   styleUrl: './sessions.css',
 })
@@ -24,6 +32,7 @@ export class Sessions implements OnInit {
   private readonly pixelsPerHour = 100;
 
   // Signals
+  showCreateModal = signal(false);
   selectedDate = signal<Date>(new Date());
   editMode = signal(false);
   loading = signal(false);
@@ -91,7 +100,11 @@ export class Sessions implements OnInit {
   }
 
   async onCreateSession() {
-    this.notify.showSuccess('Open Create Session Modal');
+    this.showCreateModal.set(true);
+  }
+
+  closeModal() {
+    this.showCreateModal.set(false);
   }
 
   // === HELPERS ===
