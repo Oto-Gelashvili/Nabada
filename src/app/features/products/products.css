@@ -52,6 +52,9 @@
   gap: 2.4rem;
   width: 100%;
 }
+.btn-secondary {
+  min-height: 30px;
+}
 
 .productsCard {
   display: flex;
