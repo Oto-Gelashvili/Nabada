@@ -9,4 +9,33 @@
   align-items: center;
   justify-content: center;
   backdrop-filter: blur(3px);
+  /* =========================================
+     1. THE INPUT FIELD (Shared by all inputs)
+     ========================================= */
+
+  /* Background of the input box */
+  --p-inputtext-background: var(--accent-color);
+
+  /* Text color inside the input */
+  --p-inputtext-color: var(--text-color);
+
+  /* Border color */
+  --p-inputtext-border-color: var(--border-color);
+
+  /* =========================================
+     2. THE POPUP PANEL (The Calendar)
+     ========================================= */
+
+  /* Background of the dropdown panel */
+  --p-datepicker-panel-background: var(--accent-color);
+
+  /* Border of the panel */
+  --p-datepicker-panel-border-color: var(--border-color);
+  --p-button-text-secondary-color: var(--text-color);
+  --p-icon-size: 1.4rem;
+}
+
+:host ::ng-deep .p-datepicker-time-picker span {
+  font-size: 1.4rem;
+  color: var(--text-color);
 }

@@ -1,9 +1,16 @@
 import { Component, output, signal } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+  FormsModule,
+} from '@angular/forms';
+import { DatePickerModule } from 'primeng/datepicker';
 
 @Component({
   selector: 'app-create-session',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, DatePickerModule, FormsModule],
   templateUrl: './create-sessions.html',
   styleUrls: ['./create-sessions.css'],
 })
@@ -13,16 +20,16 @@ export class CreateSessionComponent {
 
   readonly createSessionForm = new FormGroup({
     stationId: new FormControl(null, [Validators.required]),
-    startTime: new FormControl(this.getCurrentTime(), [Validators.required]),
-    endTime: new FormControl(''),
+    startTime: new FormControl(new Date(), [Validators.required]),
+    endTime: new FormControl(null),
     productIds: new FormControl([]),
   });
 
-  private getCurrentTime(): string {
-    const now = new Date();
-    now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
-    return now.toISOString().slice(0, 16);
-  }
+  // private getCurrentTime(): string {
+  //   const now = new Date();
+  //   now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+  //   return now.toISOString().slice(0, 16);
+  // }
   onSubmit() {
     console.log(this.createSessionForm.value);
   }

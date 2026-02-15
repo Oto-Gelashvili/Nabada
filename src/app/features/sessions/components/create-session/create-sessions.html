@@ -9,12 +9,17 @@
     <div class="time-row">
       <div class="input-group">
         <label>Start Time</label>
-        <input type="datetime-local" formControlName="startTime" />
+        <p-datepicker formControlName="startTime" inputId="calendar-timeonly" [timeOnly]="true" />
       </div>
 
       <div class="input-group">
         <label>End Time</label>
-        <input type="datetime-local" formControlName="endTime" />
+        <p-datepicker
+          placeholder="Ongoing"
+          formControlName="endTime"
+          inputId="calendar-timeonly"
+          [timeOnly]="true"
+        />
       </div>
     </div>
     <div class="optionsRow">
