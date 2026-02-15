@@ -25,11 +25,25 @@
     <div class="optionsRow">
       <div class="input-group">
         <label>Station</label>
-        <select formControlName="stationId">
-          <option [ngValue]="null">Select Station</option>
-          <option value="1">Station 1</option>
-          <option value="2">Station 2</option>
-        </select>
+        <div class="customSelect" [class.open]="isCustomSelectOpen()">
+          <div class="customSelectHeading" (click)="toggleStations()">
+            <p class="defaultOption">{{ selectedStationName() }}</p>
+            <span class="material-symbols-outlined arrow"> expand_more </span>
+          </div>
+          @if (isCustomSelectOpen()) {
+            <ul
+              class="customSelectBody"
+              animate.enter="open-animation"
+              animate.leave="close-animation"
+            >
+              @for (station of stations(); track station.id) {
+                <li (click)="selectStation(station)">
+                  {{ station.name }}
+                </li>
+              }
+            </ul>
+          }
+        </div>
       </div>
       <div class="input-group">
         <label>Products</label>
