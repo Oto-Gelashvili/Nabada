@@ -9,6 +9,8 @@ import { SessionsHeaderComponent } from './components/sessions-header/sessions-h
 import { StationsService } from '../../core/services/station.service';
 import { DateUtils } from '../../shared/components/utils/date.utils';
 import { CreateSessionComponent } from './components/create-session/create-sessions';
+import { ProductsService } from '../../core/services/products.service';
+import { Product } from '../../models/products.model';
 
 @Component({
   selector: 'app-sessions',
@@ -27,6 +29,7 @@ import { CreateSessionComponent } from './components/create-session/create-sessi
 export class Sessions implements OnInit {
   private readonly destroyRef = inject(DestroyRef);
   private readonly stationsService = inject(StationsService);
+  private readonly productsService = inject(ProductsService);
   private readonly notify = inject(NotificationService);
 
   private readonly pixelsPerHour = 100;
@@ -45,6 +48,7 @@ export class Sessions implements OnInit {
   readonly allStations = computed(() => [...this.stations(), ...this.addedStations()]);
   readonly removedStationsIds = signal<number[]>([]);
   readonly sessions = signal<ServiceSession[]>([]);
+  readonly products = signal<Product[]>([]);
   readonly hours = Array.from({ length: 24 }, (_, i) => i);
 
   private originalData = new Map<number, string>();
@@ -73,9 +77,14 @@ export class Sessions implements OnInit {
 
       const sessionsData = await this.stationsService.getSessions(this.selectedDate());
       this.sessions.set(sessionsData);
+
+      const productsData = await this.productsService.getProducts();
+      this.products.set(productsData);
     } catch (error) {
       if (error instanceof Error) {
-        this.notify.showError(error.message);
+        this.notify.showError(
+          $localize`:@@common.fetchingError:Could not fetch data. Please try again.`,
+        );
       }
     } finally {
       if (action === 'initLoad') {

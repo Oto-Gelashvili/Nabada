@@ -26,7 +26,7 @@
       <div class="input-group">
         <label>Station</label>
         <div class="customSelect" [class.open]="isCustomSelectOpen()">
-          <div class="customSelectHeading" (click)="toggleStations()">
+          <div class="customSelectHeading" (click)="toggleCustomSelect()">
             <p class="defaultOption">{{ selectedStationName() }}</p>
             <span class="material-symbols-outlined arrow"> expand_more </span>
           </div>
@@ -47,13 +47,59 @@
       </div>
       <div class="input-group">
         <label>Products</label>
-        <select multiple formControlName="productIds">
-          <option value="101">Coca Cola</option>
-          <option value="102">Snickers</option>
-        </select>
+        <div class="customSelect" [class.open]="isCustomMultiSelectOpen()">
+          <div class="customSelectHeading" (click)="toggleCustomMultiSelect()">
+            <p class="defaultOption">Add products</p>
+            <span class="material-symbols-outlined arrow"> expand_more </span>
+          </div>
+          @if (isCustomMultiSelectOpen()) {
+            <ul
+              class="customSelectBody"
+              animate.enter="open-animation"
+              animate.leave="close-animation"
+            >
+              @for (product of products(); track product.id) {
+                <li
+                  (click)="toggleProduct(product)"
+                  [class.selected]="isProductSelected(product.id)"
+                >
+                  <div class="checkbox-wrapper">
+                    <p-checkbox
+                      [ngModel]="isProductSelected(product.id)"
+                      [binary]="true"
+                      [readonly]="true"
+                      [ngModelOptions]="{ standalone: true }"
+                    />
+                  </div>
+                  <p>{{ product.name }}</p>
+                </li>
+              }
+            </ul>
+          }
+        </div>
       </div>
     </div>
 
+    <div class="selectedProductsCont">
+      @for (selectedProduct of selectedProductsList(); track selectedProduct.id) {
+        <div class="selectedProductCard">
+          <div class="cardHeading">
+            <h4>{{ selectedProduct.name }}</h4>
+            <div class="amountBtns">
+              <span class="material-symbols-outlined add"> add </span>
+              <span class="material-symbols-outlined remove"> remove </span>
+            </div>
+          </div>
+          <div class="cardBody">
+            <div class="amountCont">
+              <p><span>Amount:</span> 1</p>
+              <p class="price"><span>Price:</span> {{ selectedProduct.price }}</p>
+            </div>
+            <p class="total">Total: {{ selectedProduct.price }}</p>
+          </div>
+        </div>
+      }
+    </div>
     <button type="submit" class="btn-primary">
       {{ isSubmitting() ? 'Creating...' : 'Create Session' }}
     </button>

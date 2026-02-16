@@ -99,11 +99,12 @@
     }
   </div>
 </section>
-@if (showCreateModal()) {
-  <app-create-session
-    animate.enter="scale-in-animation"
-    animate.leave="scale-out-animation"
-    (close)="closeModal()"
-    [stations]="stations()"
-  ></app-create-session>
-}
+<!-- @if (showCreateModal()) { -->
+<app-create-session
+  animate.enter="scale-in-animation"
+  animate.leave="scale-out-animation"
+  (close)="closeModal()"
+  [stations]="stations()"
+  [products]="products()"
+></app-create-session>
+<!-- } -->

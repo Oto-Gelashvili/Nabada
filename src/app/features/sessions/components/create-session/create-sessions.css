@@ -33,6 +33,14 @@
   --p-datepicker-panel-border-color: var(--border-color);
   --p-button-text-secondary-color: var(--text-color);
   --p-icon-size: 1.4rem;
+
+  --p-checkbox-checked-border-color: var(--border-color);
+  --p-checkbox-checked-background: var(--success);
+  --p-checkbox-border-color: var(--border-color);
+  --p-checkbox-background: var(--hover-color);
+  --p-checkbox-width: 1.8rem;
+  --p-checkbox-height: 1.8rem;
+  --p-checkbox-icon-size: 1.2rem;
 }
 
 :host ::ng-deep .p-datepicker-time-picker span {
@@ -42,6 +50,10 @@
 :host ::ng-deep .p-datepicker input::placeholder {
   color: var(--text-color);
   opacity: 0.7;
+}
+#createSessionModal {
+  min-width: 300px;
+  width: fit-content;
 }
 .customSelect {
   position: relative;
@@ -60,7 +72,8 @@
   transition: 0.2s;
 }
 
-.customSelectBody {
+.customSelectBody,
+.customMultiSelectBody {
   position: absolute;
   top: 110%;
   left: 0;
@@ -83,6 +96,10 @@
   color: var(--text-color);
   border-bottom: 1px solid var(--hover-color);
   transition: 0.4s;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.2rem;
 }
 
 .customSelectBody li:last-child {
@@ -93,6 +110,16 @@
   background: var(--hover-color);
   color: var(--primary-color);
 }
+.customSelectBody li.selected {
+  background-color: var(--background-color);
+  color: var(--secondary-color);
+}
+
+.checkbox-wrapper {
+  pointer-events: none;
+  display: flex;
+}
+
 .customSelect:has(.open-animation) .arrow {
   animation: arrow-rotate-up-animation 0.6s;
 }
@@ -143,4 +170,78 @@
     opacity: 0;
     max-height: 0;
   }
+}
+.selectedProductsCont {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.4rem;
+  justify-content: space-between;
+}
+.selectedProductCard {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  font-size: 1.4rem;
+  padding: 1.2rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  border: 1px solid var(--border-color);
+  background-color: var(--background-color);
+  width: 100%;
+  border-radius: 12px;
+  min-width: fit-content;
+}
+
+.cardHeading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 1.6rem;
+  color: var(--secondary-color);
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 0.8rem;
+  gap: 1.6rem;
+}
+
+.cardBody {
+  display: flex;
+  align-items: end;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.amountCont {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.6rem;
+  width: 100%;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 0.8rem;
+}
+.amountCont span {
+  color: var(--secondary-color);
+}
+.total {
+  width: fit-content;
+  font-size: 1.6rem;
+  color: var(--success);
+}
+.amountBtns {
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+}
+.amountBtns span {
+  cursor: pointer;
+  user-select: none;
+  transition: 0.4s;
+}
+.amountBtns .add {
+  color: var(--success);
+}
+
+.amountBtns .remove {
+  color: var(--error);
+}
+.amountBtns span:hover {
+  transform: scale(1.2);
 }
