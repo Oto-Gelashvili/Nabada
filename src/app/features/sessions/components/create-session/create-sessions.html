@@ -80,26 +80,62 @@
       </div>
     </div>
 
-    <div class="selectedProductsCont">
-      @for (selectedProduct of selectedProductsList(); track selectedProduct.id) {
-        <div class="selectedProductCard">
-          <div class="cardHeading">
-            <h4>{{ selectedProduct.name }}</h4>
-            <div class="amountBtns">
-              <span class="material-symbols-outlined add"> add </span>
-              <span class="material-symbols-outlined remove"> remove </span>
+    @if (isCustomMultiSelectOpen() || selectedProductsList().length > 0) {
+      <div class="selectedProductsCont">
+        @if (selectedProductsList().length > 0) {
+          @for (selectedProduct of selectedProductsList(); track selectedProduct.id) {
+            <div class="selectedProductCard">
+              <div class="cardHeading">
+                <h4>{{ selectedProduct.name }}</h4>
+                <div class="amountBtns">
+                  <span
+                    class="material-symbols-outlined add"
+                    (click)="addAmount(selectedProduct.id)"
+                  >
+                    add
+                  </span>
+                  <span
+                    class="material-symbols-outlined remove"
+                    (click)="removeAmount(selectedProduct.id)"
+                  >
+                    remove
+                  </span>
+                </div>
+              </div>
+              <div class="cardBody">
+                <div class="amountCont">
+                  <p><span>Amount:</span> {{ getAmount(selectedProduct.id) }}</p>
+                  <p class="price">
+                    <span>Price:</span>
+                    {{ selectedProduct.price | currency: 'GEL' : '₾' : '1.2-2' }}
+                  </p>
+                </div>
+                <p class="total">
+                  Total: {{ getTotalPrice(selectedProduct) | currency: 'GEL' : '₾' : '1.2-2' }}
+                </p>
+              </div>
+            </div>
+          }
+        } @else {
+          <div class="selectedProductCard template">
+            <div class="cardHeading">
+              <h4>Product</h4>
+              <div class="amountBtns">
+                <span class="material-symbols-outlined add"> add </span>
+                <span class="material-symbols-outlined remove"> remove </span>
+              </div>
+            </div>
+            <div class="cardBody">
+              <div class="amountCont">
+                <p>1</p>
+                <p>1</p>
+              </div>
+              <p class="total">Total: $1.00</p>
             </div>
           </div>
-          <div class="cardBody">
-            <div class="amountCont">
-              <p><span>Amount:</span> 1</p>
-              <p class="price"><span>Price:</span> {{ selectedProduct.price }}</p>
-            </div>
-            <p class="total">Total: {{ selectedProduct.price }}</p>
-          </div>
-        </div>
-      }
-    </div>
+        }
+      </div>
+    }
     <button type="submit" class="btn-primary">
       {{ isSubmitting() ? 'Creating...' : 'Create Session' }}
     </button>

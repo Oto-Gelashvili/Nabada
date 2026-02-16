@@ -1,9 +1,9 @@
 :host {
-  position: fixed;
-  top: 0;
+  position: absolute;
+  top: var(--fixed-header-height);
   left: 0;
   width: 100vw;
-  height: 100vh;
+  min-height: calc(100vh - var(--fixed-header-height));
   z-index: var(--most-z);
   display: flex;
   align-items: center;
@@ -54,6 +54,13 @@
 #createSessionModal {
   min-width: 300px;
   width: fit-content;
+  margin-bottom: 4.8rem;
+}
+.time-row,
+.optionsRow {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
 }
 .customSelect {
   position: relative;
@@ -74,11 +81,6 @@
 
 .customSelectBody,
 .customMultiSelectBody {
-  position: absolute;
-  top: 110%;
-  left: 0;
-  right: 0;
-  z-index: var(--header-z);
   background: var(--accent-color);
   border: 1px solid var(--border-color);
   border-radius: 8px;
@@ -176,6 +178,7 @@
   grid-template-columns: 1fr 1fr;
   gap: 0.4rem;
   justify-content: space-between;
+  margin-top: 0.8rem;
 }
 .selectedProductCard {
   display: flex;
@@ -189,6 +192,45 @@
   width: 100%;
   border-radius: 12px;
   min-width: fit-content;
+}
+.selectedProductCard h4 {
+  max-width: 120px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+@keyframes skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.template {
+  width: 200px;
+}
+.selectedProductCard.template h4,
+.selectedProductCard.template p {
+  color: transparent;
+  user-select: none;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    var(--accent-color) 25%,
+    var(--border-color) 50%,
+    var(--accent-color) 75%
+  );
+  background-size: 200% 100%;
+  border-radius: 4px;
+  animation: skeleton-loading 1.5s infinite linear;
+}
+.selectedProductCard.template .amountCont p {
+  width: 100%;
+}
+.selectedProductCard.template .total {
+  width: 100%;
 }
 
 .cardHeading {
