@@ -81,10 +81,14 @@
     </div>
 
     @if (isCustomMultiSelectOpen() || selectedProductsList().length > 0) {
-      <div class="selectedProductsCont">
+      <div
+        class="selectedProductsCont"
+        animate.enter="showSelectedProducts"
+        animate.leave="hideSelectedProducts"
+      >
         @if (selectedProductsList().length > 0) {
           @for (selectedProduct of selectedProductsList(); track selectedProduct.id) {
-            <div class="selectedProductCard">
+            <div class="selectedProductCard" animate.enter="scale-in-animation">
               <div class="cardHeading">
                 <h4>{{ selectedProduct.name }}</h4>
                 <div class="amountBtns">

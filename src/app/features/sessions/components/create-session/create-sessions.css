@@ -1,5 +1,5 @@
 :host {
-  position: absolute;
+  /* position: absolute;
   top: var(--fixed-header-height);
   left: 0;
   width: 100vw;
@@ -8,7 +8,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px); */
   /* =========================================
      1. THE INPUT FIELD (Shared by all inputs)
      ========================================= */
@@ -41,6 +41,16 @@
   --p-checkbox-width: 1.8rem;
   --p-checkbox-height: 1.8rem;
   --p-checkbox-icon-size: 1.2rem;
+  position: absolute;
+  z-index: var(--most-z);
+  backdrop-filter: blur(3px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  min-height: 100vh;
 }
 
 :host ::ng-deep .p-datepicker-time-picker span {
@@ -54,7 +64,13 @@
 #createSessionModal {
   min-width: 300px;
   width: fit-content;
-  margin-bottom: 4.8rem;
+  margin-block: 4.8rem;
+}
+#createSessionModal .modal-body {
+  gap: 0;
+}
+#createSessionModal .btn-primary {
+  margin-top: 1.2rem;
 }
 .time-row,
 .optionsRow {
@@ -171,6 +187,7 @@
   to {
     opacity: 0;
     max-height: 0;
+    border: none;
   }
 }
 .selectedProductsCont {
@@ -189,9 +206,9 @@
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
   border: 1px solid var(--border-color);
   background-color: var(--background-color);
-  width: 100%;
   border-radius: 12px;
   min-width: fit-content;
+  width: 200px;
 }
 .selectedProductCard h4 {
   max-width: 120px;
@@ -199,18 +216,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
-@keyframes skeleton-loading {
-  0% {
-    background-position: 200% 0;
-  }
-  100% {
-    background-position: -200% 0;
-  }
-}
 
-.template {
-  width: 200px;
-}
 .selectedProductCard.template h4,
 .selectedProductCard.template p {
   color: transparent;
@@ -225,6 +231,17 @@
   background-size: 200% 100%;
   border-radius: 4px;
   animation: skeleton-loading 1.5s infinite linear;
+}
+@keyframes skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+.selectedProductCard.template h4 {
+  width: calc(50% - 0.8rem);
 }
 .selectedProductCard.template .amountCont p {
   width: 100%;
@@ -286,4 +303,52 @@
 }
 .amountBtns span:hover {
   transform: scale(1.2);
+}
+
+.showSelectedProducts {
+  animation: showSelectedProducts-animation 1s;
+}
+.showSelectedProducts .template {
+  animation: showSelectedProducts-animation 1s;
+}
+@keyframes showSelectedProducts-animation {
+  0% {
+    height: 0;
+    overflow: hidden;
+    width: 0;
+  }
+  100% {
+    height: fit-content;
+    overflow: hidden;
+  }
+}
+.hideSelectedProducts {
+  animation: hideSelectedProducts-animation 1s;
+}
+.hideSelectedProducts .template {
+  animation: hideSelectedProducts-animation 1s;
+}
+@keyframes hideSelectedProducts-animation {
+  0% {
+    overflow: hidden;
+  }
+  100% {
+    height: 0;
+    overflow: hidden;
+    width: 0;
+    margin-top: 0;
+  }
+}
+@media screen and (max-width: 575px) {
+  .selectedProductsCont {
+    grid-template-columns: 1fr;
+  }
+  .selectedProductCard {
+    width: 100%;
+  }
+}
+@media screen and (max-width: 375px) {
+  #createSessionModal {
+    width: 100%;
+  }
 }

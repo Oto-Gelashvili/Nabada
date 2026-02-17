@@ -83,7 +83,11 @@ export class CreateSessionComponent implements OnInit {
 
   selectedProductsList(): Product[] {
     const selectedIds = this.createSessionForm.controls.productIds.value;
-    return this.products().filter((p) => selectedIds.includes(p.id));
+    const allProducts = this.products();
+
+    return selectedIds
+      .map((id) => allProducts.find((product) => product.id === id))
+      .filter((product) => product !== undefined) as Product[];
   }
   removeProduct(productId: number) {
     const currentIds = this.createSessionForm.controls.productIds.value;
