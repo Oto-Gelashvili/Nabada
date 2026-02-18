@@ -356,3 +356,7 @@
     width: 100%;
   }
 }
+.input-group label,
+.input-group .form-label {
+  font-weight: 500;
+}

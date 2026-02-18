@@ -38,7 +38,7 @@
         <div class="station-row">
           <div class="label-column">
             <input
-              [attr.id]="'station-name-' + station.id"
+              [id]="'station-name-' + station.id"
               [attr.name]="'station-name-' + station.id"
               type="text"
               [readonly]="!editMode()"
@@ -47,6 +47,7 @@
               [(ngModel)]="station.name"
               required
               [class.error-border]="!station.name"
+              aria-label="Station Name"
             />
             @if (editMode()) {
               <span

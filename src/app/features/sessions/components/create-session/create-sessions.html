@@ -8,23 +8,24 @@
   <form [formGroup]="createSessionForm" (ngSubmit)="onSubmit()" class="modal-body">
     <div class="time-row">
       <div class="input-group">
-        <label i18n="@@createSession.startLabel">Start Time</label>
-        <p-datepicker formControlName="startTime" inputId="calendar-timeonly" [timeOnly]="true" />
+        <label for="start-time-picker" i18n="@@createSession.startLabel">Start Time</label>
+        <p-datepicker formControlName="startTime" inputId="start-time-picker" [timeOnly]="true" />
       </div>
 
       <div class="input-group">
-        <label i18n="@@createSession.endLabel">End Time</label>
+        <label for="end-time-picker" i18n="@@createSession.endLabel">End Time</label>
         <p-datepicker
           placeholder="Ongoing"
+          i18n-placeholder="@@sessions.ongoing"
           formControlName="endTime"
-          inputId="calendar-timeonly"
+          inputId="end-time-picker"
           [timeOnly]="true"
         />
       </div>
     </div>
     <div class="optionsRow">
       <div class="input-group">
-        <label i18n="@@createSession.stationLabel">Station</label>
+        <span class="form-label" i18n="@@createSession.stationLabel">Station</span>
         <div class="customSelect" [class.open]="isCustomSelectOpen()">
           <div class="customSelectHeading" (click)="toggleCustomSelect()">
             <p class="defaultOption">{{ selectedStationName() }}</p>
@@ -46,7 +47,7 @@
         </div>
       </div>
       <div class="input-group">
-        <label i18n="@@createSession.productsLabel">Products</label>
+        <span class="form-label" i18n="@@createSession.productsLabel">Products</span>
         <div class="customSelect" [class.open]="isCustomMultiSelectOpen()">
           <div class="customSelectHeading" (click)="toggleCustomMultiSelect()">
             <p class="defaultOption" i18n="@@createSession.addProducts">Add products</p>
@@ -69,6 +70,7 @@
                       [binary]="true"
                       [readonly]="true"
                       [ngModelOptions]="{ standalone: true }"
+                      [attr.aria-label]="product.name"
                     />
                   </div>
                   <p>{{ product.name }}</p>
