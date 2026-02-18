@@ -1,28 +1,19 @@
 import { inject, Injectable, signal } from '@angular/core';
-import {
-  AuthChangeEvent,
-  AuthSession,
-  createClient,
-  Session,
-  SupabaseClient,
-  User,
-} from '@supabase/supabase-js';
-import { environment } from '../../environments/environments';
+import { AuthChangeEvent, AuthSession, Session, User } from '@supabase/supabase-js';
 import { Router } from '@angular/router';
 import { UserProfile } from '../../models/userProfile';
-import { ServiceSession, Station } from '../../models/sessions';
+import { SUPABASE_CLIENT } from './supabase.token';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SupabaseService {
-  private readonly supabase: SupabaseClient;
+  private readonly supabase = inject(SUPABASE_CLIENT);
   private readonly _session = signal<AuthSession | null>(null);
   readonly session = this._session.asReadonly();
   private readonly router = inject(Router);
 
   constructor() {
-    this.supabase = createClient(environment.supabaseUrl, environment.supabaseKey);
     this.initSession();
     this.supabase.auth.onAuthStateChange((event, session) => {
       this._session.set(session);

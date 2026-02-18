@@ -1,17 +1,14 @@
-import { Injectable } from '@angular/core';
-import { createClient, SupabaseClient } from '@supabase/supabase-js';
-import { environment } from '../../environments/environments';
+import { inject, Injectable } from '@angular/core';
 import { Station, ServiceSession, CreateSessionDTO } from '../../models/sessions';
+import { SUPABASE_CLIENT } from './supabase.token';
 
 @Injectable({
   providedIn: 'root',
 })
 export class StationsService {
-  private supabase: SupabaseClient;
+  private readonly supabase = inject(SUPABASE_CLIENT);
 
-  constructor() {
-    this.supabase = createClient(environment.supabaseUrl, environment.supabaseKey);
-  }
+  constructor() {}
 
   async getStations(date?: Date): Promise<Station[]> {
     if (!date) {
