@@ -1,4 +1,4 @@
-import { Component, computed, input, OnInit, output, signal } from '@angular/core';
+import { Component, computed, inject, input, OnInit, output, signal } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -8,28 +8,45 @@ import {
 } from '@angular/forms';
 import { DatePickerModule } from 'primeng/datepicker';
 import { CheckboxModule } from 'primeng/checkbox';
-import { Station } from '../../../../models/sessions';
+import { ServiceSession, Station } from '../../../../models/sessions';
 import { Product, ProductAmount } from '../../../../models/products.model';
 import { CurrencyPipe } from '@angular/common';
+import { StationsService } from '../../../../core/services/station.service';
+import { NotificationService } from '../../../../core/services/Notification';
+import { Spinner } from '../../../../shared/components/spinner/spinner';
 @Component({
   selector: 'app-create-session',
-  imports: [ReactiveFormsModule, CheckboxModule, DatePickerModule, FormsModule, CurrencyPipe],
+  imports: [
+    ReactiveFormsModule,
+    CheckboxModule,
+    DatePickerModule,
+    FormsModule,
+    CurrencyPipe,
+    Spinner,
+  ],
   templateUrl: './create-sessions.html',
   styleUrls: ['./create-sessions.css'],
 })
 export class CreateSessionComponent implements OnInit {
   stations = input<Station[]>([]);
   products = input<Product[]>([]);
+  existingSessions = input<ServiceSession[]>([]);
+  selectedDate = input.required<Date>();
+
+  private stationService = inject(StationsService);
+  private notify = inject(NotificationService);
+
   amounts = signal<ProductAmount[]>([]);
   isCustomSelectOpen = signal(false);
   isCustomMultiSelectOpen = signal(false);
   close = output<void>();
   isSubmitting = signal(false);
+  sessionCreated = output<void>();
 
   readonly createSessionForm = new FormGroup({
     stationId: new FormControl<number | null>(null, [Validators.required]),
-    startTime: new FormControl(new Date(), [Validators.required]),
-    endTime: new FormControl(null),
+    startTime: new FormControl<Date | null>(new Date(), [Validators.required]),
+    endTime: new FormControl<Date | null>(null),
     productIds: new FormControl<number[]>([], { nonNullable: true }),
   });
 
@@ -129,8 +146,105 @@ export class CreateSessionComponent implements OnInit {
       return updated;
     });
   }
-  onSubmit() {
-    console.log(this.createSessionForm.value);
+
+  private mergeDateAndTime(datePart: Date, timePart: Date): Date {
+    const result = new Date(datePart);
+    result.setHours(timePart.getHours());
+    result.setMinutes(timePart.getMinutes());
+    result.setSeconds(0);
+    result.setMilliseconds(0);
+    return result;
+  }
+
+  private hasOverlap(stationId: number, start: Date, end: Date | null): boolean {
+    const stationSessions = this.existingSessions().filter((s) => s.station_id === stationId);
+
+    return stationSessions.some((existing) => {
+      const existStart = new Date(existing.start_time).getTime();
+      const existEnd = existing.end_time ? new Date(existing.end_time).getTime() : Date.now();
+
+      const newStart = start.getTime();
+      const newEnd = end ? end.getTime() : Date.now() + 1000 * 60 * 60;
+
+      return newStart < existEnd && newEnd > existStart;
+    });
+  }
+
+  private prepareProductsPayload() {
+    const selectedIds = this.createSessionForm.controls.productIds.value;
+    if (selectedIds.length === 0) return [];
+
+    const allProducts = this.products();
+    return selectedIds.map((id) => {
+      const product = allProducts.find((p) => p.id === id)!;
+      const quantity = this.getAmount(id);
+      return {
+        product_id: id,
+        quantity: quantity,
+        price_at_purchase: product.price,
+        name: product.name,
+      };
+    });
+  }
+
+  async onSubmit() {
+    if (this.createSessionForm.invalid) {
+      this.notify.showError($localize`:@@common.fillInError:Please fill in all required fields`);
+      return;
+    }
+
+    const val = this.createSessionForm.value;
+    const baseDate = new Date(this.selectedDate());
+
+    const startDateTime = this.mergeDateAndTime(baseDate, val.startTime!);
+
+    let endDateTime: Date | null = null;
+    if (val.endTime) {
+      endDateTime = this.mergeDateAndTime(baseDate, val.endTime);
+
+      if (endDateTime <= startDateTime) {
+        if (endDateTime.getHours() < startDateTime.getHours()) {
+          endDateTime.setDate(endDateTime.getDate() + 1);
+        } else {
+          this.notify.showError($localize`:@@common.timeError:End time must be after start time`);
+          return;
+        }
+      }
+    }
+
+    if (this.hasOverlap(val.stationId!, startDateTime, endDateTime)) {
+      this.notify.showError($localize`:@@common.overlapError:Times are overlapping`);
+      return;
+    }
+
+    const productPayload = this.prepareProductsPayload();
+
+    this.isSubmitting.set(true);
+    try {
+      const result = await this.stationService.createSession({
+        station_id: val.stationId!,
+        start_time: startDateTime.toISOString(),
+        end_time: endDateTime ? endDateTime.toISOString() : null,
+        products: productPayload,
+      });
+
+      if (result.closed_session_id) {
+        this.notify.showSuccess(
+          $localize`:@@createSession.autoCancel:Previous session auto-closed. New session created`,
+        );
+      } else {
+        this.notify.showSuccess($localize`:@@createSession.created:Session created`);
+      }
+
+      this.sessionCreated.emit();
+      this.close.emit();
+    } catch (error) {
+      if (error instanceof Error) {
+        this.notify.showError(error.message);
+      }
+    } finally {
+      this.isSubmitting.set(false);
+    }
   }
   onCancel() {
     this.close.emit();

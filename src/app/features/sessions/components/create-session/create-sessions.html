@@ -1,6 +1,6 @@
 <div id="createSessionModal" class="add-modal-box">
   <div class="modal-header">
-    <h3>Create Session</h3>
+    <h3 i18n="@@createSession.title">Create Session</h3>
     <button class="close-btn" (click)="onCancel()">
       <span class="material-symbols-outlined">close</span>
     </button>
@@ -8,12 +8,12 @@
   <form [formGroup]="createSessionForm" (ngSubmit)="onSubmit()" class="modal-body">
     <div class="time-row">
       <div class="input-group">
-        <label>Start Time</label>
+        <label i18n="@@createSession.startLabel">Start Time</label>
         <p-datepicker formControlName="startTime" inputId="calendar-timeonly" [timeOnly]="true" />
       </div>
 
       <div class="input-group">
-        <label>End Time</label>
+        <label i18n="@@createSession.endLabel">End Time</label>
         <p-datepicker
           placeholder="Ongoing"
           formControlName="endTime"
@@ -24,7 +24,7 @@
     </div>
     <div class="optionsRow">
       <div class="input-group">
-        <label>Station</label>
+        <label i18n="@@createSession.stationLabel">Station</label>
         <div class="customSelect" [class.open]="isCustomSelectOpen()">
           <div class="customSelectHeading" (click)="toggleCustomSelect()">
             <p class="defaultOption">{{ selectedStationName() }}</p>
@@ -46,10 +46,10 @@
         </div>
       </div>
       <div class="input-group">
-        <label>Products</label>
+        <label i18n="@@createSession.productsLabel">Products</label>
         <div class="customSelect" [class.open]="isCustomMultiSelectOpen()">
           <div class="customSelectHeading" (click)="toggleCustomMultiSelect()">
-            <p class="defaultOption">Add products</p>
+            <p class="defaultOption" i18n="@@createSession.addProducts">Add products</p>
             <span class="material-symbols-outlined arrow"> expand_more </span>
           </div>
           @if (isCustomMultiSelectOpen()) {
@@ -108,14 +108,18 @@
               </div>
               <div class="cardBody">
                 <div class="amountCont">
-                  <p><span>Amount:</span> {{ getAmount(selectedProduct.id) }}</p>
+                  <p>
+                    <span i18n="@@createSession.amount">Amount:</span>
+                    {{ getAmount(selectedProduct.id) }}
+                  </p>
                   <p class="price">
-                    <span>Price:</span>
+                    <span i18n="@@products.labelPrice">Price:</span>
                     {{ selectedProduct.price | currency: 'GEL' : '₾' : '1.2-2' }}
                   </p>
                 </div>
                 <p class="total">
-                  Total: {{ getTotalPrice(selectedProduct) | currency: 'GEL' : '₾' : '1.2-2' }}
+                  <span i18n="@@createSession.totalLabel">Total:</span>
+                  {{ getTotalPrice(selectedProduct) | currency: 'GEL' : '₾' : '1.2-2' }}
                 </p>
               </div>
             </div>
@@ -141,7 +145,11 @@
       </div>
     }
     <button type="submit" class="btn-primary">
-      {{ isSubmitting() ? 'Creating...' : 'Create Session' }}
+      @if (isSubmitting()) {
+        <app-spinner></app-spinner>
+      } @else {
+        <p i18n="@@createSession.title">Create Session</p>
+      }
     </button>
   </form>
 </div>

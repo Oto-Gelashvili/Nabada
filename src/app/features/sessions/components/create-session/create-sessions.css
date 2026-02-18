@@ -72,6 +72,10 @@
 #createSessionModal .btn-primary {
   margin-top: 1.2rem;
 }
+#createSessionModal .btn-primary:hover {
+  --spinner-border-color: var(--border-color);
+  --spinner-primary-color: var(--primary-color);
+}
 .time-row,
 .optionsRow {
   display: flex;

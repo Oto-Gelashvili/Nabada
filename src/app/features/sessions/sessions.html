@@ -106,5 +106,9 @@
     (close)="closeModal()"
     [stations]="stations()"
     [products]="products()"
+    [existingSessions]="sessions()"
+    [selectedDate]="selectedDate()"
+    (close)="closeModal()"
+    (sessionCreated)="onSessionCreated()"
   ></app-create-session>
 }

@@ -304,4 +304,7 @@ export class Sessions implements OnInit {
       this.removedStationsIds.update((current) => [...current, stationId]);
     }
   }
+  async onSessionCreated() {
+    await this.loadData('reset');
+  }
 }
