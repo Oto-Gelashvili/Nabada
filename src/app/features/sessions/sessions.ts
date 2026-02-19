@@ -41,6 +41,7 @@ export class Sessions implements OnInit {
   loading = signal(false);
   resetting = signal(false);
   now = signal(Date.now());
+  EditableSessionID = signal<number | null>(null);
 
   // Data
   readonly stations = signal<Station[]>([]);
@@ -113,9 +114,14 @@ export class Sessions implements OnInit {
   }
 
   closeModal() {
+    this.EditableSessionID.set(null);
     this.showCreateModal.set(false);
   }
 
+  showEditModal(sessionId: number) {
+    this.EditableSessionID.set(sessionId);
+    this.showCreateModal.set(true);
+  }
   // === HELPERS ===
 
   getSessionsForStation(stationId: number): ServiceSession[] {

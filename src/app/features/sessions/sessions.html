@@ -70,6 +70,7 @@
                 [ngClass]="[getSessionOverlapClass(session), getStateClass(session)]"
                 [style.left.px]="calculateLeft(session.start_time)"
                 [style.width.px]="calculateWidth(session.start_time, session.end_time)"
+                (click)="showEditModal(session.id)"
                 animate.enter="show-animated-enter-session"
               >
                 <span class="session-time">
@@ -109,7 +110,7 @@
     [products]="products()"
     [existingSessions]="sessions()"
     [selectedDate]="selectedDate()"
-    (close)="closeModal()"
     (sessionCreated)="onSessionCreated()"
+    [editableSessionID]="EditableSessionID()"
   ></app-create-session>
 }

@@ -1,6 +1,11 @@
 <div id="createSessionModal" class="add-modal-box">
   <div class="modal-header">
-    <h3 i18n="@@createSession.title">Create Session</h3>
+    @if (!editableSessionID()) {
+      <h3 i18n="@@createSession.title">Create Session</h3>
+    } @else {
+      <h3 i18n="@@editSession.title">Edit Session</h3>
+    }
+
     <button class="close-btn" (click)="onCancel()">
       <span class="material-symbols-outlined">close</span>
     </button>
@@ -149,8 +154,10 @@
     <button type="submit" class="btn-primary">
       @if (isSubmitting()) {
         <app-spinner></app-spinner>
-      } @else {
+      } @else if (!editableSessionID()) {
         <p i18n="@@createSession.title">Create Session</p>
+      } @else {
+        <p i18n="@@editSession.title">Edit Session</p>
       }
     </button>
   </form>

@@ -30,6 +30,7 @@ import { Spinner } from '../../../../shared/components/spinner/spinner';
 export class CreateSessionComponent implements OnInit {
   stations = input<Station[]>([]);
   products = input<Product[]>([]);
+  editableSessionID = input<number | null>(null);
   existingSessions = input<ServiceSession[]>([]);
   selectedDate = input.required<Date>();
 
@@ -51,15 +52,47 @@ export class CreateSessionComponent implements OnInit {
   });
 
   ngOnInit() {
-    const allStations = this.stations();
+    if (this.editableSessionID()) {
+      this.getSessionDetails();
+    } else {
+      const allStations = this.stations();
 
-    if (allStations && allStations.length > 0) {
-      this.createSessionForm.patchValue({
-        stationId: allStations[0].id,
-      });
+      if (allStations && allStations.length > 0) {
+        this.createSessionForm.patchValue({
+          stationId: allStations[0].id,
+        });
+      }
     }
   }
 
+  async getSessionDetails() {
+    const session = this.existingSessions().find(
+      (session) => session.id === this.editableSessionID(),
+    );
+    if (session) {
+      try {
+        const sessionItems = await this.stationService.getSessionItems(session.id);
+        const productIds: number[] = [];
+        const loadedAmounts: ProductAmount[] = [];
+        sessionItems.forEach((sessionItem) => {
+          productIds.push(sessionItem.product_id);
+          loadedAmounts.push({ id: sessionItem.product_id, amount: sessionItem.quantity });
+        });
+        this.amounts.set(loadedAmounts);
+        this.createSessionForm.patchValue({
+          stationId: session.station_id,
+          startTime: new Date(session.start_time),
+          endTime: session.end_time ? new Date(session.end_time) : null,
+          productIds: productIds,
+        });
+      } catch (error) {
+        if (error instanceof Error) {
+          this.notify.showError(error.message);
+        }
+        this.close.emit();
+      }
+    }
+  }
   selectedStationName(): string {
     const selectedId = this.createSessionForm.controls.stationId.value;
     const matchingStation = this.stations().find((s) => s.id === selectedId);
@@ -157,8 +190,9 @@ export class CreateSessionComponent implements OnInit {
   }
 
   private hasOverlap(stationId: number, start: Date, end: Date | null): boolean {
-    const stationSessions = this.existingSessions().filter((s) => s.station_id === stationId);
-
+    const stationSessions = this.existingSessions().filter((s) => {
+      return s.station_id === stationId && s.id !== this.editableSessionID();
+    });
     return stationSessions.some((existing) => {
       const existStart = new Date(existing.start_time).getTime();
       const existEnd = existing.end_time ? new Date(existing.end_time).getTime() : Date.now();
@@ -221,23 +255,36 @@ export class CreateSessionComponent implements OnInit {
 
     this.isSubmitting.set(true);
     try {
-      const result = await this.stationService.createSession({
+      const payload = {
         station_id: val.stationId!,
         start_time: startDateTime.toISOString(),
         end_time: endDateTime ? endDateTime.toISOString() : null,
         products: productPayload,
-      });
-
-      if (result.closed_session_id) {
-        this.notify.showSuccess(
-          $localize`:@@createSession.autoCancel:Previous session auto-closed. New session created`,
-        );
+      };
+      if (this.editableSessionID()) {
+        await this.stationService.updateSession(this.editableSessionID()!, payload);
+        this.notify.showSuccess($localize`:@@createSession.updated:Session updated`);
+        this.sessionCreated.emit();
+        this.close.emit();
       } else {
-        this.notify.showSuccess($localize`:@@createSession.created:Session created`);
-      }
+        const result = await this.stationService.createSession({
+          station_id: val.stationId!,
+          start_time: startDateTime.toISOString(),
+          end_time: endDateTime ? endDateTime.toISOString() : null,
+          products: productPayload,
+        });
 
-      this.sessionCreated.emit();
-      this.close.emit();
+        if (result.closed_session_id) {
+          this.notify.showSuccess(
+            $localize`:@@createSession.autoCancel:Previous session auto-closed. New session created`,
+          );
+        } else {
+          this.notify.showSuccess($localize`:@@createSession.created:Session created`);
+        }
+
+        this.sessionCreated.emit();
+        this.close.emit();
+      }
     } catch (error) {
       if (error instanceof Error) {
         this.notify.showError(error.message);
