@@ -280,8 +280,11 @@
 .session-card.active {
   background-color: var(--primary-color);
 }
+.session-card.booked {
+  background-color: var(--booked-color);
+}
 .session-card.activeOpen {
-  background-color: var(--hover-color);
+  background: linear-gradient(90deg, var(--primary-color) 10%, var(--booked-color) 95%);
 }
 
 .session-time {
@@ -297,7 +300,6 @@
   bottom: 100%;
   left: 50%;
   transform: translateX(-50%) translateY(-8px);
-  background-color: var(--border-color);
   padding: 0.6rem 1.2rem;
   border-radius: 6px;
   font-size: 1.2rem;
@@ -308,6 +310,8 @@
   transition: 0.4s ease-in-out;
   pointer-events: none;
   z-index: var(--most-z);
+  color: var(--secondary-color);
+  background-color: var(--border-color);
 }
 .hover-tooltip::after {
   content: '';

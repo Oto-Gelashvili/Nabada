@@ -187,6 +187,9 @@ export class Sessions implements OnInit {
     if (!session.end_time) {
       return 'activeOpen';
     }
+    if (new Date(session.start_time).getTime() > now) {
+      return 'booked';
+    }
 
     return 'active';
   }

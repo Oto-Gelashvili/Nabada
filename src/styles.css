@@ -7,6 +7,7 @@
   --border-color: #2d2d2d;
   --hover-color: #1f1f1f;
   --active-color: #050505;
+  --booked-color: #a1a1a1;
   --error: #dc2626;
   --success: #44bba4;
   --spinner-border-color: var(--border-color);
@@ -54,7 +55,7 @@
 
 :root[data-theme='dark'] {
   color-scheme: dark;
-  --primary-color: #ffc363;
+  --primary-color: #ffbc4f;
   --secondary-color: #fff;
   --background-color: #000000;
   --accent-color: #0a0a0a;
