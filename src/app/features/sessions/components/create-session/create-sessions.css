@@ -207,7 +207,7 @@
   gap: 0.4rem;
   font-size: 1.4rem;
   padding: 1.2rem;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 10px 25px var(--hover-color);
   border: 1px solid var(--border-color);
   background-color: var(--background-color);
   border-radius: 12px;
