@@ -14,6 +14,7 @@ import { CurrencyPipe } from '@angular/common';
 import { StationsService } from '../../../../core/services/station.service';
 import { NotificationService } from '../../../../core/services/Notification';
 import { Spinner } from '../../../../shared/components/spinner/spinner';
+import { toSignal } from '@angular/core/rxjs-interop';
 @Component({
   selector: 'app-create-session',
   imports: [
@@ -49,6 +50,10 @@ export class CreateSessionComponent implements OnInit {
     startTime: new FormControl<Date | null>(new Date(), [Validators.required]),
     endTime: new FormControl<Date | null>(null),
     productIds: new FormControl<number[]>([], { nonNullable: true }),
+  });
+
+  private formValues = toSignal(this.createSessionForm.valueChanges, {
+    initialValue: this.createSessionForm.getRawValue(),
   });
 
   ngOnInit() {
@@ -143,6 +148,7 @@ export class CreateSessionComponent implements OnInit {
     const currentIds = this.createSessionForm.controls.productIds.value;
     const newIds = currentIds.filter((id) => id !== productId);
     this.createSessionForm.patchValue({ productIds: newIds });
+    this.amounts.update((prev) => prev.filter((a) => a.id !== productId));
   }
   getAmount(productId: number): number {
     const item = this.amounts().find((a) => a.id === productId);
@@ -167,17 +173,18 @@ export class CreateSessionComponent implements OnInit {
     });
   }
   removeAmount(productId: number) {
-    this.amounts.update((current) => {
-      const index = current.findIndex((item) => item.id === productId);
-      if (current[index].amount === 1) {
-        this.removeProduct(productId);
-        return current;
-      }
+    const currentItem = this.amounts().find((item) => item.id === productId);
 
-      const updated = [...current];
-      updated[index] = { ...updated[index], amount: current[index].amount - 1 };
-      return updated;
-    });
+    if (currentItem && currentItem.amount === 1) {
+      this.removeProduct(productId);
+    } else {
+      this.amounts.update((current) => {
+        const index = current.findIndex((item) => item.id === productId);
+        const updated = [...current];
+        updated[index] = { ...updated[index], amount: updated[index].amount - 1 };
+        return updated;
+      });
+    }
   }
 
   private mergeDateAndTime(datePart: Date, timePart: Date): Date {
@@ -293,6 +300,43 @@ export class CreateSessionComponent implements OnInit {
       this.isSubmitting.set(false);
     }
   }
+  totalSum = computed(() => {
+    const vals = this.formValues();
+    const currentAmounts = this.amounts();
+    const allProducts = this.products();
+    const currentSessionId = this.editableSessionID();
+    let sum = 0;
+
+    let hourlyRate = 8.0;
+    if (currentSessionId) {
+      const session = this.existingSessions().find((s) => s.id === currentSessionId);
+      if (session && session.hourly_rate) {
+        hourlyRate = session.hourly_rate;
+      }
+    }
+
+    if (vals.startTime && vals.endTime) {
+      let diffMs = vals.endTime.getTime() - vals.startTime.getTime();
+      // this for cases wehn session spans to next day for example 23:00 -1:00, we add 24 hours in that case
+      if (diffMs < 0) {
+        diffMs += 24 * 60 * 60 * 1000;
+      }
+      const diffHours = diffMs / (1000 * 60 * 60);
+
+      if (diffHours > 0) {
+        sum += diffHours * hourlyRate;
+      }
+    }
+
+    for (const item of currentAmounts) {
+      const product = allProducts.find((p) => p.id === item.id);
+      if (product) {
+        sum += item.amount * product.price;
+      }
+    }
+
+    return sum;
+  });
   onCancel() {
     this.close.emit();
   }

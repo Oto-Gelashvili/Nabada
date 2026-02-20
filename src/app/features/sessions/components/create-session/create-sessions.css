@@ -343,6 +343,17 @@
     margin-top: 0;
   }
 }
+.input-group label,
+.input-group .form-label {
+  font-weight: 500;
+}
+
+.sum {
+  margin-top: 1.2rem;
+  text-align: end;
+  font-size: 1.6rem;
+  color: var(--success);
+}
 @media screen and (max-width: 575px) {
   .selectedProductsCont {
     grid-template-columns: 1fr;
@@ -355,8 +366,4 @@
   #createSessionModal {
     width: 100%;
   }
-}
-.input-group label,
-.input-group .form-label {
-  font-weight: 500;
 }

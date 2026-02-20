@@ -151,6 +151,7 @@
         }
       </div>
     }
+    <h4 class="sum">Sum: {{ totalSum() | currency: 'GEL' : '₾' : '1.2-2' }}</h4>
     <button type="submit" class="btn-primary">
       @if (isSubmitting()) {
         <app-spinner></app-spinner>
