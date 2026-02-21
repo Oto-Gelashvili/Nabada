@@ -15,7 +15,6 @@ import { StationsService } from '../../../../core/services/station.service';
 import { NotificationService } from '../../../../core/services/Notification';
 import { Spinner } from '../../../../shared/components/spinner/spinner';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { isActive } from '@angular/router';
 @Component({
   selector: 'app-create-session',
   imports: [
@@ -44,7 +43,7 @@ export class CreateSessionComponent implements OnInit {
   isCustomMultiSelectOpen = signal(false);
   close = output<void>();
   isSubmitting = signal(false);
-  sessionCreated = output<void>();
+  sessionChanged = output<void>();
 
   readonly createSessionForm = new FormGroup({
     stationId: new FormControl<number | null>(null, [Validators.required]),
@@ -272,7 +271,7 @@ export class CreateSessionComponent implements OnInit {
       if (this.editableSessionID()) {
         await this.stationService.updateSession(this.editableSessionID()!, payload);
         this.notify.showSuccess($localize`:@@createSession.updated:Session updated`);
-        this.sessionCreated.emit();
+        this.sessionChanged.emit();
         this.close.emit();
       } else {
         const result = await this.stationService.createSession({
@@ -290,7 +289,7 @@ export class CreateSessionComponent implements OnInit {
           this.notify.showSuccess($localize`:@@createSession.created:Session created`);
         }
 
-        this.sessionCreated.emit();
+        this.sessionChanged.emit();
         this.close.emit();
       }
     } catch (error) {
@@ -374,7 +373,30 @@ export class CreateSessionComponent implements OnInit {
     const endTime = new Date(session.end_time).getTime();
     return endTime > now;
   });
+  async deleteSession() {
+    const sessionId = this.editableSessionID();
+    if (!sessionId) return;
+    const confirmed = await this.notify.confirm(
+      $localize`:@@confirm.deleteSession:This will delete session`,
+    );
+    if (!confirmed) return;
 
+    this.isSubmitting.set(true);
+
+    try {
+      await this.stationService.deleteSession(sessionId);
+      this.notify.showSuccess($localize`:@@common.deleted:Deleted`);
+
+      this.sessionChanged.emit();
+      this.close.emit();
+    } catch (error) {
+      if (error instanceof Error) {
+        this.notify.showError(error.message);
+      }
+    } finally {
+      this.isSubmitting.set(false);
+    }
+  }
   onCancel() {
     this.close.emit();
   }

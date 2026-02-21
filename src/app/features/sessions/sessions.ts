@@ -313,7 +313,7 @@ export class Sessions implements OnInit {
       this.removedStationsIds.update((current) => [...current, stationId]);
     }
   }
-  async onSessionCreated() {
+  async onSessionChanged() {
     await this.loadData('reset');
   }
 }

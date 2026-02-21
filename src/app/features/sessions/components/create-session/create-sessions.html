@@ -8,7 +8,9 @@
 
     <div class="headerActionsCont">
       @if (canEndSession()) {
-        <button type="button" class="end-btn" (click)="endSession()">End</button>
+        <button i18n="@@createSession.end" type="button" class="end-btn" (click)="endSession()">
+          End
+        </button>
       }
       <button class="close-btn" (click)="onCancel()">
         <span class="material-symbols-outlined">close</span>
@@ -156,10 +158,17 @@
         }
       </div>
     }
-    <h4 class="sum">
-      <span i18n="@@createSession.sum">Sum:</span>
-      {{ totalSum() | currency: 'GEL' : '₾' : '1.2-2' }}
-    </h4>
+    <div class="modal-footer">
+      @if (editableSessionID()) {
+        <button i18n="@@common.delete" type="button" class="end-btn" (click)="deleteSession()">
+          Delete
+        </button>
+      }
+      <h4 class="sum">
+        <span i18n="@@createSession.sum">Sum:</span>
+        {{ totalSum() | currency: 'GEL' : '₾' : '1.2-2' }}
+      </h4>
+    </div>
     <button type="submit" class="btn-primary">
       @if (isSubmitting()) {
         <app-spinner></app-spinner>

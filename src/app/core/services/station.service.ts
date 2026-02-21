@@ -168,4 +168,12 @@ export class StationsService {
 
     return result;
   }
+
+  async deleteSession(sessionId: number): Promise<void> {
+    const { error } = await this.supabase.from('sessions').delete().eq('id', sessionId);
+
+    if (error) {
+      throw new Error($localize`:@@common.deleteError:Could not delete. Please try again.`);
+    }
+  }
 }
