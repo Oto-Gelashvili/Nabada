@@ -354,6 +354,33 @@
   font-size: 1.6rem;
   color: var(--success);
 }
+.end-btn {
+  background-color: var(--error);
+  color: #fff;
+  padding: 0.2rem 1.2rem;
+  border: 1px solid var(--error);
+  border-radius: 4px;
+  outline: 1px solid transparent;
+  cursor: pointer;
+  transition: 0.4s;
+}
+.end-btn:hover {
+  color: var(--error);
+  background-color: transparent;
+}
+
+.end-btn:focus {
+  color: var(--error);
+  background-color: transparent;
+}
+.end-btn:active {
+  border-color: transparent;
+}
+.headerActionsCont {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
 @media screen and (max-width: 575px) {
   .selectedProductsCont {
     grid-template-columns: 1fr;

@@ -15,6 +15,7 @@ import { StationsService } from '../../../../core/services/station.service';
 import { NotificationService } from '../../../../core/services/Notification';
 import { Spinner } from '../../../../shared/components/spinner/spinner';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { isActive } from '@angular/router';
 @Component({
   selector: 'app-create-session',
   imports: [
@@ -337,6 +338,43 @@ export class CreateSessionComponent implements OnInit {
 
     return sum;
   });
+
+  async endSession() {
+    const confirmed = await this.notify.confirm(
+      $localize`:@@confirm.endSession:This will end the session`,
+    );
+    if (!confirmed) {
+      return;
+    }
+    this.createSessionForm.patchValue({
+      endTime: new Date(),
+    });
+
+    await this.onSubmit();
+  }
+
+  canEndSession = computed(() => {
+    const sessionId = this.editableSessionID();
+    if (!sessionId) return false;
+
+    const session = this.existingSessions().find((s) => s.id === sessionId);
+    if (!session) return false;
+
+    const now = new Date().getTime();
+    const startTime = new Date(session.start_time).getTime();
+
+    if (startTime > now) {
+      return false;
+    }
+
+    if (!session.end_time) {
+      return true;
+    }
+
+    const endTime = new Date(session.end_time).getTime();
+    return endTime > now;
+  });
+
   onCancel() {
     this.close.emit();
   }

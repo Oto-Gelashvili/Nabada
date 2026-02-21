@@ -6,9 +6,14 @@
       <h3 i18n="@@editSession.title">Edit Session</h3>
     }
 
-    <button class="close-btn" (click)="onCancel()">
-      <span class="material-symbols-outlined">close</span>
-    </button>
+    <div class="headerActionsCont">
+      @if (canEndSession()) {
+        <button type="button" class="end-btn" (click)="endSession()">End</button>
+      }
+      <button class="close-btn" (click)="onCancel()">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
   </div>
   <form [formGroup]="createSessionForm" (ngSubmit)="onSubmit()" class="modal-body">
     <div class="time-row">
@@ -151,7 +156,10 @@
         }
       </div>
     }
-    <h4 class="sum">Sum: {{ totalSum() | currency: 'GEL' : '₾' : '1.2-2' }}</h4>
+    <h4 class="sum">
+      <span i18n="@@createSession.sum">Sum:</span>
+      {{ totalSum() | currency: 'GEL' : '₾' : '1.2-2' }}
+    </h4>
     <button type="submit" class="btn-primary">
       @if (isSubmitting()) {
         <app-spinner></app-spinner>
