@@ -11,6 +11,7 @@ export interface ServiceSession {
   end_time: string | null;
   status: string;
   hourly_rate: number;
+  total_cost: number;
 }
 export interface CreateSessionDTO {
   station_id: number;

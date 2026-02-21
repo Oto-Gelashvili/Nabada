@@ -21,7 +21,7 @@
   background-color: var(--light-gray);
   display: flex;
   flex-direction: column;
-  min-height: calc(100% - 8.4rem);
+  height: calc(100% - 8.4rem);
   scrollbar-width: thin;
   scrollbar-color: var(--primary-color) var(--accent-color);
 }
@@ -351,4 +351,11 @@
   100% {
     background-position: 200% 0;
   }
+}
+.sum {
+  font-size: 1.6rem;
+  color: var(--success);
+  margin-top: 1.6rem;
+  width: 100%;
+  text-align: end;
 }

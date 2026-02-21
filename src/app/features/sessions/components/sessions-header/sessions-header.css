@@ -40,7 +40,7 @@
   color: var(--primary-color);
 }
 .arrowsCont span:focus {
-  outline-color: var(--primary-color);
+  border-color: var(--primary-color);
 }
 .datePickerCont {
   position: relative;

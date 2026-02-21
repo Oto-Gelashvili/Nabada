@@ -2,7 +2,7 @@ import { Component, computed, DestroyRef, inject, OnInit, signal } from '@angula
 import { DatePipe, NgClass } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Spinner } from '../../shared/components/spinner/spinner';
-
+import { CurrencyPipe } from '@angular/common';
 import { NotificationService } from '../../core/services/Notification';
 import { ServiceSession, Station } from '../../models/sessions';
 import { SessionsHeaderComponent } from './components/sessions-header/sessions-header';
@@ -22,6 +22,7 @@ import { Product } from '../../models/products.model';
     SessionsHeaderComponent,
     NgClass,
     CreateSessionComponent,
+    CurrencyPipe,
   ],
   templateUrl: './sessions.html',
   styleUrl: './sessions.css',
@@ -313,6 +314,27 @@ export class Sessions implements OnInit {
       this.removedStationsIds.update((current) => [...current, stationId]);
     }
   }
+
+  totalSum = computed(() => {
+    let sum = 0;
+    const currentViewDate = this.selectedDate();
+
+    const startOfDay = new Date(currentViewDate);
+    startOfDay.setHours(0, 0, 0, 0);
+
+    const endOfDay = new Date(currentViewDate);
+    endOfDay.setHours(23, 59, 59, 999);
+
+    for (const session of this.sessions()) {
+      const sessionStart = new Date(session.start_time);
+
+      if (sessionStart >= startOfDay && sessionStart <= endOfDay) {
+        sum += Number(session.total_cost || 0);
+      }
+    }
+
+    return sum;
+  });
   async onSessionChanged() {
     await this.loadData('reset');
   }
