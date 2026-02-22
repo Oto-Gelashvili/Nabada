@@ -32,8 +32,9 @@ export class StationsService {
       .lte('created_at', endOfDay.toISOString())
       .or(`deleted_at.is.null,deleted_at.gte.${endOfDay.toISOString()}`)
       .order('display_order');
-
-    if (error) throw error;
+    if (error) {
+      throw new Error($localize`:@@error.fetchingError:Could not fetch data. Please try again.`);
+    }
     return data as Station[];
   }
 
@@ -48,7 +49,7 @@ export class StationsService {
       .single();
 
     if (error) {
-      throw new Error(error.message);
+      throw new Error($localize`:@@error.createError:Could not Create. Please try again.`);
     }
 
     return data as Station;
@@ -58,7 +59,7 @@ export class StationsService {
     const { error } = await this.supabase.from('stations').update({ name: newName }).eq('id', id);
 
     if (error) {
-      throw new Error(error.message);
+      throw new Error($localize`:@@error.updateError:Could not update. Please try again.`);
     }
   }
 
@@ -71,7 +72,7 @@ export class StationsService {
       })
       .eq('id', id);
     if (error) {
-      throw new Error(error.message);
+      throw new Error($localize`:@@error.deleteError:Could not delete. Please try again.`);
     }
   }
 
@@ -93,7 +94,7 @@ export class StationsService {
       );
 
     if (error) {
-      throw new Error(error.message);
+      throw new Error($localize`:@@error.fetchingError:Could not fetch data. Please try again.`);
     }
 
     return data as ServiceSession[];
@@ -105,7 +106,7 @@ export class StationsService {
       .eq('session_id', sessionID);
 
     if (error) {
-      throw new Error($localize`:@@error.getSessionItems:Could not fetch product details.`);
+      throw new Error($localize`:@@error.fetchingError:Could not fetch data. Please try again.`);
     }
     return data as SessionItem[];
   }
@@ -114,7 +115,7 @@ export class StationsService {
     const {
       data: { user },
     } = await this.supabase.auth.getUser();
-    if (!user) throw new Error($localize`:@@common.notAuthenticated: User not Authenticated`);
+    if (!user) throw new Error($localize`:@@error.notAuthenticated: User not Authenticated`);
 
     const { data: result, error } = await this.supabase.rpc('create_session_smart', {
       p_station_id: data.station_id,
@@ -127,14 +128,14 @@ export class StationsService {
 
     if (error) {
       if (error.message.includes('no_overlapping_sessions')) {
-        throw new Error($localize`:@@common.overlapError:Times are overlapping`);
+        throw new Error($localize`:@@error.overlapError:Times are overlapping`);
       }
 
       if (error.message.includes('check_times')) {
-        throw new Error($localize`:@@common.timeError:End time must be after start time`);
+        throw new Error($localize`:@@error.timeError:End time must be after start time`);
       }
 
-      throw new Error($localize`:@@common.createError:Could not create session. Please try again.`);
+      throw new Error($localize`:@@error.createError:Could not create session. Please try again.`);
     }
 
     return result;

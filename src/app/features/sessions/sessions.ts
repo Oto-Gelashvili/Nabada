@@ -84,9 +84,7 @@ export class Sessions implements OnInit {
       this.products.set(productsData);
     } catch (error) {
       if (error instanceof Error) {
-        this.notify.showError(
-          $localize`:@@common.fetchingError:Could not fetch data. Please try again.`,
-        );
+        this.notify.showError(error.message);
       }
     } finally {
       if (action === 'initLoad') {
@@ -213,7 +211,7 @@ export class Sessions implements OnInit {
 
   async toggleEditMode() {
     if (!this.isToday()) {
-      this.notify.showError('Can not edit past stations');
+      this.notify.showError($localize`:@@error.pastStations:Can not edit past stations`);
       return;
     }
 
@@ -259,11 +257,7 @@ export class Sessions implements OnInit {
     );
 
     const removedStationsIds = this.removedStationsIds();
-    const deletePromises = removedStationsIds.map((id) =>
-      this.stationsService.removeStation(id).catch((err) => {
-        this.notify.showError('Failed to delete');
-      }),
-    );
+    const deletePromises = removedStationsIds.map((id) => this.stationsService.removeStation(id));
 
     if (updatePromises.length === 0 && createPromises.length === 0 && deletePromises.length === 0) {
       return true;
@@ -273,7 +267,7 @@ export class Sessions implements OnInit {
       this.resetting.set(true);
       await Promise.all([...updatePromises, ...createPromises, ...deletePromises]);
 
-      this.notify.showSuccess(`Saved`);
+      this.notify.showSuccess($localize`:@@common.saved:Saved`);
       this.removedStationsIds.set([]);
       this.addedStations.set([]);
       await this.loadData('reset');

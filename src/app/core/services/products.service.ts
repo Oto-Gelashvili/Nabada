@@ -23,7 +23,7 @@ export class ProductsService {
     const { id, name, price } = product;
     const { error } = await this.supabase.from('products').update({ name, price }).eq('id', id);
     if (error) {
-      throw new Error(error.message);
+      throw new Error($localize`:@@error.fetchingError:Could not fetch data. Please try again.`);
     }
   }
   async deleteProduct(id: number): Promise<void> {
@@ -33,7 +33,7 @@ export class ProductsService {
       .eq('id', id);
 
     if (error) {
-      throw new Error(error.message);
+      throw new Error($localize`:@@error.deleteError:Could not delete. Please try again.`);
     }
   }
 
@@ -48,7 +48,7 @@ export class ProductsService {
       .single();
 
     if (error) {
-      throw new Error(error.message);
+      throw new Error($localize`:@@error.createError:Could not Create. Please try again.`);
     }
 
     return data as Product;

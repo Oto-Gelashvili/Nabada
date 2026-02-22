@@ -230,7 +230,7 @@ export class CreateSessionComponent implements OnInit {
 
   async onSubmit() {
     if (this.createSessionForm.invalid) {
-      this.notify.showError($localize`:@@common.fillInError:Please fill in all required fields`);
+      this.notify.showError($localize`:@@error.fillInError:Please fill in all required fields`);
       return;
     }
 
@@ -247,14 +247,14 @@ export class CreateSessionComponent implements OnInit {
         if (endDateTime.getHours() < startDateTime.getHours()) {
           endDateTime.setDate(endDateTime.getDate() + 1);
         } else {
-          this.notify.showError($localize`:@@common.timeError:End time must be after start time`);
+          this.notify.showError($localize`:@@error.timeError:End time must be after start time`);
           return;
         }
       }
     }
 
     if (this.hasOverlap(val.stationId!, startDateTime, endDateTime)) {
-      this.notify.showError($localize`:@@common.overlapError:Times are overlapping`);
+      this.notify.showError($localize`:@@error.overlapError:Times are overlapping`);
       return;
     }
 
@@ -270,7 +270,7 @@ export class CreateSessionComponent implements OnInit {
       };
       if (this.editableSessionID()) {
         await this.stationService.updateSession(this.editableSessionID()!, payload);
-        this.notify.showSuccess($localize`:@@createSession.updated:Session updated`);
+        this.notify.showSuccess($localize`:@@success.updated:Session updated`);
         this.sessionChanged.emit();
         this.close.emit();
       } else {

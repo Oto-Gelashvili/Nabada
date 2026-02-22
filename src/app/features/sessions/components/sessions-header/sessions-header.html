@@ -2,7 +2,7 @@
   <div class="dateCont">
     @if (editMode()) {
       <button class="headerBtn cancelBtn" (click)="onCancel()">
-        <p>cancel</p>
+        <p i18n="@@common.cancel">cancel</p>
         <span class="material-symbols-outlined"> cancel </span>
       </button>
     } @else {
@@ -47,7 +47,7 @@
   </div>
 
   <button class="headerBtn createSessionBtn" (click)="createClick.emit()">
-    <p>create session</p>
+    <p i18n="@@createSession.title">create session</p>
     <span class="material-symbols-outlined"> add </span>
   </button>
 </div>
