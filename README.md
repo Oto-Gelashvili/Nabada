@@ -1,59 +1,65 @@
-# NabadaManager
+# 🎮 Nabda
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.0.3.
+**Nabda** is a specialized management platform designed for playroom owners (gaming lounges, internet cafes, etc.). It provides real-time tracking of gaming stations, automated cost calculation, and deep financial analytics to help owners optimize their business operations.
 
-## Development server
+---
 
-To start a local development server, run:
+## ✨ Key Features
 
-```bash
-ng serve
-```
+### 🖥️ Station & Session Management
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+- **Dynamic Stations:** Monitor all hardware (PS5, PC, VR) from a centralized dashboard.
+- **Smart Session Logic:**
+  - **Fixed or Ongoing:** Start sessions with a set duration or let them run indefinitely until manually stopped.
+  - **Real-time State Tracking:** Visual indicators for session statuses:
+    - 🟢 **Ongoing:** Active sessions currently running.
+    - 🔵 **Future:** Scheduled bookings.
+    - ⚪ **Completed:** Past sessions stored for records.
+- **Manual Overrides:** Click any active session to stop it instantly or edit details on the fly.
 
-## Code scaffolding
+### 💰 Financials & Products
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+- **Integrated POS:** Add snacks, drinks, or extra services to any session.
+- **Automatic Billing:** Costs are calculated based on your custom hourly rate plus any products consumed.
+- **Daily Totals:** Quick-glance views of the current day's revenue directly on the sessions page.
 
-```bash
-ng generate component component-name
-```
+### 📊 Advanced Analytics
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+- **Date Filtering:** View financial performance over specific time ranges.
+- **Granular Insights:**
+  - **Revenue per Station:** Identify which hardware is your "money maker."
+  - **Product Performance:** Track which snacks/services are selling best.
+  - **Revenue Trends:** Visual breakdown of money made per selected date.
 
-```bash
-ng generate --help
-```
+### 👤 Personalization & Settings
 
-## Building
+- **Flexible Pricing:** Set your default hourly rate (default is **8 Lari/hr**) in your profile.
+- **Account Management:** Update your username, email, and security credentials.
+- **UI/UX:** Fully responsive design with **Multi-language (Locale)** support and **Dark/Light mode** toggling in the header.
 
-To build the project run:
+---
 
-```bash
-ng build
-```
+## 🗄️ Database Schema
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+The core logic of Nabda relies on the relationship between owners, inventory, and time-sensitive session data.
 
-## Running unit tests
+### Data Tables
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+| Table        | Description                                                              |
+| :----------- | :----------------------------------------------------------------------- |
+| **Stations** | Tracks hardware (PS5, PC) and their current availability.                |
+| **Sessions** | Stores start/end times, snapshots of hourly rates, and session states.   |
+| **Products** | Inventory management for snacks/drinks with pricing and stock.           |
+| **Users**    | Owner profiles including custom rates and UI preferences (Theme/Locale). |
 
-```bash
-ng test
-```
+---
 
-## Running end-to-end tests
+## 🚀 Getting Started
 
-For end-to-end (e2e) testing, run:
+1. **Register:** Create your owner account.
+2. **Configure:** Head to the **Profile** page to set your currency and hourly service rate.
+3. **Stock Up:** Add your inventory in the **Products** page.
+4. **Play:** Go to the **Sessions** page to start assigning customers to stations.
 
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+> [!TIP]
+> Use the **Analytics** page at the end of every week to see which stations have the highest uptime and which products need restocking!
