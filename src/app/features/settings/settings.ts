@@ -65,7 +65,7 @@ export class Settings implements OnInit {
 
   async updateProfile() {
     if (!this.userId) {
-      this.notify.showError($localize`:@@settings.error.noID:Cannot update: User ID missing`);
+      this.notify.showError($localize`:@@settings.errorNoID:Cannot update: User ID missing`);
       return;
     }
 
@@ -120,7 +120,7 @@ export class Settings implements OnInit {
     const { error } = await this.supabase.updateProfile(updates);
     if (error) throw error;
 
-    this.notify.showSuccess($localize`:@@settings.success.profileUpdated:Profile updated!`);
+    this.notify.showSuccess($localize`:@@settings.profileUpdated:Profile updated!`);
   }
 
   private async saveEmailData() {
@@ -131,7 +131,7 @@ export class Settings implements OnInit {
     if (error) throw error;
 
     this.notify.showSuccess(
-      $localize`:@@settings.success.emailSent:Confirmation link sent to your new email!`,
+      $localize`:@@settings.emailSent:Confirmation link sent to your new email!`,
     );
   }
 
@@ -157,7 +157,7 @@ export class Settings implements OnInit {
     const file = input.files[0];
 
     if (file.size > 2 * 1024 * 1024) {
-      this.notify.showError($localize`:@@settings.error.largeIMG:Image must be smaller than 2MB`);
+      this.notify.showError($localize`:@@settings.errorLargeIMG:Image must be smaller than 2MB`);
       return;
     }
 

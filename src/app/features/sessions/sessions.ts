@@ -1,16 +1,14 @@
 import { Component, computed, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { DatePipe, NgClass } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Spinner } from '../../shared/components/spinner/spinner';
 import { CurrencyPipe } from '@angular/common';
-import { NotificationService } from '../../core/services/Notification';
-import { ServiceSession, Station } from '../../models/sessions';
+import { Spinner } from '../../shared/components/spinner/spinner';
 import { SessionsHeaderComponent } from './components/sessions-header/sessions-header';
-import { StationsService } from '../../core/services/station.service';
-import { DateUtils } from '../../shared/components/utils/date.utils';
 import { CreateSessionComponent } from './components/create-session/create-sessions';
-import { ProductsService } from '../../core/services/products.service';
-import { Product } from '../../models/products.model';
+import { SessionStateService } from '../../core/services/sessions/state.service';
+import { StationEditService } from '../../core/services/sessions/edit.service';
+import { TimelineCalculator } from '../../core/services/sessions/timeline-calculator';
+import { ServiceSession } from '../../models/sessions';
 
 @Component({
   selector: 'app-sessions',
@@ -29,307 +27,78 @@ import { Product } from '../../models/products.model';
 })
 export class Sessions implements OnInit {
   private readonly destroyRef = inject(DestroyRef);
-  private readonly stationsService = inject(StationsService);
-  private readonly productsService = inject(ProductsService);
-  private readonly notify = inject(NotificationService);
 
-  private readonly pixelsPerHour = 100;
+  // Services — components read directly from their signals in the template
+  protected readonly state = inject(SessionStateService);
+  protected readonly edit = inject(StationEditService);
 
-  // Signals
-  showCreateModal = signal(false);
-  selectedDate = signal<Date>(new Date());
-  editMode = signal(false);
-  loading = signal(false);
-  resetting = signal(false);
-  now = signal(Date.now());
-  EditableSessionID = signal<number | null>(null);
+  // Local UI state that belongs only to this component
+  protected readonly showCreateModal = signal(false);
+  protected readonly editableSessionId = signal<number | null>(null);
 
-  // Data
-  readonly stations = signal<Station[]>([]);
-  readonly addedStations = signal<Station[]>([]);
-  readonly allStations = computed(() => [...this.stations(), ...this.addedStations()]);
-  readonly removedStationsIds = signal<number[]>([]);
-  readonly sessions = signal<ServiceSession[]>([]);
-  readonly products = signal<Product[]>([]);
-  readonly hours = Array.from({ length: 24 }, (_, i) => i);
+  protected readonly hours = Array.from({ length: 24 }, (_, i) => i);
+  private readonly now = signal(Date.now());
+  private readonly timeline = new TimelineCalculator(100);
 
-  private originalData = new Map<number, string>();
+  // ── Lifecycle ─────────────────────────────────────────────────────────────
 
-  ngOnInit() {
-    this.loadData('initLoad');
+  ngOnInit(): void {
+    this.state.loadAll('initLoad');
 
-    const intervalId = setInterval(() => {
-      this.now.set(Date.now());
-    }, 60000);
-
+    const intervalId = setInterval(() => this.now.set(Date.now()), 60_000);
     this.destroyRef.onDestroy(() => clearInterval(intervalId));
   }
 
-  async loadData(action: 'initLoad' | 'reset') {
-    try {
-      if (action === 'initLoad') {
-        this.loading.set(true);
-      } else if (action === 'reset') {
-        this.resetting.set(true);
-      }
+  // ── Header events ─────────────────────────────────────────────────────────
 
-      this.clearTempState();
-      const stationsData = await this.stationsService.getStations(this.selectedDate());
-      this.stations.set(stationsData);
-
-      const sessionsData = await this.stationsService.getSessions(this.selectedDate());
-      this.sessions.set(sessionsData);
-
-      const productsData = await this.productsService.getProducts();
-      this.products.set(productsData);
-    } catch (error) {
-      if (error instanceof Error) {
-        this.notify.showError(error.message);
-      }
-    } finally {
-      if (action === 'initLoad') {
-        this.loading.set(false);
-      } else if (action === 'reset') {
-        this.resetting.set(false);
-      }
-    }
+  onDateChange(): void {
+    this.state.loadAll('reset');
   }
 
-  // === HELPER TO CLEAN STATE ===
-  private clearTempState() {
-    this.addedStations.set([]);
-    this.removedStationsIds.set([]);
-    this.originalData.clear();
-  }
-
-  // === HEADER EVENTS ===
-
-  async onDateChange() {
-    this.loadData('reset');
-  }
-
-  async onCreateSession() {
+  onCreateSession(): void {
     this.showCreateModal.set(true);
   }
 
-  closeModal() {
-    this.EditableSessionID.set(null);
+  // ── Modal ─────────────────────────────────────────────────────────────────
+
+  showEditModal(sessionId: number): void {
+    this.editableSessionId.set(sessionId);
+    this.showCreateModal.set(true);
+  }
+
+  closeModal(): void {
+    this.editableSessionId.set(null);
     this.showCreateModal.set(false);
   }
 
-  showEditModal(sessionId: number) {
-    this.EditableSessionID.set(sessionId);
-    this.showCreateModal.set(true);
-  }
-  // === HELPERS ===
-
-  getSessionsForStation(stationId: number): ServiceSession[] {
-    return this.sessions().filter((s) => s.station_id === stationId);
+  async onSessionChanged(): Promise<void> {
+    await this.state.loadAll('reset');
   }
 
-  calculateLeft(startTimeStr: string): number {
-    const sessionStart = new Date(startTimeStr).getTime();
-    const viewStart = new Date(this.selectedDate());
-    viewStart.setHours(0, 0, 0, 0);
+  // ── Timeline helpers (thin delegation to calculator) ─────────────────────
 
-    if (sessionStart < viewStart.getTime()) {
-      return 0;
+  protected readonly sessionsByStation = computed(() => {
+    const map = new Map<number, ServiceSession[]>();
+    for (const s of this.state.sessions()) {
+      const list = map.get(s.station_id) ?? [];
+      list.push(s);
+      map.set(s.station_id, list);
     }
-
-    const date = new Date(startTimeStr);
-    const hours = date.getHours();
-    const minutes = date.getMinutes();
-    return hours * this.pixelsPerHour + minutes * (this.pixelsPerHour / 60);
+    return map;
+  });
+  calculateLeft(startTimeStr: string): number {
+    return this.timeline.calculateLeft(startTimeStr, this.state.selectedDate());
   }
 
   calculateWidth(startStr: string, endStr: string | null): number {
-    const sessionStart = new Date(startStr).getTime();
-    const sessionEnd = endStr ? new Date(endStr).getTime() : this.now();
-
-    const viewStart = new Date(this.selectedDate());
-    viewStart.setHours(0, 0, 0, 0);
-
-    const viewEnd = new Date(this.selectedDate());
-    viewEnd.setHours(24, 0, 0, 0);
-
-    const effectiveStart = Math.max(sessionStart, viewStart.getTime());
-    const effectiveEnd = Math.min(sessionEnd, viewEnd.getTime());
-
-    const durationHours = (effectiveEnd - effectiveStart) / (1000 * 60 * 60);
-
-    return Math.max(0, durationHours * this.pixelsPerHour);
+    return this.timeline.calculateWidth(startStr, endStr, this.state.selectedDate(), this.now());
   }
 
   getSessionOverlapClass(session: ServiceSession): string {
-    const start = new Date(session.start_time).getTime();
-    const end = session.end_time ? new Date(session.end_time).getTime() : this.now();
-
-    const viewStart = new Date(this.selectedDate());
-    viewStart.setHours(0, 0, 0, 0);
-
-    const viewEnd = new Date(this.selectedDate());
-    viewEnd.setHours(24, 0, 0, 0);
-
-    const classes = [];
-
-    if (start < viewStart.getTime()) {
-      classes.push('overflow-left');
-    }
-
-    if (end > viewEnd.getTime()) {
-      classes.push('overflow-right');
-    }
-
-    return classes.join(' ');
+    return this.timeline.getOverlapClass(session, this.state.selectedDate(), this.now());
   }
+
   getStateClass(session: ServiceSession): string {
-    const now = new Date().getTime();
-
-    if (session.end_time && new Date(session.end_time).getTime() < now) {
-      return 'finished';
-    }
-
-    if (!session.end_time) {
-      return 'activeOpen';
-    }
-    if (new Date(session.start_time).getTime() > now) {
-      return 'booked';
-    }
-
-    return 'active';
-  }
-
-  hasInvalidStations(): boolean {
-    return this.allStations().some((s) => !s.name || s.name.trim() === '');
-  }
-
-  isToday(): boolean {
-    return DateUtils.isToday(this.selectedDate());
-  }
-
-  // === EDIT MODE ===
-
-  async toggleEditMode() {
-    if (!this.isToday()) {
-      this.notify.showError($localize`:@@error.pastStations:Can not edit past stations`);
-      return;
-    }
-
-    if (this.editMode()) {
-      const success = await this.saveAllChanges();
-      if (success) {
-        this.editMode.set(false);
-      }
-    } else {
-      this.captureSnapshot();
-      this.editMode.set(true);
-    }
-  }
-
-  private captureSnapshot() {
-    this.originalData.clear();
-    this.stations().forEach((s) => {
-      this.originalData.set(s.id, s.name);
-    });
-  }
-
-  closeEditMode() {
-    this.editMode.set(false);
-    this.loadData('reset');
-  }
-
-  async saveAllChanges(): Promise<boolean> {
-    const changedStations = this.stations().filter((station) => {
-      const originalName = this.originalData.get(station.id);
-      return station.name !== originalName;
-    });
-
-    const updatePromises = changedStations.map((station) =>
-      this.stationsService.updateStationName(station.id, station.name),
-    );
-
-    const newStations = this.addedStations();
-    const createPromises = newStations.map((station) =>
-      this.stationsService.createStation({
-        name: station.name,
-        display_order: station.display_order,
-      }),
-    );
-
-    const removedStationsIds = this.removedStationsIds();
-    const deletePromises = removedStationsIds.map((id) => this.stationsService.removeStation(id));
-
-    if (updatePromises.length === 0 && createPromises.length === 0 && deletePromises.length === 0) {
-      return true;
-    }
-
-    try {
-      this.resetting.set(true);
-      await Promise.all([...updatePromises, ...createPromises, ...deletePromises]);
-
-      this.notify.showSuccess($localize`:@@common.saved:Saved`);
-      this.removedStationsIds.set([]);
-      this.addedStations.set([]);
-      await this.loadData('reset');
-      return true;
-    } catch (error) {
-      if (error instanceof Error) {
-        this.notify.showError(error.message);
-      }
-      return false;
-    } finally {
-      this.resetting.set(false);
-    }
-  }
-
-  // === STATION ACTIONS ===
-
-  addStation() {
-    const maxOrder = this.allStations().reduce((max, station) => {
-      return Math.max(max, station.display_order);
-    }, 0);
-    const nextId = Date.now();
-    const nextOrder = maxOrder + 1;
-
-    const newStation: Station = {
-      id: nextId,
-      name: `PS${nextOrder}`,
-      display_order: nextOrder,
-    };
-    this.addedStations.update((current) => [...current, newStation]);
-  }
-
-  removeStation(stationId: number) {
-    const isNew = this.addedStations().some((s) => s.id === stationId);
-    if (isNew) {
-      this.addedStations.update((current) => current.filter((s) => s.id !== stationId));
-    } else {
-      this.stations.update((current) => current.filter((s) => s.id !== stationId));
-      this.removedStationsIds.update((current) => [...current, stationId]);
-    }
-  }
-
-  totalSum = computed(() => {
-    let sum = 0;
-    const currentViewDate = this.selectedDate();
-
-    const startOfDay = new Date(currentViewDate);
-    startOfDay.setHours(0, 0, 0, 0);
-
-    const endOfDay = new Date(currentViewDate);
-    endOfDay.setHours(23, 59, 59, 999);
-
-    for (const session of this.sessions()) {
-      const sessionStart = new Date(session.start_time);
-
-      if (sessionStart >= startOfDay && sessionStart <= endOfDay) {
-        sum += Number(session.total_cost || 0);
-      }
-    }
-
-    return sum;
-  });
-  async onSessionChanged() {
-    await this.loadData('reset');
+    return this.timeline.getStateClass(session);
   }
 }

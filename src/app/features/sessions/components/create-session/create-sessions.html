@@ -1,14 +1,14 @@
 <div id="createSessionModal" class="add-modal-box">
   <div class="modal-header">
     @if (!editableSessionID()) {
-      <h3 i18n="@@createSession.title">Create Session</h3>
+      <h3 i18n="@@sessions.createTitle">Create Session</h3>
     } @else {
-      <h3 i18n="@@editSession.title">Edit Session</h3>
+      <h3 i18n="@@sessions.editTitle">Edit Session</h3>
     }
 
     <div class="headerActionsCont">
       @if (canEndSession()) {
-        <button i18n="@@createSession.end" type="button" class="end-btn" (click)="endSession()">
+        <button i18n="@@sessions.end" type="button" class="end-btn" (click)="endSession()">
           End
         </button>
       }
@@ -20,12 +20,12 @@
   <form [formGroup]="createSessionForm" (ngSubmit)="onSubmit()" class="modal-body">
     <div class="time-row">
       <div class="input-group">
-        <label for="start-time-picker" i18n="@@createSession.startLabel">Start Time</label>
+        <label for="start-time-picker" i18n="@@sessions.startLabel">Start Time</label>
         <p-datepicker formControlName="startTime" inputId="start-time-picker" [timeOnly]="true" />
       </div>
 
       <div class="input-group">
-        <label for="end-time-picker" i18n="@@createSession.endLabel">End Time</label>
+        <label for="end-time-picker" i18n="@@sessions.endLabel">End Time</label>
         <p-datepicker
           placeholder="Ongoing"
           i18n-placeholder="@@sessions.ongoing"
@@ -37,7 +37,7 @@
     </div>
     <div class="optionsRow">
       <div class="input-group">
-        <span class="form-label" i18n="@@createSession.stationLabel">Station</span>
+        <span class="form-label" i18n="@@sessions.stationLabel">Station</span>
         <div class="customSelect" [class.open]="isCustomSelectOpen()">
           <div class="customSelectHeading" (click)="toggleCustomSelect()">
             <p class="defaultOption">{{ selectedStationName() }}</p>
@@ -59,10 +59,10 @@
         </div>
       </div>
       <div class="input-group">
-        <span class="form-label" i18n="@@createSession.productsLabel">Products</span>
+        <span class="form-label" i18n="@@sessions.productsLabel">Products</span>
         <div class="customSelect" [class.open]="isCustomMultiSelectOpen()">
           <div class="customSelectHeading" (click)="toggleCustomMultiSelect()">
-            <p class="defaultOption" i18n="@@createSession.addProducts">Add products</p>
+            <p class="defaultOption" i18n="@@sessions.addProducts">Add products</p>
             <span class="material-symbols-outlined arrow"> expand_more </span>
           </div>
           @if (isCustomMultiSelectOpen()) {
@@ -123,7 +123,7 @@
               <div class="cardBody">
                 <div class="amountCont">
                   <p>
-                    <span i18n="@@createSession.amount">Amount:</span>
+                    <span i18n="@@sessions.amount">Amount:</span>
                     {{ getAmount(selectedProduct.id) }}
                   </p>
                   <p class="price">
@@ -132,7 +132,7 @@
                   </p>
                 </div>
                 <p class="total">
-                  <span i18n="@@createSession.totalLabel">Total:</span>
+                  <span i18n="@@sessions.totalLabel">Total:</span>
                   {{ getTotalPrice(selectedProduct) | currency: 'GEL' : '₾' : '1.2-2' }}
                 </p>
               </div>
@@ -165,7 +165,7 @@
         </button>
       }
       <h4 class="sum">
-        <span i18n="@@createSession.sum">Sum:</span>
+        <span i18n="@@sessions.sum">Sum:</span>
         {{ totalSum() | currency: 'GEL' : '₾' : '1.2-2' }}
       </h4>
     </div>
@@ -173,9 +173,9 @@
       @if (isSubmitting()) {
         <app-spinner></app-spinner>
       } @else if (!editableSessionID()) {
-        <p i18n="@@createSession.title">Create Session</p>
+        <p i18n="@@sessions.createTitle">Create Session</p>
       } @else {
-        <p i18n="@@editSession.title">Edit Session</p>
+        <p i18n="@@sessions.editTitle">Edit Session</p>
       }
     </button>
   </form>

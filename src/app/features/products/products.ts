@@ -74,7 +74,7 @@ export class Products implements OnInit {
       const minDelay = new Promise((resolve) => setTimeout(resolve, 800));
       const apiCall = this.productsService.updateProducts(product);
       await Promise.all([apiCall, minDelay]);
-      this.notify.showSuccess($localize`:@@commoont.updated:Updated`);
+      this.notify.showSuccess($localize`:@@common.updated:Updated`);
       this.editingId.set(null);
     } catch (error) {
       if (error instanceof Error) {

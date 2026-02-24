@@ -20,19 +20,19 @@
       [routerLinkActiveOptions]="{ exact: true }"
       (click)="toggleState()"
       class="mobile"
-      ><p i18n="@@sessionsLink">Sessions</p>
+      ><p i18n="@@nav.sessions">Sessions</p>
       <span class="material-symbols-outlined"> work </span>
     </a>
     <a routerLink="/products" routerLinkActive="active" (click)="toggleState()" class="mobile"
-      ><p i18n="@@productsLink">Products</p>
+      ><p i18n="@@nav.products">Products</p>
       <span class="material-symbols-outlined"> box_add </span>
     </a>
     <a routerLink="/analytics" routerLinkActive="active" (click)="toggleState()" class="mobile"
-      ><p i18n="@@analyticsLink">Analytics</p>
+      ><p i18n="@@nav.analytics">Analytics</p>
       <span class="material-symbols-outlined"> analytics </span>
     </a>
-    <a routerLink="/settings" routerLinkActive="active" (click)="toggleState()"
-      ><p i18n="@@settingLink">Settings</p>
+    <a routerLink="/nav.settings" routerLinkActive="active" (click)="toggleState()"
+      ><p i18n="@@nav.settings">Settings</p>
       @if (userProfile()?.avatar_url; as avatar) {
         <img [src]="avatar" class="avatar" alt="users avatar" />
       } @else {
@@ -40,7 +40,7 @@
       }
     </a>
     <a routerLink="/" (click)="toggleState()"
-      ><p i18n="@@HomePageLink">Home</p>
+      ><p i18n="@@nav.home">Home</p>
       <span class="material-symbols-outlined"> home </span>
     </a>
     <app-theme-switcher></app-theme-switcher>
@@ -49,7 +49,7 @@
         @if (loading()) {
           <app-spinner></app-spinner>
         } @else {
-          <span i18n="@@logOutBtn">Log out</span>
+          <span i18n="@@nav.logOut">Log out</span>
         }
       </button>
     </div>

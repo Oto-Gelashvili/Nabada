@@ -1,29 +1,30 @@
 <section id="sessions">
   <app-sessions-header
-    [(date)]="selectedDate"
-    [editMode]="editMode()"
+    [(date)]="state.selectedDate"
+    [editMode]="edit.editMode()"
     (dateChange)="onDateChange()"
-    (cancelEdit)="closeEditMode()"
+    (cancelEdit)="edit.cancelEditMode()"
     (createClick)="onCreateSession()"
   ></app-sessions-header>
+
   <div class="scheduler-container">
-    @if (loading()) {
+    @if (state.loading()) {
       <div class="loadingTemplate"></div>
     } @else {
       <div class="header-row">
         <div class="label-column empty-corner">
           <button
-            (click)="toggleEditMode()"
-            [class.submitBtn]="editMode()"
-            [disabled]="editMode() && hasInvalidStations()"
-            [class.disabled-btn]="editMode() && hasInvalidStations()"
+            (click)="edit.toggleEditMode()"
+            [class.submitBtn]="edit.editMode()"
+            [disabled]="edit.editMode() && edit.hasInvalidStations()"
+            [class.disabled-btn]="edit.editMode() && edit.hasInvalidStations()"
           >
-            @if (resetting()) {
+            @if (state.resetting()) {
               <app-spinner></app-spinner>
-            } @else if (editMode()) {
-              <span class="material-symbols-outlined"> check </span>
+            } @else if (edit.editMode()) {
+              <span class="material-symbols-outlined">check</span>
             } @else {
-              <span class="material-symbols-outlined editIcon"> edit </span>
+              <span class="material-symbols-outlined editIcon">edit</span>
             }
           </button>
         </div>
@@ -34,26 +35,27 @@
           }
         </div>
       </div>
-      @for (station of allStations(); track station.id) {
+
+      @for (station of edit.allStations(); track station.id) {
         <div class="station-row">
           <div class="label-column">
             <input
               [id]="'station-name-' + station.id"
               [attr.name]="'station-name-' + station.id"
               type="text"
-              [readonly]="!editMode()"
-              [class.editableInput]="editMode()"
+              [readonly]="!edit.editMode()"
+              [class.editableInput]="edit.editMode()"
               animate.enter="show-animated-enter-row"
               [(ngModel)]="station.name"
               required
               [class.error-border]="!station.name"
               aria-label="Station Name"
             />
-            @if (editMode()) {
+            @if (edit.editMode()) {
               <span
                 class="material-symbols-outlined removeIcon"
                 animate.enter="show-animated-enter-removeIcon"
-                (click)="removeStation(station.id)"
+                (click)="edit.removeStation(station.id)"
               >
                 remove
               </span>
@@ -64,7 +66,7 @@
           </div>
 
           <div class="timeline-track grid-lines">
-            @for (session of getSessionsForStation(station.id); track session.id) {
+            @for (session of sessionsByStation().get(station.id) ?? []; track session.id) {
               <div
                 class="session-card"
                 [ngClass]="[getSessionOverlapClass(session), getStateClass(session)]"
@@ -87,33 +89,36 @@
         </div>
       }
     }
-    @if (editMode()) {
+
+    @if (edit.editMode()) {
       <div
         class="station-row add-row"
         animate.enter="show-animated-enter-row"
         animate.leave="show-animated-leave-row"
       >
-        <div class="label-column" (click)="addStation()">
-          <span class="material-symbols-outlined addIcon"> add </span>
+        <div class="label-column" (click)="edit.addStation()">
+          <span class="material-symbols-outlined addIcon">add</span>
         </div>
         <div class="timeline-track grid-lines"></div>
       </div>
     }
   </div>
-  <h4 class="sum" i18n="@@createSession.sum">
-    Sum: {{ totalSum() | currency: 'GEL' : '₾' : '1.2-2' }}
+
+  <h4 class="sum" i18n="@@sessions.sum">
+    Sum: {{ state.totalDaySum() | currency: 'GEL' : '₾' : '1.2-2' }}
   </h4>
 </section>
+
 @if (showCreateModal()) {
   <app-create-session
     animate.enter="scale-in-animation"
     animate.leave="scale-out-animation"
     (close)="closeModal()"
-    [stations]="stations()"
-    [products]="products()"
-    [existingSessions]="sessions()"
-    [selectedDate]="selectedDate()"
+    [stations]="state.stations()"
+    [products]="state.products()"
+    [existingSessions]="state.sessions()"
+    [selectedDate]="state.selectedDate()"
     (sessionChanged)="onSessionChanged()"
-    [editableSessionID]="EditableSessionID()"
+    [editableSessionID]="editableSessionId()"
   ></app-create-session>
 }

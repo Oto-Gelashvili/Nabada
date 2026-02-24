@@ -144,7 +144,7 @@ export class StationsService {
     const {
       data: { user },
     } = await this.supabase.auth.getUser();
-    if (!user) throw new Error($localize`:@@common.notAuthenticated: User not Authenticated`);
+    if (!user) throw new Error($localize`:@@error.notAuthenticated: User not Authenticated`);
 
     const { data: result, error } = await this.supabase.rpc('update_session_smart', {
       p_session_id: sessionId,
@@ -159,12 +159,12 @@ export class StationsService {
     if (error) {
       console.error('Update Session Error:', error);
       if (error.message.includes('no_overlapping_sessions')) {
-        throw new Error($localize`:@@common.overlapError:Times are overlapping`);
+        throw new Error($localize`:@@error.overlapError:Times are overlapping`);
       }
       if (error.message.includes('check_times')) {
-        throw new Error($localize`:@@common.timeError:End time must be after start time`);
+        throw new Error($localize`:@@error.timeError:End time must be after start time`);
       }
-      throw new Error($localize`:@@common.updateError:Could not update session. Please try again.`);
+      throw new Error($localize`:@@error.updateError:Could not update session. Please try again.`);
     }
 
     return result;
@@ -174,7 +174,7 @@ export class StationsService {
     const { error } = await this.supabase.from('sessions').delete().eq('id', sessionId);
 
     if (error) {
-      throw new Error($localize`:@@common.deleteError:Could not delete. Please try again.`);
+      throw new Error($localize`:@@error.deleteError:Could not delete. Please try again.`);
     }
   }
 }

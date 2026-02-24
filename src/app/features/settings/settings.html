@@ -39,7 +39,7 @@
         </div>
         <div class="textCont">
           <div class="usernameCont">
-            <label for="username" i18n="@@settings.label.username">Username</label>
+            <label for="username" i18n="@@settings.labelUsername">Username</label>
             <div class="inputCont" [class.data-loading]="loading()">
               <input
                 id="username"
@@ -58,13 +58,13 @@
                 profileForm.get('username')?.hasError('required')) &&
               profileForm.get('username')?.touched
             ) {
-              <span class="error-msg" i18n="@@settings.error.minThreeChars"
+              <span class="error-msg" i18n="@@settings.errorMinChars"
                 >Must be at least 3 characters</span
               >
             }
           </div>
           <div class="emailCont">
-            <label for="email" i18n="@@settings.label.email">Email</label>
+            <label for="email" i18n="@@settings.labelEmail">Email</label>
 
             <div class="inputCont" [class.data-loading]="loading()">
               <input
@@ -79,7 +79,7 @@
             @if (
               profileForm.get('email')?.hasError('invalid') && profileForm.get('email')?.touched
             ) {
-              <span class="error-msg" i18n="@@settings.error.minThreeChars"
+              <span class="error-msg" i18n="@@settings.errorMinChars"
                 >Must be at least 3 characters</span
               >
             }
