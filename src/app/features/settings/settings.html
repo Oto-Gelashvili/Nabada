@@ -63,25 +63,29 @@
               >
             }
           </div>
-          <div class="emailCont">
-            <label for="email" i18n="@@settings.labelEmail">Email</label>
-
+          <div class="rateCont">
+            <label for="rate" i18n="@@settings.rate">Hourly rate</label>
             <div class="inputCont" [class.data-loading]="loading()">
               <input
-                id="email"
-                type="email"
+                id="rate"
+                min="0"
+                required
+                type="number"
                 [readonly]="!isEditing()"
-                formControlName="email"
+                formControlName="rate"
+                [class.error-border]="
+                  profileForm.get('rate')?.invalid && profileForm.get('rate')?.touched
+                "
                 [class.editableInput]="isEditing()"
                 animate.enter="show-animated-enter"
               />
             </div>
             @if (
-              profileForm.get('email')?.hasError('invalid') && profileForm.get('email')?.touched
+              (profileForm.get('rate')?.hasError('min') ||
+                profileForm.get('rate')?.hasError('required')) &&
+              profileForm.get('rate')?.touched
             ) {
-              <span class="error-msg" i18n="@@settings.errorMinChars"
-                >Must be at least 3 characters</span
-              >
+              <span class="error-msg" i18n="@@settings.errorRate">Must be a positive number</span>
             }
           </div>
         </div>
@@ -101,13 +105,35 @@
   </div>
   <div class="wrapper actionsCont">
     <h2 i18n="@@settings.manage">Manage Account</h2>
-    <div class="subInfo">
-      <p class="subDesc" i18n="@@settings.subDesc">Subscription Tier:</p>
-      <p class="subTier">Free</p>
-      <a routerLink="/subscription"
-        ><button i18n="@@settings.subChange" class="btn-secondary">Change Tier</button></a
+    <form [formGroup]="emailForm" (ngSubmit)="saveEmail()" class="emailForm">
+      <div class="emailCont">
+        <label for="email" i18n="@@settings.labelEmail">Email</label>
+        <div class="inputCont" [class.data-loading]="loading()">
+          <input
+            id="email"
+            type="email"
+            formControlName="email"
+            class="editableInput"
+            animate.enter="show-animated-enter"
+          />
+        </div>
+        @if (emailForm.get('email')?.hasError('email') && emailForm.get('email')?.touched) {
+          <span class="error-msg" i18n="@@settings.errorEmail">Please enter a valid email</span>
+        }
+      </div>
+      <button
+        type="submit"
+        class="btn-secondary"
+        [disabled]="updatingEmail() || emailForm.invalid || emailForm.pristine"
       >
-    </div>
+        @if (updatingEmail()) {
+          <app-spinner></app-spinner>
+        } @else {
+          <p i18n="@@common.save">Save</p>
+        }
+      </button>
+    </form>
+
     <button i18n="@@common.delete" class="btn-primary del" (click)="onDelete()">
       Delete Account
     </button>

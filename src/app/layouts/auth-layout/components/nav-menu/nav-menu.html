@@ -31,7 +31,7 @@
       ><p i18n="@@nav.analytics">Analytics</p>
       <span class="material-symbols-outlined"> analytics </span>
     </a>
-    <a routerLink="/nav.settings" routerLinkActive="active" (click)="toggleState()"
+    <a routerLink="/settings" routerLinkActive="active" (click)="toggleState()"
       ><p i18n="@@nav.settings">Settings</p>
       @if (userProfile()?.avatar_url; as avatar) {
         <img [src]="avatar" class="avatar" alt="users avatar" />

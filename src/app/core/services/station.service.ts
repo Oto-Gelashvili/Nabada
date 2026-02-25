@@ -121,7 +121,7 @@ export class StationsService {
       p_station_id: data.station_id,
       p_start_time: data.start_time,
       p_end_time: data.end_time || null,
-      p_hourly_rate: 8.0,
+      p_hourly_rate: data.hourly_rate,
       p_user_id: user.id,
       p_items: data.products || [],
     });
@@ -151,7 +151,7 @@ export class StationsService {
       p_station_id: data.station_id,
       p_start_time: data.start_time,
       p_end_time: data.end_time || null,
-      p_hourly_rate: 8.0,
+      p_hourly_rate: data.hourly_rate,
       p_user_id: user.id,
       p_items: data.products || [],
     });

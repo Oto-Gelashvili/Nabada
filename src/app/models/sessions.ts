@@ -23,4 +23,5 @@ export interface CreateSessionDTO {
     price_at_purchase: number;
     name: string;
   }[];
+  hourly_rate: number;
 }

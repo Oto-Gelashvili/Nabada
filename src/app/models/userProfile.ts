@@ -3,4 +3,5 @@ export interface UserProfile {
   username: string;
   avatar_url: string | null;
   email?: string;
+  hourly_rate: number;
 }

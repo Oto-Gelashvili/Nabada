@@ -93,13 +93,14 @@
     "settings.profileInfo": "პროფილის ინფო",
     "settings.labelUsername": "მეტსახელი",
     "settings.labelEmail": "ელ.ფოსტა",
+    "settings.errorEmail": "შეიყვანეთ ვალიდური ელ.ფოსტა",
     "settings.manage": "ანგარიშის მართვა",
-    "settings.subDesc": "გამოწერის დონე:",
-    "settings.subChange": "შეცვალე დონე",
     "settings.errorMinChars": "შეიყვანეთ 3 ასოზე მეტი",
     "settings.errorNoID": "ვერ დამახსოვრდა: მომხმარებლის ID მიუწვდომელია",
     "settings.errorLargeIMG": "ფოტა 2MB-ზომაზე ნაკლები უნდა იყოს",
     "settings.profileUpdated": "პროფილი განახლდა!",
-    "settings.emailSent": "დამადასტურებელი ბმული გამოიგზავნა ელ.ფოსტაზე!"
+    "settings.emailSent": "დამადასტურებელი ბმული გამოიგზავნა ელ.ფოსტაზე!",
+    "settings.rate": "საათობრივი ფასი",
+    "settings.errorRate": "აუცილებელია რიცხვი იყოს დადებითი"
   }
 }

@@ -4,6 +4,7 @@ import { Product } from '../../../models/products.model';
 import { StationsService } from '../station.service';
 import { ProductsService } from '../products.service';
 import { NotificationService } from '../Notification';
+import { SupabaseService } from '../supabase';
 
 /**
  * SessionStateService centralizes all shared state for the sessions feature.
@@ -13,12 +14,14 @@ import { NotificationService } from '../Notification';
 export class SessionStateService {
   private readonly stationsService = inject(StationsService);
   private readonly productsService = inject(ProductsService);
+  private readonly supabaseService = inject(SupabaseService);
   private readonly notify = inject(NotificationService);
 
   // ── Public state ──────────────────────────────────────────────────────────
   readonly selectedDate = signal<Date>(new Date());
   readonly loading = signal(false);
   readonly resetting = signal(false);
+  readonly hourlyRate = signal<number>(8.0);
 
   readonly stations = signal<Station[]>([]);
   readonly sessions = signal<ServiceSession[]>([]);
@@ -30,15 +33,19 @@ export class SessionStateService {
     action === 'initLoad' ? this.loading.set(true) : this.resetting.set(true);
 
     try {
-      const [stationsData, sessionsData, productsData] = await Promise.all([
+      const [stationsData, sessionsData, productsData, profile] = await Promise.all([
         this.stationsService.getStations(this.selectedDate()),
         this.stationsService.getSessions(this.selectedDate()),
         this.productsService.getProducts(),
+        this.supabaseService.getCurrentProfile(),
       ]);
 
       this.stations.set(stationsData);
       this.sessions.set(sessionsData);
       this.products.set(productsData);
+      if (profile?.hourly_rate != null) {
+        this.hourlyRate.set(profile.hourly_rate);
+      }
     } catch (error) {
       if (error instanceof Error) this.notify.showError(error.message);
     } finally {

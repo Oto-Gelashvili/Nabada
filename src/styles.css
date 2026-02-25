@@ -277,7 +277,8 @@ main {
   background-image: linear-gradient(to right, var(--error), var(--error));
 }
 
-.btn-primary:disabled {
+.btn-primary:disabled,
+.btn-secondary:disabled {
   cursor: not-allowed;
 }
 .del.btn-primary {

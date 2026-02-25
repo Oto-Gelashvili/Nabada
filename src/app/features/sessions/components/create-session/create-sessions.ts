@@ -3,7 +3,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { DatePickerModule } from 'primeng/datepicker';
 import { CheckboxModule } from 'primeng/checkbox';
 import { CurrencyPipe } from '@angular/common';
-import { ServiceSession, Station } from '../../../../models/sessions';
+import { CreateSessionDTO, ServiceSession, Station } from '../../../../models/sessions';
 import { Product } from '../../../../models/products.model';
 import { StationsService } from '../../../../core/services/station.service';
 import { NotificationService } from '../../../../core/services/Notification';
@@ -29,6 +29,7 @@ export class CreateSessionComponent implements OnInit {
   // ── Inputs / Outputs ──────────────────────────────────────────────────────
   stations = input<Station[]>([]);
   products = input<Product[]>([]);
+  hourlyRate = input<number>(8.0);
   editableSessionID = input<number | null>(null);
   existingSessions = input<ServiceSession[]>([]);
   selectedDate = input.required<Date>();
@@ -113,7 +114,7 @@ export class CreateSessionComponent implements OnInit {
   protected readonly totalSum = computed(() => {
     const sessionId = this.editableSessionID();
     const session = sessionId ? this.existingSessions().find((s) => s.id === sessionId) : null;
-    const hourlyRate = session?.hourly_rate ?? 8.0;
+    const hourlyRate = session?.hourly_rate ?? this.hourlyRate();
     return this.formService.buildTotalSum(this.products(), hourlyRate);
   });
 
@@ -174,11 +175,12 @@ export class CreateSessionComponent implements OnInit {
     }
 
     const products = this.formService.buildProductsPayload(this.products());
-    const payload = {
+    const payload: CreateSessionDTO = {
       station_id: stationId!,
       start_time: start.toISOString(),
       end_time: end?.toISOString() ?? null,
       products,
+      hourly_rate: this.hourlyRate(),
     };
 
     this.isSubmitting.set(true);

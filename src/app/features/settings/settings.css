@@ -33,14 +33,16 @@ form {
   flex-direction: column;
 }
 .usernameCont,
-.emailCont {
+.emailCont,
+.rateCont {
   font-size: 1.4rem;
   display: flex;
   flex-direction: column;
   position: relative;
 }
 .usernameCont label,
-.emailCont label {
+.emailCont label,
+.rateCont label {
   color: var(--secondary-color);
 }
 
@@ -48,7 +50,8 @@ form {
   color: var(--text-color);
 }
 .usernameCont input,
-.emailCont input {
+.emailCont input,
+.rateCont input {
   transition: 0.4s;
   border: 1px solid transparent;
   outline: 1px solid transparent;
@@ -81,6 +84,9 @@ h2 {
   --spinner-border-color: var(--primary-color);
   --spinner-primary-color: var(--background-color);
 }
+.btn-primary:valid:active {
+  transition: background-size 0.8s ease-in-out;
+}
 
 .formCard {
   display: flex;
@@ -89,8 +95,12 @@ h2 {
   gap: 4.8rem;
 }
 .usernameCont input.error-border,
-.emailCont input.error-border {
+.emailCont input.error-border,
+.rateCont input.error-border {
   border-color: var(--error);
+}
+.rateCont:has(input.error-border) {
+  margin-bottom: 0.8rem;
 }
 
 .avatar-placeholder {
@@ -151,25 +161,7 @@ h2 {
   z-index: var(--header-z);
   cursor: pointer;
 }
-.subDesc {
-  font-size: 1.6rem;
-}
-.subTier {
-  font-size: 1.6rem;
-  color: var(--secondary-color);
-}
 
-.subInfo {
-  display: flex;
-  flex-direction: column;
-  text-align: center;
-  justify-content: space-around;
-  gap: 1.2rem;
-  flex: 1;
-}
-.subInfo .btn-secondary {
-  width: 100%;
-}
 .actionsCont {
   justify-content: space-between;
   gap: 2.4rem;
@@ -178,10 +170,49 @@ h2 {
 }
 .actionsCont .btn-secondary {
   padding: 0.4rem 1.2rem;
+  color: var(--success);
+  background-image: linear-gradient(to right, var(--success), var(--success));
+  background-size: 0% 100%;
+  background-repeat: no-repeat;
+  background-position: left center;
+}
+.actionsCont .btn-secondary:hover,
+.actionsCont .btn-secondary:focus {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
 }
 
+.actionsCont .btn-secondary:active {
+  transition: background-size 0.8s ease-in-out;
+  background-size: 100% 100%;
+  color: #fff;
+}
 .show-animated-enter {
   animation: show-animated-enter 2s;
+}
+
+.emailForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.emailCont label {
+  margin-bottom: 0.4rem;
+}
+.emailCont input {
+  width: 100%;
+}
+
+.emailCont input.editableInput {
+  padding: 0.8rem 1.6rem;
+  border-radius: 8px;
+  border-color: var(--border-color);
+  background-color: var(--accent-color);
+}
+
+.emailCont input.editableInput:focus {
+  outline-color: var(--primary-color);
 }
 
 @keyframes show-animated-enter {

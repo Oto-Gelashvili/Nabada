@@ -101,8 +101,9 @@ export class SessionFormService {
 
     if (vals.startTime && vals.endTime) {
       let diffMs = vals.endTime.getTime() - vals.startTime.getTime();
-      if (diffMs < 0) diffMs += 24 * 60 * 60 * 1000; // spans midnight
-      sum += (diffMs / (1000 * 60 * 60)) * hourlyRate;
+      if (diffMs < 0) diffMs += 24 * 60 * 60 * 1000;
+      const diffMinutes = Math.ceil(diffMs / (1000 * 60));
+      sum += (diffMinutes / 60) * hourlyRate;
     }
 
     for (const item of this.amounts()) {
