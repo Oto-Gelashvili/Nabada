@@ -1,0 +1,82 @@
+@if (data().length === 0) {
+  <div class="empty-state">
+    <span class="material-symbols-outlined">bar_chart</span>
+    <p>No data for this period</p>
+  </div>
+} @else {
+  <div class="graph-container">
+    <svg
+      #svgEl
+      [attr.viewBox]="'0 0 ' + svgWidth + ' ' + svgHeight"
+      width="100%"
+      class="graph-svg"
+      (mousemove)="onMouseMove($event, svgEl)"
+      (mouseleave)="onMouseLeave()"
+    >
+      <defs>
+        <linearGradient id="incomeGradient" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="var(--primary-color)" stop-opacity="0.3" />
+          <stop offset="100%" stop-color="var(--primary-color)" stop-opacity="0" />
+        </linearGradient>
+      </defs>
+
+      <!-- Y axis grid lines + labels -->
+      @for (label of yAxisLabels; track label.value) {
+        <line
+          [attr.x1]="paddingLeft"
+          [attr.y1]="label.y"
+          [attr.x2]="svgWidth - paddingRight"
+          [attr.y2]="label.y"
+          class="grid-line"
+        />
+        <text [attr.x]="paddingLeft - 8" [attr.y]="label.y + 4" class="axis-label y-label">
+          ₾{{ label.value | number: '1.0-0' }}
+        </text>
+      }
+
+      <!-- X axis labels -->
+      @for (pt of plottedPoints; track pt.date) {
+        <text [attr.x]="pt.x" [attr.y]="paddingTop + plotHeight + 30" class="axis-label x-label">
+          {{ pt.date }}
+        </text>
+      }
+
+      <!-- Gradient fill area -->
+      <path [attr.d]="fillPath" fill="url(#incomeGradient)" />
+
+      <!-- Line -->
+      <path
+        [attr.d]="linePath"
+        fill="none"
+        stroke="var(--primary-color)"
+        stroke-width="2.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+
+      <!-- Dots -->
+      @for (pt of plottedPoints; track pt.date; let i = $index) {
+        <circle
+          [attr.cx]="pt.x"
+          [attr.cy]="pt.y"
+          class="data-dot"
+          [class.data-dot--active]="tooltip()?.index === i"
+        />
+      }
+
+      <!-- Tooltip -->
+      @if (tooltip(); as tip) {
+        @let point = plottedPoints[tip.index];
+        <g
+          [attr.transform]="
+            'translate(' + (tip.x + (tip.x > svgWidth - 160 ? -140 : 12)) + ',' + (tip.y - 25) + ')'
+          "
+        >
+          <rect x="0" y="0" width="124" height="44" rx="8" class="tooltip-bg" />
+          <text x="12" y="16" class="tooltip-date">{{ point.date }}</text>
+          <text x="12" y="34" class="tooltip-value">₾{{ point.total }}</text>
+        </g>
+      }
+    </svg>
+  </div>
+}
