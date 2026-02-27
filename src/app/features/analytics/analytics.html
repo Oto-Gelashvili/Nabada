@@ -24,5 +24,9 @@
     </div>
   </div>
 
-  <app-line-graph [data]="dataPoints" />
+  @if (loading()) {
+    <div class="graph-skeleton"></div>
+  } @else {
+    <app-line-graph [data]="dataPoints()" />
+  }
 </div>

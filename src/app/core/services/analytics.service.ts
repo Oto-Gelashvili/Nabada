@@ -1,0 +1,112 @@
+import { inject, Injectable } from '@angular/core';
+import { SUPABASE_CLIENT } from './supabase.token';
+import { GraphPoint } from '../../features/analytics/models/analytics.models';
+
+type Granularity = 'day' | 'week' | 'month';
+
+@Injectable({ providedIn: 'root' })
+export class AnalyticsService {
+  private readonly supabase = inject(SUPABASE_CLIENT);
+
+  async getDailyIncome(startDate: Date, endDate: Date): Promise<GraphPoint[]> {
+    const startStr = new Date(startDate).toISOString();
+    const end = new Date(endDate);
+    end.setHours(23, 59, 59, 999);
+    const endStr = end.toISOString();
+
+    const { data, error } = await this.supabase
+      .from('sessions')
+      .select('start_time, total_cost')
+      .gte('start_time', startStr)
+      .lte('start_time', endStr)
+      .not('total_cost', 'is', null);
+
+    if (error) {
+      throw new Error($localize`:@@error.fetchingError:Could not fetch data. Please try again.`);
+    }
+
+    const diffDays = Math.round((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
+    const granularity: Granularity = diffDays <= 14 ? 'day' : diffDays <= 90 ? 'week' : 'month';
+
+    return this.groupData(data, startDate, endDate, granularity);
+  }
+
+  private groupData(
+    sessions: { start_time: string; total_cost: number }[],
+    startDate: Date,
+    endDate: Date,
+    granularity: Granularity,
+  ): GraphPoint[] {
+    const buckets = new Map<string, number>();
+
+    for (const session of sessions) {
+      const date = new Date(session.start_time);
+      const key = this.getBucketKey(date, granularity);
+      buckets.set(key, (buckets.get(key) ?? 0) + Number(session.total_cost));
+    }
+
+    const points: GraphPoint[] = [];
+    const selectedDay = new Date(startDate);
+    selectedDay.setHours(0, 0, 0, 0);
+
+    const endDay = new Date(endDate);
+    endDay.setHours(23, 59, 59, 999);
+
+    while (selectedDay <= endDay) {
+      const key = this.getBucketKey(selectedDay, granularity);
+
+      points.push({
+        date: this.getLabel(selectedDay, granularity),
+        total: buckets.get(key) ?? 0,
+      });
+
+      if (granularity === 'day') {
+        selectedDay.setDate(selectedDay.getDate() + 1);
+      } else if (granularity === 'week') {
+        selectedDay.setDate(selectedDay.getDate() + 7);
+      } else {
+        selectedDay.setMonth(selectedDay.getMonth() + 1);
+      }
+    }
+
+    return points;
+  }
+
+  private getBucketKey(date: Date, granularity: Granularity): string {
+    if (granularity === 'day') {
+      // "2025-01-07"
+      return date.toISOString().slice(0, 10);
+    }
+
+    if (granularity === 'week') {
+      // ISO week number: we find the Monday of the week this date belongs to
+      const monday = new Date(date);
+      const day = date.getDay(); // 0=Sun, 1=Mon ... 6=Sat
+      // getDay() returns 0 for Sunday, we treat Sunday as end of week
+      const diff = day === 0 ? -6 : 1 - day;
+      monday.setDate(date.getDate() + diff);
+      return monday.toISOString().slice(0, 10);
+    }
+
+    // month: "2025-01"
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, '0');
+    return `${y}-${m}`;
+  }
+
+  private getLabel(date: Date, granularity: Granularity): string {
+    if (granularity === 'day') {
+      return date.toLocaleDateString('en-GB', { month: 'short', day: 'numeric' });
+      // → "Jan 7"
+    }
+
+    if (granularity === 'week') {
+      return date.toLocaleDateString('en-GB', { month: 'short', day: 'numeric' });
+      // → "Jan 6" (the Monday that starts the week)
+    }
+
+    // month
+    return date.toLocaleDateString('en-GB', { month: 'short', year: 'numeric' });
+    // → "Jan 2025"
+  }
+}

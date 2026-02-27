@@ -120,8 +120,31 @@ p-datepicker {
   background: var(--hover-color);
   color: var(--primary-color);
 }
+
 @media screen and (max-width: 768px) {
   .heading {
     flex-direction: column;
+  }
+}
+.graph-skeleton {
+  max-width: 1000px;
+  min-height: 340px;
+  border-radius: 16px;
+  background: linear-gradient(
+    90deg,
+    var(--border-color) 25%,
+    var(--accent-color) 50%,
+    var(--border-color) 75%
+  );
+  background-size: 400% 100%;
+  animation: shimmer 2s infinite linear;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: -100% 0;
   }
 }

@@ -1,4 +1,3 @@
-import { DecimalPipe } from '@angular/common';
 import { Component, input, signal } from '@angular/core';
 import { GraphPoint } from '../models/analytics.models';
 
@@ -17,7 +16,7 @@ interface TooltipState {
 
 @Component({
   selector: 'app-line-graph',
-  imports: [DecimalPipe],
+  imports: [],
   templateUrl: './line-graph.html',
   styleUrl: './line-graph.css',
 })
@@ -107,5 +106,12 @@ export class LineGraphComponent {
 
   onMouseLeave(): void {
     this.tooltip.set(null);
+  }
+  formatYLabel(value: number): string {
+    if (value >= 1000) {
+      const k = value / 1000;
+      return '₾' + (k % 1 === 0 ? k : k.toFixed(1)) + 'k';
+    }
+    return '₾' + Math.round(value);
   }
 }

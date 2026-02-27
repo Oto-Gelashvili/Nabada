@@ -1,7 +1,8 @@
 .graph-container {
   width: 100%;
   overflow: auto;
-  max-width: calc(100vw - var(--padding-inline) * 2);
+  /* max-width: calc(100vw - var(--padding-inline) * 2); */
+  max-width: 1000px;
   -webkit-overflow-scrolling: touch;
   border-radius: 16px;
   background-color: var(--hover-color);
@@ -13,7 +14,9 @@
   padding: 2.4rem;
   cursor: crosshair;
   min-width: 1000px;
-  min-height: 300px;
+  min-height: 340px;
+  max-height: 340px;
+  max-width: 1000px;
   overflow: visible;
 }
 
