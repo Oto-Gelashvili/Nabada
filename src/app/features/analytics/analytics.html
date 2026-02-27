@@ -1,6 +1,27 @@
 <div id="analyticsPage">
   <div class="heading">
     <h2>Analytics</h2>
+
+    <div class="date-range">
+      <p-datepicker
+        [(ngModel)]="startDate"
+        [maxDate]="endDate()"
+        (ngModelChange)="onDateChange()"
+        dateFormat="M d, yy"
+        [showIcon]="true"
+      />
+
+      <span class="date-divider">—</span>
+
+      <p-datepicker
+        [(ngModel)]="endDate"
+        [minDate]="startDate()"
+        [maxDate]="today"
+        (ngModelChange)="onDateChange()"
+        dateFormat="M d, yy"
+        [showIcon]="true"
+      />
+    </div>
   </div>
 
   <app-line-graph [data]="dataPoints" />

@@ -7,3 +7,121 @@
   flex-direction: column;
   gap: 2.4rem;
 }
+
+.heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.6rem;
+}
+
+.heading h2 {
+  font-size: 2.4rem;
+  color: var(--secondary-color);
+}
+
+.date-range {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.date-divider {
+  color: var(--secondary-color);
+  opacity: 0.7;
+}
+:host ::ng-deep .p-inputtext {
+  font-size: 1.4rem;
+}
+:host ::ng-deep .p-datepicker-panel {
+  background: var(--accent-color);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  color: var(--text-color);
+  margin-top: 0.4rem;
+}
+p-datepicker {
+  --p-datepicker-panel-background: var(--primary-color);
+  --p-inputtext-background: var(--accent-color);
+  --p-inputtext-color: var(--text-color);
+  --p-inputtext-border-color: var(--border-color);
+  --p-inputtext-hover-border-color: var(--primary-color);
+  --p-inputtext-focus-border-color: var(--primary-color);
+  --p-inputtext-focus-ring-color: transparent;
+  --p-inputtext-placeholder-color: var(--text-color);
+}
+:host ::ng-deep .p-datepicker-header {
+  background-color: var(--accent-color);
+  border-bottom: 1px solid var(--border-color);
+  color: var(--primary-color);
+}
+
+:host ::ng-deep .p-datepicker-prev-button,
+:host ::ng-deep .p-datepicker-next-button {
+  color: var(--secondary-color);
+}
+:host ::ng-deep .p-button-text.p-button-secondary:not(:disabled):hover {
+  background: var(--hover-color);
+  color: var(--secondary-color);
+  border-radius: 50%;
+  transition: 0.4s;
+}
+:host ::ng-deep .p-datepicker-select-month,
+:host ::ng-deep .p-datepicker-select-year {
+  padding: 0.2rem 0.8rem;
+  color: var(--secondary-color);
+  border-radius: 50rem;
+  font-size: 1.2rem;
+}
+:host ::ng-deep .p-datepicker-select-month:hover,
+:host ::ng-deep .p-datepicker-select-year:hover {
+  background: var(--hover-color);
+  color: var(--primary-color);
+}
+:host ::ng-deep .p-datepicker-weekday-cell {
+  padding: 0.4rem;
+}
+:host ::ng-deep .p-datepicker-weekday {
+  font-weight: 400;
+  color: var(--secondary-color);
+  font-size: 1.2rem;
+}
+
+:host ::ng-deep .p-datepicker-day,
+:host ::ng-deep .p-datepicker-month,
+:host ::ng-deep .p-datepicker-year {
+  padding: 1.2rem;
+  font-size: 1.2rem;
+  color: var(--text-color);
+}
+:host ::ng-deep .p-datepicker-month:not(.p-datepicker-month-selected):not(.p-disabled):hover,
+:host ::ng-deep .p-datepicker-day:not(.p-datepicker-day-selected):not(.p-disabled):hover,
+:host ::ng-deep .p-datepicker-year:not(.p-datepicker-year-selected):not(.p-disabled):hover {
+  background: var(--hover-color);
+  color: var(--primary-color);
+}
+
+:host ::ng-deep .p-datepicker-day-selected,
+:host ::ng-deep .p-datepicker-month-selected,
+:host ::ng-deep .p-datepicker-year-selected {
+  background: transparent;
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
+:host ::ng-deep .p-datepicker-day-selected:hover,
+:host ::ng-deep .p-datepicker-month-selected:hover,
+:host ::ng-deep .p-datepicker-year-selected:hover {
+  background: var(--primary-color);
+  color: #fff;
+  transition: 0.4s;
+}
+:host ::ng-deep .p-datepicker-today > .p-datepicker-day {
+  background: var(--hover-color);
+  color: var(--primary-color);
+}
+@media screen and (max-width: 768px) {
+  .heading {
+    flex-direction: column;
+  }
+}
