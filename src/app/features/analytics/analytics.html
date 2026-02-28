@@ -26,7 +26,40 @@
 
   @if (loading()) {
     <div class="graph-skeleton"></div>
+    <div class="stations-skeleton"></div>
   } @else {
     <app-line-graph [data]="dataPoints()" animate.enter="scale-in-animation" />
+    @if (stationsData().length > 0) {
+      <section class="stationData" animate.enter="scale-in-animation">
+        <div class="stationHeading">
+          <h3>Station incomes</h3>
+          <app-sorter (sortChanged)="onSortChange($event)" />
+        </div>
+        <div class="stationBody">
+          @for (station of sortedStations(); track station.id; let i = $index) {
+            <div class="station-row">
+              <div class="station-row-header">
+                <span class="station-rank">#{{ i + 1 }}</span>
+                <span class="station-name">{{ station.name }}</span>
+              </div>
+              <div class="station-stats">
+                <div class="stat">
+                  <span class="stat-label">Total</span>
+                  <span class="stat-value total">{{ station.total_cost | formatCurrency }} </span>
+                </div>
+                <div class="stat">
+                  <span class="stat-label">Gaming</span>
+                  <span class="stat-value">{{ station.gaming_cost | formatCurrency }} </span>
+                </div>
+                <div class="stat">
+                  <span class="stat-label">Products</span>
+                  <span class="stat-value">{{ station.products_cost | formatCurrency }} </span>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      </section>
+    }
   }
 </div>

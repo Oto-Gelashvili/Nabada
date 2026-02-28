@@ -121,11 +121,6 @@ p-datepicker {
   color: var(--primary-color);
 }
 
-@media screen and (max-width: 768px) {
-  .heading {
-    flex-direction: column;
-  }
-}
 .graph-skeleton {
   max-width: 1000px;
   min-height: 340px;
@@ -146,5 +141,138 @@ p-datepicker {
   }
   100% {
     background-position: -100% 0;
+  }
+}
+.stationData {
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+  background-color: var(--hover-color);
+  border-radius: 16px;
+  padding: 2.4rem;
+  width: fit-content;
+  overflow-y: auto;
+  max-height: 450px;
+}
+.stationHeading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4.8rem;
+}
+.stationHeading h3 {
+  font-size: 1.6rem;
+  color: var(--secondary-color);
+  font-weight: 500;
+}
+.stationBody {
+  display: flex;
+  flex-direction: column;
+  border-radius: 12px;
+  /* overflow: hidden; */
+  border: 1px solid var(--border-color);
+}
+
+.station-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.4rem 1.6rem;
+  gap: 1.6rem;
+  border-bottom: 1px solid var(--border-color);
+  transition: 0.4s;
+  cursor: pointer;
+}
+
+.station-row:last-child {
+  border-bottom: none;
+}
+
+.station-row:hover {
+  background-color: var(--accent-color);
+}
+
+.station-row-header {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  min-width: 160px;
+}
+
+.station-rank {
+  font-size: 1.2rem;
+  color: var(--text-color);
+}
+
+.station-name {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: var(--secondary-color);
+}
+
+.station-stats {
+  display: flex;
+  align-items: center;
+  gap: 2.4rem;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.2rem;
+}
+
+.stat-label {
+  font-size: 1.1rem;
+  color: var(--text-color);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.stat-value {
+  font-size: 1.4rem;
+  font-weight: 500;
+  color: var(--secondary-color);
+}
+
+.stat-value.total {
+  color: var(--primary-color);
+  font-weight: 700;
+}
+
+@media screen and (max-width: 768px) {
+  .heading {
+    flex-direction: column;
+  }
+  .station-row-header {
+    min-width: unset;
+  }
+  .station-row {
+    gap: 4.8rem;
+  }
+}
+@media screen and (max-width: 475px) {
+  .stationData {
+    width: 100%;
+  }
+  .stationHeading {
+    flex-direction: column;
+    gap: 1.6rem;
+  }
+  .station-row {
+    gap: 1.2rem;
+  }
+  .station-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .station-stats {
+    gap: 1.6rem;
+    width: 100%;
+    justify-content: space-between;
+  }
+  .stat {
+    align-items: center;
   }
 }

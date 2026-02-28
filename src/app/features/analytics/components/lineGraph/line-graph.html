@@ -30,7 +30,7 @@
           class="grid-line"
         />
         <text [attr.x]="paddingLeft - 8" [attr.y]="label.y + 4" class="axis-label y-label">
-          {{ formatYLabel(label.value) }}
+          {{ label.value | formatCurrency }}
         </text>
       }
 

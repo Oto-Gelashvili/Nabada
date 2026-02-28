@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { SUPABASE_CLIENT } from './supabase.token';
-import { GraphPoint } from '../../features/analytics/models/analytics.models';
+import { GraphPoint, StationAnalytics } from '../../features/analytics/models/analytics.models';
 
 type Granularity = 'day' | 'week' | 'month';
 
@@ -108,5 +108,53 @@ export class AnalyticsService {
     // month
     return date.toLocaleDateString('en-GB', { month: 'short', year: 'numeric' });
     // → "Jan 2025"
+  }
+
+  async getStationsAnalytics(startDate: Date, endDate: Date): Promise<StationAnalytics[]> {
+    const startStr = new Date(startDate).toISOString();
+    const end = new Date(endDate);
+    end.setHours(23, 59, 59, 999);
+
+    const [{ data: sessions, error: sessionsError }, { data: stations, error: stationsError }] =
+      await Promise.all([
+        this.supabase
+          .from('sessions')
+          .select('station_id, total_cost, gaming_cost, products_cost')
+          .gte('start_time', startStr)
+          .lte('start_time', end.toISOString()),
+        this.supabase
+          .from('stations')
+          .select('id, name')
+          .lte('created_at', end.toISOString())
+          .or(`deleted_at.is.null,deleted_at.gte.${startStr}`)
+          .order('display_order', { ascending: true }),
+      ]);
+
+    if (sessionsError || stationsError)
+      throw new Error($localize`:@@error.fetchingError:Could not fetch data. Please try again.`);
+
+    const byStation = new Map<number, Omit<StationAnalytics, 'id' | 'name'>>();
+    for (const session of sessions) {
+      const existing = byStation.get(session.station_id);
+      if (existing) {
+        existing.total_cost += Number(session.total_cost ?? 0);
+        existing.gaming_cost += Number(session.gaming_cost ?? 0);
+        existing.products_cost += Number(session.products_cost ?? 0);
+      } else {
+        byStation.set(session.station_id, {
+          total_cost: Number(session.total_cost ?? 0),
+          gaming_cost: Number(session.gaming_cost ?? 0),
+          products_cost: Number(session.products_cost ?? 0),
+        });
+      }
+    }
+
+    return stations
+      .map((station) => ({
+        id: station.id,
+        name: station.name,
+        ...(byStation.get(station.id) ?? { total_cost: 0, gaming_cost: 0, products_cost: 0 }),
+      }))
+      .sort((a, b) => b.total_cost - a.total_cost);
   }
 }
