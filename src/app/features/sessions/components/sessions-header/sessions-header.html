@@ -6,21 +6,12 @@
         <span class="material-symbols-outlined"> cancel </span>
       </button>
     } @else {
-      <div class="datePickerCont">
-        <h3 (click)="openDatePicker()" title="Change Date">
-          {{ date() | date: 'MMMM d, y' }}
-        </h3>
-
-        <input
-          id="hidden-picker"
-          #datePickerInput
-          type="date"
-          [value]="dateInputValue()"
-          [max]="maxDate()"
-          (change)="onDatePicked($event)"
-          class="hidden-picker"
-        />
-      </div>
+      <p-datepicker
+        [(ngModel)]="date"
+        [maxDate]="today"
+        dateFormat="MM d, yy"
+        class="session-datepicker"
+      />
 
       <div class="arrowsCont">
         <span
