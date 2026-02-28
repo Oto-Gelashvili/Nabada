@@ -15,8 +15,7 @@
 .dateCont {
   display: flex;
   align-items: center;
-  gap: 0;
-  flex-direction: row-reverse;
+  gap: 0.2rem;
 }
 
 .arrowsCont {

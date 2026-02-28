@@ -6,13 +6,6 @@
         <span class="material-symbols-outlined"> cancel </span>
       </button>
     } @else {
-      <p-datepicker
-        [(ngModel)]="date"
-        [maxDate]="today"
-        dateFormat="MM d, yy"
-        class="session-datepicker"
-      />
-
       <div class="arrowsCont">
         <span
           class="material-symbols-outlined"
@@ -34,6 +27,13 @@
           chevron_forward
         </span>
       </div>
+
+      <p-datepicker
+        [(ngModel)]="date"
+        [maxDate]="today"
+        dateFormat="MM d, yy"
+        class="session-datepicker"
+      />
     }
   </div>
 
