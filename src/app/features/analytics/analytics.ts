@@ -4,11 +4,9 @@ import { DatePickerModule } from 'primeng/datepicker';
 import {
   GraphPoint,
   PRODUCT_SORT_OPTIONS,
-  ProductSortOption,
   SessionItems,
   STATION_SORT_OPTIONS,
   StationAnalytics,
-  StationSortOption,
 } from './models/analytics.models';
 import { LineGraphComponent } from './components/lineGraph/line-graph';
 import { AnalyticsService } from '../../core/services/analytics.service';
@@ -42,7 +40,7 @@ export class Analytics implements OnInit {
   readonly productsTotalRevenue = computed(() =>
     this.productsData().reduce((sum, p) => sum + p.total_revenue, 0),
   );
-  readonly TotalRevenue = computed(() =>
+  readonly totalRevenue = computed(() =>
     this.stationsData().reduce((sum, p) => sum + p.total_cost, 0),
   );
 
@@ -78,45 +76,47 @@ export class Analytics implements OnInit {
   }
 
   onStationSortChange(option: string) {
-    const sort = option as StationSortOption;
-    this.stationsData.set(this.sortStations(this.stationsData(), sort));
+    this.stationsData.set(this.sortStations(this.stationsData(), option));
   }
 
   onProductSortChange(option: string) {
-    const sort = option as ProductSortOption;
-    this.productsData.set(this.sortProducts(this.productsData(), sort));
+    this.productsData.set(this.sortProducts(this.productsData(), option));
   }
 
-  private sortStations(data: StationAnalytics[], sort: StationSortOption): StationAnalytics[] {
+  private sortStations(data: StationAnalytics[], sort: string): StationAnalytics[] {
     return [...data].sort((a, b) => {
       switch (sort) {
-        case 'Decreasing total':
+        case 'dec-total':
           return b.total_cost - a.total_cost;
-        case 'Increasing total':
+        case 'inc-total':
           return a.total_cost - b.total_cost;
-        case 'Decreasing gaming':
+        case 'dec-gaming':
           return b.gaming_cost - a.gaming_cost;
-        case 'Increasing gaming':
+        case 'inc-gaming':
           return a.gaming_cost - b.gaming_cost;
-        case 'Decreasing products':
+        case 'dec-products':
           return b.products_cost - a.products_cost;
-        case 'Increasing products':
+        case 'inc-products':
           return a.products_cost - b.products_cost;
+        default:
+          return 0;
       }
     });
   }
 
-  private sortProducts(data: SessionItems[], sort: ProductSortOption): SessionItems[] {
+  private sortProducts(data: SessionItems[], sort: string): SessionItems[] {
     return [...data].sort((a, b) => {
       switch (sort) {
-        case 'Decreasing total':
+        case 'dec-total':
           return b.total_revenue - a.total_revenue;
-        case 'Increasing total':
+        case 'inc-total':
           return a.total_revenue - b.total_revenue;
-        case 'Decreasing quantity':
+        case 'dec-quantity':
           return b.quantity - a.quantity;
-        case 'Increasing quantity':
+        case 'inc-quantity':
           return a.quantity - b.quantity;
+        default:
+          return 0;
       }
     });
   }

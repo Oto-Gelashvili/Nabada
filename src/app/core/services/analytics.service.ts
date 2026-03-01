@@ -99,18 +99,19 @@ export class AnalyticsService {
   }
 
   private getLabel(date: Date, granularity: Granularity): string {
+    //undefined defaults to prefered locale(setting ka-ge didnt work btw)
     if (granularity === 'day') {
-      return date.toLocaleDateString('en-GB', { month: 'short', day: 'numeric' });
+      return date.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
       // → "Jan 7"
     }
 
     if (granularity === 'week') {
-      return date.toLocaleDateString('en-GB', { month: 'short', day: 'numeric' });
+      return date.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
       // → "Jan 6" (the Monday that starts the week)
     }
 
     // month
-    return date.toLocaleDateString('en-GB', { month: 'short', year: 'numeric' });
+    return date.toLocaleDateString(undefined, { month: 'short', year: 'numeric' });
     // → "Jan 2025"
   }
 

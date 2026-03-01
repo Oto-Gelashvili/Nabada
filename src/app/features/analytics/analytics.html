@@ -1,6 +1,6 @@
 <div id="analyticsPage">
   <div class="heading">
-    <h2>Analytics</h2>
+    <h2 i18n="@@analytics.pageTitle">Analytics</h2>
 
     <div class="date-range">
       <p-datepicker
@@ -36,9 +36,9 @@
       @if (stationsData().length > 0) {
         <section class="stationData" animate.enter="scale-in-animation">
           <div class="stationHeading">
-            <h3>
+            <h3 i18n="@@analytics.stationIncomes">
               Station incomes
-              <span class="total-badge">{{ TotalRevenue() | formatCurrency }}</span>
+              <span class="total-badge">{{ totalRevenue() | formatCurrency }}</span>
             </h3>
             <app-sorter
               [options]="stationSortOptions"
@@ -54,15 +54,15 @@
                 </div>
                 <div class="station-stats">
                   <div class="stat">
-                    <span class="stat-label">Total</span>
+                    <span class="stat-label" i18n="@@analytics.total">Total</span>
                     <span class="stat-value total">{{ station.total_cost | formatCurrency }} </span>
                   </div>
                   <div class="stat">
-                    <span class="stat-label">Gaming</span>
+                    <span class="stat-label" i18n="@@analytics.gaming">Gaming</span>
                     <span class="stat-value">{{ station.gaming_cost | formatCurrency }} </span>
                   </div>
                   <div class="stat">
-                    <span class="stat-label">Products</span>
+                    <span class="stat-label" i18n="@@analytics.products">Products</span>
                     <span class="stat-value">{{ station.products_cost | formatCurrency }} </span>
                   </div>
                 </div>
@@ -74,7 +74,7 @@
       @if (productsData().length > 0) {
         <section class="stationData" animate.enter="scale-in-animation">
           <div class="stationHeading">
-            <h3>
+            <h3 i18n="@@analytics.productsIncome">
               Products income
               <span class="total-badge">{{ productsTotalRevenue() | formatCurrency }}</span>
             </h3>
@@ -92,13 +92,13 @@
                 </div>
                 <div class="station-stats">
                   <div class="stat">
-                    <span class="stat-label">Total</span>
+                    <span class="stat-label" i18n="@@analytics.total">Total</span>
                     <span class="stat-value total"
                       >{{ product.total_revenue | formatCurrency }}
                     </span>
                   </div>
                   <div class="stat">
-                    <span class="stat-label">Amount</span>
+                    <span class="stat-label" i18n="@@analytics.amount">Amount</span>
                     <span class="stat-value">{{ product.quantity }} </span>
                   </div>
                 </div>

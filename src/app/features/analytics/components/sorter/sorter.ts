@@ -1,4 +1,5 @@
 import { Component, input, OnInit, output, signal } from '@angular/core';
+import { SortOption } from '../../models/analytics.models';
 
 @Component({
   selector: 'app-sorter',
@@ -7,11 +8,11 @@ import { Component, input, OnInit, output, signal } from '@angular/core';
   styleUrl: './sorter.css',
 })
 export class SorterComponent implements OnInit {
-  options = input.required<string[]>();
+  options = input.required<SortOption[]>();
   sortChanged = output<string>();
 
   readonly isOpen = signal(false);
-  readonly selectedOption = signal<string>('');
+  readonly selectedOption = signal<SortOption | null>(null);
 
   ngOnInit() {
     const first = this.options()[0];
@@ -21,9 +22,9 @@ export class SorterComponent implements OnInit {
     this.isOpen.update((v) => !v);
   }
 
-  select(option: string): void {
+  select(option: SortOption): void {
     this.selectedOption.set(option);
     this.isOpen.set(false);
-    this.sortChanged.emit(option);
+    this.sortChanged.emit(option.key);
   }
 }

@@ -91,6 +91,21 @@
     "common.confirmation": "Confirmation",
     "common.confirm": " Confirm ",
     "nav.language": "ქარ",
-    "nav.theme": "Theme"
+    "nav.theme": "Theme",
+    "analytics.stationIncomes": "Station incomes",
+    "analytics.productsIncome": "Products income",
+    "analytics.total": "Total",
+    "analytics.gaming": "Gaming",
+    "analytics.products": "Products",
+    "analytics.amount": "Amount",
+    "analytics.pageTitle": "Analytics",
+    "analytics.decTotal": "Decreasing total",
+    "analytics.incTotal": "Increasing total",
+    "analytics.decGaming": "Decreasing gaming",
+    "analytics.incGaming": "Increasing gaming",
+    "analytics.decProducts": "Decreasing products",
+    "analytics.incProducts": "Increasing products",
+    "analytics.decQuantity": "Decreasing quantity",
+    "analytics.incQuantity": "Increasing quantity"
   }
 }
