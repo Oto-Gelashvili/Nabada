@@ -26,7 +26,10 @@
 
   @if (loading()) {
     <div class="graph-skeleton"></div>
-    <div class="stations-skeleton"></div>
+    <div class="dataSectionsCont">
+      <div class="stations-skeleton"></div>
+      <div class="stations-skeleton"></div>
+    </div>
   } @else {
     <app-line-graph [data]="dataPoints()" animate.enter="scale-in-animation" />
     <div class="dataSectionsCont">
