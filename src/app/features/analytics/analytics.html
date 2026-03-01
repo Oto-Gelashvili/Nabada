@@ -33,10 +33,10 @@
       <section class="stationData" animate.enter="scale-in-animation">
         <div class="stationHeading">
           <h3>Station incomes</h3>
-          <app-sorter (sortChanged)="onSortChange($event)" />
+          <app-sorter [options]="stationSortOptions" (sortChanged)="onStationSortChange($event)" />
         </div>
         <div class="stationBody">
-          @for (station of sortedStations(); track station.id; let i = $index) {
+          @for (station of stationsData(); track station.id; let i = $index) {
             <div class="station-row">
               <div class="station-row-header">
                 <span class="station-rank">#{{ i + 1 }}</span>
@@ -54,6 +54,36 @@
                 <div class="stat">
                   <span class="stat-label">Products</span>
                   <span class="stat-value">{{ station.products_cost | formatCurrency }} </span>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      </section>
+    }
+    @if (productsData().length > 0) {
+      <section class="stationData" animate.enter="scale-in-animation">
+        <div class="stationHeading">
+          <h3>Products incomes</h3>
+          <app-sorter [options]="productSortOptions" (sortChanged)="onProductSortChange($event)" />
+        </div>
+        <div class="stationBody">
+          @for (product of productsData(); track product.id; let i = $index) {
+            <div class="station-row">
+              <div class="station-row-header">
+                <span class="station-rank">#{{ i + 1 }}</span>
+                <span class="station-name">{{ product.name }}</span>
+              </div>
+              <div class="station-stats">
+                <div class="stat">
+                  <span class="stat-label">Total</span>
+                  <span class="stat-value total"
+                    >{{ product.total_revenue | formatCurrency }}
+                  </span>
+                </div>
+                <div class="stat">
+                  <span class="stat-label">Amount</span>
+                  <span class="stat-value">{{ product.quantity }} </span>
                 </div>
               </div>
             </div>

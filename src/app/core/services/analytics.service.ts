@@ -1,6 +1,10 @@
 import { inject, Injectable } from '@angular/core';
 import { SUPABASE_CLIENT } from './supabase.token';
-import { GraphPoint, StationAnalytics } from '../../features/analytics/models/analytics.models';
+import {
+  GraphPoint,
+  SessionItems,
+  StationAnalytics,
+} from '../../features/analytics/models/analytics.models';
 
 type Granularity = 'day' | 'week' | 'month';
 
@@ -156,5 +160,45 @@ export class AnalyticsService {
         ...(byStation.get(station.id) ?? { total_cost: 0, gaming_cost: 0, products_cost: 0 }),
       }))
       .sort((a, b) => b.total_cost - a.total_cost);
+  }
+
+  async getProductsData(startDate: Date, endDate: Date): Promise<SessionItems[]> {
+    const startStr = new Date(startDate).toISOString();
+    const end = new Date(endDate);
+    end.setHours(23, 59, 59, 999);
+
+    const { data, error } = await this.supabase
+      .from('session_items')
+      .select('*, sessions!inner(start_time)')
+      .gte('sessions.start_time', startStr)
+      .lte('sessions.start_time', end.toISOString());
+    if (error) {
+      throw new Error($localize`:@@error.fetchingError:Could not fetch data. Please try again.`);
+    }
+
+    // group by product_id
+    const byProduct = new Map<number, { name: string; quantity: number; total_revenue: number }>();
+    for (const item of data) {
+      const existing = byProduct.get(item.product_id);
+      const revenue = Number(item.quantity ?? 0) * Number(item.price_at_purchase ?? 0);
+      if (existing) {
+        existing.quantity += Number(item.quantity ?? 0);
+        existing.total_revenue += revenue;
+      } else {
+        byProduct.set(item.product_id, {
+          name: item.name,
+          quantity: Number(item.quantity ?? 0),
+          total_revenue: revenue,
+        });
+      }
+    }
+    return Array.from(byProduct.entries())
+      .map(([productId, stats]) => ({
+        id: productId,
+        name: stats.name,
+        quantity: stats.quantity,
+        total_revenue: stats.total_revenue,
+      }))
+      .sort((a, b) => b.total_revenue - a.total_revenue);
   }
 }

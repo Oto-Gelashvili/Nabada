@@ -1,7 +1,15 @@
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { DatePickerModule } from 'primeng/datepicker';
-import { GraphPoint, SortOption, StationAnalytics } from './models/analytics.models';
+import {
+  GraphPoint,
+  PRODUCT_SORT_OPTIONS,
+  ProductSortOption,
+  SessionItems,
+  STATION_SORT_OPTIONS,
+  StationAnalytics,
+  StationSortOption,
+} from './models/analytics.models';
 import { LineGraphComponent } from './components/lineGraph/line-graph';
 import { AnalyticsService } from '../../core/services/analytics.service';
 import { NotificationService } from '../../core/services/Notification';
@@ -26,7 +34,10 @@ export class Analytics implements OnInit {
   readonly loading = signal(false);
   readonly dataPoints = signal<GraphPoint[]>([]);
   readonly stationsData = signal<StationAnalytics[]>([]);
-  readonly sortOption = signal<SortOption>('Decreasing total');
+  readonly productsData = signal<SessionItems[]>([]);
+
+  readonly stationSortOptions = [...STATION_SORT_OPTIONS];
+  readonly productSortOptions = [...PRODUCT_SORT_OPTIONS];
 
   async ngOnInit() {
     await this.load();
@@ -39,12 +50,14 @@ export class Analytics implements OnInit {
   async load() {
     try {
       this.loading.set(true);
-      const [points, stations] = await Promise.all([
+      const [points, stations, products] = await Promise.all([
         this.analyticsService.getDailyIncome(this.startDate(), this.endDate()),
         this.analyticsService.getStationsAnalytics(this.startDate(), this.endDate()),
+        this.analyticsService.getProductsData(this.startDate(), this.endDate()),
       ]);
       this.dataPoints.set(points);
       this.stationsData.set(stations);
+      this.productsData.set(products);
     } catch (error) {
       if (error instanceof Error) this.notify.showError(error.message);
     } finally {
@@ -57,26 +70,47 @@ export class Analytics implements OnInit {
     return d;
   }
 
-  readonly sortedStations = computed(() => {
-    const stations = [...this.stationsData()];
-    const option = this.sortOption();
+  onStationSortChange(option: string) {
+    const sort = option as StationSortOption;
+    this.stationsData.set(this.sortStations(this.stationsData(), sort));
+  }
 
-    switch (option) {
-      case 'Decreasing total':
-        return stations.sort((a, b) => b.total_cost - a.total_cost);
-      case 'Increasing total':
-        return stations.sort((a, b) => a.total_cost - b.total_cost);
-      case 'Decreasing gaming':
-        return stations.sort((a, b) => b.gaming_cost - a.gaming_cost);
-      case 'Increasing gaming':
-        return stations.sort((a, b) => a.gaming_cost - b.gaming_cost);
-      case 'Decreasing products':
-        return stations.sort((a, b) => b.products_cost - a.products_cost);
-      case 'Increasing products':
-        return stations.sort((a, b) => a.products_cost - b.products_cost);
-    }
-  });
-  onSortChange(option: SortOption) {
-    this.sortOption.set(option);
+  onProductSortChange(option: string) {
+    const sort = option as ProductSortOption;
+    this.productsData.set(this.sortProducts(this.productsData(), sort));
+  }
+
+  private sortStations(data: StationAnalytics[], sort: StationSortOption): StationAnalytics[] {
+    return [...data].sort((a, b) => {
+      switch (sort) {
+        case 'Decreasing total':
+          return b.total_cost - a.total_cost;
+        case 'Increasing total':
+          return a.total_cost - b.total_cost;
+        case 'Decreasing gaming':
+          return b.gaming_cost - a.gaming_cost;
+        case 'Increasing gaming':
+          return a.gaming_cost - b.gaming_cost;
+        case 'Decreasing products':
+          return b.products_cost - a.products_cost;
+        case 'Increasing products':
+          return a.products_cost - b.products_cost;
+      }
+    });
+  }
+
+  private sortProducts(data: SessionItems[], sort: ProductSortOption): SessionItems[] {
+    return [...data].sort((a, b) => {
+      switch (sort) {
+        case 'Decreasing total':
+          return b.total_revenue - a.total_revenue;
+        case 'Increasing total':
+          return a.total_revenue - b.total_revenue;
+        case 'Decreasing quantity':
+          return b.quantity - a.quantity;
+        case 'Increasing quantity':
+          return a.quantity - b.quantity;
+      }
+    });
   }
 }
