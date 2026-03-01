@@ -24,7 +24,7 @@ interface TooltipState {
 export class LineGraphComponent {
   data = input<GraphPoint[]>([]);
 
-  readonly svgWidth = 1000;
+  readonly svgWidth = 1200;
   readonly svgHeight = 300;
   readonly paddingTop = 20;
   readonly paddingBottom = 40;

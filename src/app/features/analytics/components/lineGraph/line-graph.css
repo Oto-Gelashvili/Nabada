@@ -1,8 +1,7 @@
 .graph-container {
   width: 100%;
   overflow: auto;
-  /* max-width: calc(100vw - var(--padding-inline) * 2); */
-  max-width: 1000px;
+  max-width: calc(100vw - var(--padding-inline) * 2);
   -webkit-overflow-scrolling: touch;
   border-radius: 16px;
   background-color: var(--hover-color);
@@ -13,10 +12,9 @@
   width: 100%;
   padding: 2.4rem;
   cursor: crosshair;
-  min-width: 1000px;
+  min-width: 1200px;
   min-height: 340px;
   max-height: 340px;
-  max-width: 1000px;
   overflow: visible;
 }
 
@@ -26,7 +24,7 @@
   stroke-dasharray: 5 5;
 }
 .axis-label {
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   fill: var(--secondary-color);
   font-family: inherit;
 }
@@ -66,13 +64,13 @@
 }
 
 .tooltip-date {
-  font-size: 1rem;
+  font-size: 1.2rem;
   fill: var(--secondary-color);
   font-family: inherit;
 }
 
 .tooltip-value {
-  font-size: 1.4rem;
+  font-size: 1.6rem;
   font-weight: 600;
   fill: var(--primary-color);
   font-family: inherit;
