@@ -32,7 +32,10 @@
     @if (stationsData().length > 0) {
       <section class="stationData" animate.enter="scale-in-animation">
         <div class="stationHeading">
-          <h3>Station incomes</h3>
+          <h3>
+            Station incomes
+            <span class="total-badge">{{ TotalRevenue() | formatCurrency }}</span>
+          </h3>
           <app-sorter [options]="stationSortOptions" (sortChanged)="onStationSortChange($event)" />
         </div>
         <div class="stationBody">
@@ -64,7 +67,10 @@
     @if (productsData().length > 0) {
       <section class="stationData" animate.enter="scale-in-animation">
         <div class="stationHeading">
-          <h3>Products incomes</h3>
+          <h3>
+            Products income
+            <span class="total-badge">{{ productsTotalRevenue() | formatCurrency }}</span>
+          </h3>
           <app-sorter [options]="productSortOptions" (sortChanged)="onProductSortChange($event)" />
         </div>
         <div class="stationBody">

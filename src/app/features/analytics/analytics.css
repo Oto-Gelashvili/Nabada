@@ -236,9 +236,13 @@ p-datepicker {
   color: var(--secondary-color);
 }
 
-.stat-value.total {
+.stat-value.total,
+.total-badge {
   color: var(--primary-color);
   font-weight: 700;
+}
+.total-badge {
+  margin-left: 0.4rem;
 }
 
 @media screen and (max-width: 768px) {
@@ -251,14 +255,14 @@ p-datepicker {
   .station-row {
     gap: 4.8rem;
   }
+  .stationHeading {
+    flex-direction: column;
+    gap: 1.6rem;
+  }
 }
 @media screen and (max-width: 475px) {
   .stationData {
     width: 100%;
-  }
-  .stationHeading {
-    flex-direction: column;
-    gap: 1.6rem;
   }
   .station-row {
     gap: 1.2rem;

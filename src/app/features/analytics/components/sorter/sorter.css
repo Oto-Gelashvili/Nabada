@@ -114,7 +114,7 @@
     border: none;
   }
 }
-@media screen and (max-width: 475px) {
+@media screen and (max-width: 768px) {
   :host {
     display: contents;
   }

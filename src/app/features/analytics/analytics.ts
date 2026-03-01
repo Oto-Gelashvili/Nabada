@@ -39,6 +39,13 @@ export class Analytics implements OnInit {
   readonly stationSortOptions = [...STATION_SORT_OPTIONS];
   readonly productSortOptions = [...PRODUCT_SORT_OPTIONS];
 
+  readonly productsTotalRevenue = computed(() =>
+    this.productsData().reduce((sum, p) => sum + p.total_revenue, 0),
+  );
+  readonly TotalRevenue = computed(() =>
+    this.stationsData().reduce((sum, p) => sum + p.total_cost, 0),
+  );
+
   async ngOnInit() {
     await this.load();
   }
@@ -51,7 +58,7 @@ export class Analytics implements OnInit {
     try {
       this.loading.set(true);
       const [points, stations, products] = await Promise.all([
-        this.analyticsService.getDailyIncome(this.startDate(), this.endDate()),
+        this.analyticsService.getIncomeGraph(this.startDate(), this.endDate()),
         this.analyticsService.getStationsAnalytics(this.startDate(), this.endDate()),
         this.analyticsService.getProductsData(this.startDate(), this.endDate()),
       ]);

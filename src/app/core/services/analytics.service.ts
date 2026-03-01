@@ -12,7 +12,7 @@ type Granularity = 'day' | 'week' | 'month';
 export class AnalyticsService {
   private readonly supabase = inject(SUPABASE_CLIENT);
 
-  async getDailyIncome(startDate: Date, endDate: Date): Promise<GraphPoint[]> {
+  async getIncomeGraph(startDate: Date, endDate: Date): Promise<GraphPoint[]> {
     const startStr = new Date(startDate).toISOString();
     const end = new Date(endDate);
     end.setHours(23, 59, 59, 999);
