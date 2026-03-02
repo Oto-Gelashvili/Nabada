@@ -4,6 +4,7 @@
   border-top: 1px solid var(--border-color);
   border-bottom: 1px solid var(--border-color);
   height: 100%;
+  max-height: 60px;
 }
 
 .themeCont {

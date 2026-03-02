@@ -145,13 +145,15 @@
     top: 0;
     right: 0;
     margin-top: var(--fixed-header-height);
-    justify-content: space-between;
+    justify-content: center;
+    gap: 1.2rem;
     overflow-y: scroll;
     z-index: var(--header-z);
   }
   .profileMenu a,
   .profileMenu .themeCont {
     height: 100%;
+    max-height: 60px;
   }
   .profileMenu .profileBtn {
     width: 100%;
