@@ -63,19 +63,23 @@ export class SupabaseService {
   }
 
   signIn(email: string) {
+    const isKa = window.location.pathname.startsWith('/ka');
+
     return this.supabase.auth.signInWithOtp({
       email,
       options: {
-        emailRedirectTo: `${window.location.origin}/sessions`,
+        emailRedirectTo: `${window.location.origin}${isKa ? '/ka' : ''}/sessions`,
       },
     });
   }
 
   signInWithGoogle() {
+    const isKa = window.location.pathname.startsWith('/ka');
+
     return this.supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: `${window.location.origin}/sessions`,
+        redirectTo: `${window.location.origin}${isKa ? '/ka' : ''}/sessions`,
       },
     });
   }
