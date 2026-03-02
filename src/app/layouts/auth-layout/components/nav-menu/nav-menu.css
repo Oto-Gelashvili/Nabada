@@ -75,6 +75,7 @@
   transition: 0.4s;
   display: flex;
   align-items: center;
+  height: 100%;
   justify-content: center;
 }
 .profileMenu .logOutBtn:hover {
