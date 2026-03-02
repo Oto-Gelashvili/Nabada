@@ -62,7 +62,7 @@ export class Navigation implements AfterViewInit, OnDestroy {
     }
   };
   readonly logoReset = () => {
-    const homeLink = this.document.querySelector<HTMLElement>('.homeLink');
+    const homeLink = this.navRef.nativeElement.querySelector<HTMLElement>('.homeLink');
     if (homeLink) {
       const heomLinkWidth = homeLink.getBoundingClientRect().width;
       this.bgElPosition.set(0);
