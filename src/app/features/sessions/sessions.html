@@ -104,8 +104,9 @@
     }
   </div>
 
-  <h4 class="sum" i18n="@@sessions.sum">
-    Sum: {{ state.totalDaySum() | currency: 'GEL' : '₾' : '1.2-2' }}
+  <h4 class="sum">
+    <span i18n="@@sessions.sum">Sum:</span>
+    {{ state.totalDaySum() | currency: 'GEL' : '₾' : '1.2-2' }}
   </h4>
 </section>
 
