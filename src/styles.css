@@ -16,9 +16,10 @@
   --padding-inline-mobile: 1.6rem;
   --total-padding-mobile: calc(var(--padding-inline-mobile) * 2);
   --fixed-header-height: 8.4rem;
-  --hour-width: 100px;
+  --total-padding-block-main: 4.8rem --hour-width: 100px;
 
   /* z index priorities */
+  --single-z: 1;
   --header-z: 2;
   --most-z: 100;
 }

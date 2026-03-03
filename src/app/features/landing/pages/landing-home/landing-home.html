@@ -1,1 +1,63 @@
-<h1>landing-home works!</h1>
+<section class="hero">
+  <div class="hero-bg">
+    <div class="grid-overlay"></div>
+    <div class="glow glow-1"></div>
+    <div class="glow glow-2"></div>
+  </div>
+
+  <div class="hero-content">
+    <div class="badge" animate.enter="scale-in-animation">
+      <span class="badge-dot"></span>
+      <span i18n="@@landing.badge">Free to use · No credit card required</span>
+    </div>
+
+    <h1>
+      <span i18n="@@landing.heroLine1" class="hero-line">Run your gaming cafe</span>
+      <span i18n="@@landing.heroLine2" class="hero-line accent">without the chaos.</span>
+    </h1>
+
+    <p class="hero-sub" i18n="@@landing.heroSub">
+      Nabada tracks sessions, products, and income — so you can focus on the game, not the
+      spreadsheet.
+    </p>
+
+    <div class="hero-actions">
+      <a routerLink="/signups" class="btn-primary" tabindex="0" i18n="@@landing.getStarted"
+        >Get started free</a
+      >
+      <a href="#features" class="btn-secondary" tabindex="0" i18n="@@landing.seeHow"
+        >See how it works</a
+      >
+    </div>
+  </div>
+
+  <div class="hero-visual" animate.enter="scale-in-animation">
+    <div class="mock-window">
+      <div class="mock-bar">
+        <span class="mock-dot red"></span>
+        <span class="mock-dot yellow"></span>
+        <span class="mock-dot green"></span>
+        <span class="mock-title">Nabada — Sessions</span>
+      </div>
+      <div class="mock-body">
+        <div class="mock-timeline">
+          @for (station of mockStations; track station.name) {
+            <div class="mock-row">
+              <span class="mock-label">{{ station.name }}</span>
+              <div class="mock-track">
+                @for (block of station.blocks; track block.left) {
+                  <div
+                    class="mock-block"
+                    [style.left.%]="block.left"
+                    [style.width.%]="block.width"
+                    [class.active]="block.active"
+                  ></div>
+                }
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
