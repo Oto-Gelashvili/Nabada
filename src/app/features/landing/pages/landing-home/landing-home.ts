@@ -13,7 +13,7 @@ interface MockStation {
 }
 @Component({
   selector: 'app-landing-home',
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './landing-home.html',
   styleUrl: './landing-home.css',
 })

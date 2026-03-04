@@ -149,6 +149,9 @@ section {
   flex-wrap: wrap;
 }
 
+.btn-primary {
+  color: #fff;
+}
 .btn-primary,
 .btn-secondary {
   padding: 0.8rem 2.4rem;
@@ -356,6 +359,81 @@ section {
   width: fit-content;
   margin-top: 0.8rem;
 }
+.how-it-works {
+  padding: 8rem 2.4rem;
+  background: var(--light-gray);
+  border-radius: 12px;
+}
+
+.steps {
+  display: flex;
+  align-items: flex-start;
+  gap: 0;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.step {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1.6rem;
+  padding: 0 1.2rem;
+}
+
+.step-number {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 2px solid var(--primary-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--primary-color);
+  letter-spacing: 0.04em;
+  background: var(--accent-color);
+  flex-shrink: 0;
+}
+
+.step-content h3 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--secondary-color);
+  margin-bottom: 0.8rem;
+}
+
+.step-content p {
+  font-size: 1.6rem;
+  color: var(--text-color);
+  line-height: 1.6;
+}
+
+.step-divider {
+  flex-shrink: 0;
+  width: 70px;
+  height: 2px;
+  background: var(--border-color);
+  margin-top: 28px; /* align with center of step-number */
+  position: relative;
+}
+
+.step-divider::after {
+  content: '';
+  position: absolute;
+  right: -8px;
+  top: -2.8px;
+  /* top: 50%;
+  transform: translateY(-50%); */
+  width: 8px;
+  height: 8px;
+  border-top: 2px solid var(--border-color);
+  border-right: 2px solid var(--border-color);
+  rotate: 45deg;
+}
 
 @media (max-width: 1024px) {
   .hero-content {
@@ -385,6 +463,28 @@ section {
   .feature-card--large,
   .feature-card--wide {
     grid-column: span 2;
+  }
+  .steps {
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+  .step-divider {
+    width: 2px;
+    height: 48px;
+    margin-top: 0;
+    margin-left: 0;
+  }
+
+  .step-divider::after {
+    right: -2.8px;
+    top: unset;
+    bottom: -5px;
+    rotate: 135deg;
+  }
+
+  .step {
+    padding: 2.4rem 0;
   }
 }
 
