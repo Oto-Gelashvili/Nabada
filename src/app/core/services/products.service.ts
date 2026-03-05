@@ -20,8 +20,11 @@ export class ProductsService {
     return data as Product[];
   }
   async updateProducts(product: Product) {
-    const { id, name, price } = product;
-    const { error } = await this.supabase.from('products').update({ name, price }).eq('id', id);
+    const { id, name, price, quantity } = product;
+    const { error } = await this.supabase
+      .from('products')
+      .update({ name, price, quantity })
+      .eq('id', id);
     if (error) {
       throw new Error($localize`:@@error.fetchingError:Could not fetch data. Please try again.`);
     }
@@ -37,12 +40,17 @@ export class ProductsService {
     }
   }
 
-  async createProduct(product: { name: string; price: number }): Promise<Product> {
+  async createProduct(product: {
+    name: string;
+    price: number;
+    quantity: number;
+  }): Promise<Product> {
     const { data, error } = await this.supabase
       .from('products')
       .insert({
         name: product.name,
         price: product.price,
+        quantity: product.quantity,
       })
       .select()
       .single();

@@ -87,7 +87,42 @@
               }
             </div>
           </div>
-
+          <div class="quantityCont">
+            <label i18n="@@products.labelQuantity" [for]="'Quantity-' + product.id"
+              >Quantity:</label
+            >
+            <div class="inputCont">
+              <input
+                [id]="'Quantity-' + product.id"
+                name="Quantity"
+                type="number"
+                [readonly]="editingId() !== product.id"
+                [class.editableInput]="editingId() === product.id"
+                [class.error-input]="
+                  editingId() === product.id && (product.quantity === null || product.quantity < 0)
+                "
+                [(ngModel)]="product.quantity"
+                min="0"
+              />
+              @if (editingId() === product.id) {
+                @if (product.quantity === null) {
+                  <span
+                    i18n="@@error.quantityReq"
+                    class="error-msg"
+                    animate.enter="show-animated-enter-error"
+                    >Amount required</span
+                  >
+                } @else if (product.quantity < 0) {
+                  <span
+                    i18n="@@error.negative"
+                    class="error-msg"
+                    animate.enter="show-animated-enter-error"
+                    >Can't be negative</span
+                  >
+                }
+              }
+            </div>
+          </div>
           <button
             type="submit"
             class="btn-primary"
@@ -178,6 +213,40 @@
                 Price required
               </span>
             } @else if (newProduct.price < 0) {
+              <span
+                class="error-msg"
+                animate.enter="show-animated-enter-error"
+                animate.leave="error-hide-animation"
+                i18n="@@error.negative"
+              >
+                Can't be negative
+              </span>
+            }
+          }
+        </div>
+        <div class="input-group">
+          <label for="new-quantity" i18n="@@common.quantity">Quantity</label>
+          <input
+            id="new-quantity"
+            type="number"
+            [(ngModel)]="newProduct.quantity"
+            [class.error-input]="
+              showFormErrors() && (newProduct.quantity === null || newProduct.quantity < 0)
+            "
+            min="0"
+            placeholder="0"
+          />
+          @if (showFormErrors()) {
+            @if (newProduct.quantity === null) {
+              <span
+                class="error-msg"
+                animate.enter="show-animated-enter-error"
+                animate.leave="error-hide-animation"
+                i18n="@@error.quantityReq"
+              >
+                Quantity required
+              </span>
+            } @else if (newProduct.quantity < 0) {
               <span
                 class="error-msg"
                 animate.enter="show-animated-enter-error"

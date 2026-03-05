@@ -26,6 +26,7 @@ export class Products implements OnInit {
   newProduct = {
     name: '',
     price: null as number | null,
+    quantity: null as number | null,
   };
 
   ngOnInit() {
@@ -120,7 +121,7 @@ export class Products implements OnInit {
     }
   }
   openAddModal() {
-    this.newProduct = { name: '', price: null };
+    this.newProduct = { name: '', price: null, quantity: null };
     this.showFormErrors.set(false);
     this.showAddModal.set(true);
   }
@@ -144,6 +145,7 @@ export class Products implements OnInit {
       const createdProduct = await this.productsService.createProduct({
         name: this.newProduct.name,
         price: this.newProduct.price as number,
+        quantity: this.newProduct.quantity as number,
       });
 
       this.products.update((current) => [...current, createdProduct]);

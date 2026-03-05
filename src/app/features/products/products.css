@@ -82,7 +82,8 @@
   text-overflow: ellipsis;
 }
 .priceCont,
-.nameCont {
+.nameCont,
+.quantityCont {
   display: flex;
   gap: 1.2rem;
   align-items: center;
@@ -90,7 +91,8 @@
   justify-content: space-between;
 }
 .nameCont:has(.error-msg),
-.priceCont:has(.error-msg) {
+.priceCont:has(.error-msg),
+.quantityCont:has(.error-msg) {
   margin-bottom: 1.2rem;
 }
 .productsCard label {
