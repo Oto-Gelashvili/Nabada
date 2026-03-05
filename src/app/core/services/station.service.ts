@@ -173,8 +173,9 @@ export class StationsService {
   }
 
   async deleteSession(sessionId: number): Promise<void> {
-    const { error } = await this.supabase.from('sessions').delete().eq('id', sessionId);
-
+    const { error } = await this.supabase.rpc('delete_session_and_restore_stock', {
+      p_session_id: sessionId,
+    });
     if (error) {
       throw new Error($localize`:@@error.deleteError:Could not delete. Please try again.`);
     }

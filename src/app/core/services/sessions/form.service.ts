@@ -17,7 +17,7 @@ export class SessionFormService {
     productIds: new FormControl<number[]>([], { nonNullable: true }),
     payMethod: new FormControl<string>('Cash'),
   });
-
+  readonly initialAmounts = signal<ProductAmount[]>([]);
   readonly amounts = signal<ProductAmount[]>([]);
 
   private readonly formValues = toSignal(this.form.valueChanges, {
@@ -137,6 +137,7 @@ export class SessionFormService {
 
   /** Patch all fields from an existing session + its items. */
   patchFromSession(session: ServiceSession, productIds: number[], amounts: ProductAmount[]): void {
+    this.initialAmounts.set(amounts);
     this.amounts.set(amounts);
     this.form.patchValue({
       stationId: session.station_id,

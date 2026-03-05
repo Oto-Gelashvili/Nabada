@@ -284,6 +284,11 @@
 .amountCont span {
   color: var(--secondary-color);
 }
+.amountCont span.stock-hint {
+  font-size: 1.2rem;
+  color: var(--text-color);
+  opacity: 0.8;
+}
 .total {
   width: fit-content;
   font-size: 1.6rem;

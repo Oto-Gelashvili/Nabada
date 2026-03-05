@@ -92,7 +92,7 @@
               animate.enter="open-animation"
               animate.leave="close-animation"
             >
-              @for (product of products(); track product.id) {
+              @for (product of productsInStock(); track product.id) {
                 <li
                   (click)="toggleProduct(product)"
                   [class.selected]="isProductSelected(product.id)"
@@ -146,6 +146,9 @@
                   <p>
                     <span i18n="@@sessions.amount">Amount:</span>
                     {{ getAmount(selectedProduct.id) }}
+                    <span class="stock-hint"
+                      >/{{ getMaxAllowed(selectedProduct.id, selectedProduct.quantity) }}</span
+                    >
                   </p>
                   <p class="price">
                     <span i18n="@@products.labelPrice">Price:</span>

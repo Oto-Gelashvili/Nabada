@@ -104,6 +104,9 @@ export class CreateSessionComponent implements OnInit {
 
   // ── Product multi-select ──────────────────────────────────────────────────
 
+  protected readonly productsInStock = computed(() =>
+    this.products().filter((p) => p.quantity > 0),
+  );
   protected toggleCustomMultiSelect(): void {
     this.isCustomMultiSelectOpen.update((v) => !v);
     this.isCustomSelectOpen.set(false);
@@ -125,8 +128,27 @@ export class CreateSessionComponent implements OnInit {
   protected getTotalPrice(p: Product) {
     return this.formService.getTotalPrice(p);
   }
-  protected addAmount(id: number) {
-    return this.formService.addAmount(id);
+
+  protected addAmount(productId: number): void {
+    const product = this.products().find((p) => p.id === productId);
+    if (!product) return;
+
+    const currentAmount = this.formService.getAmount(productId);
+    const initialAmount =
+      this.formService.initialAmounts().find((a) => a.id === productId)?.amount ?? 0;
+    const maxAllowed = initialAmount + product.quantity;
+    if (currentAmount >= maxAllowed) {
+      this.notify.showError($localize`:@@error.stockLimit:Not enough stock`);
+      return;
+    }
+
+    this.formService.addAmount(productId);
+  }
+
+  protected getMaxAllowed(productId: number, stockQuantity: number): number {
+    const initialAmount =
+      this.formService.initialAmounts().find((a) => a.id === productId)?.amount ?? 0;
+    return initialAmount + stockQuantity;
   }
   protected removeAmount(id: number) {
     return this.formService.removeAmount(id);
