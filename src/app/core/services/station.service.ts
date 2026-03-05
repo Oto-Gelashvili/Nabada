@@ -124,6 +124,7 @@ export class StationsService {
       p_hourly_rate: data.hourly_rate,
       p_user_id: user.id,
       p_items: data.products || [],
+      p_pay_method: data.pay_method,
     });
 
     if (error) {
@@ -154,6 +155,7 @@ export class StationsService {
       p_hourly_rate: data.hourly_rate,
       p_user_id: user.id,
       p_items: data.products || [],
+      p_pay_method: data.pay_method,
     });
 
     if (error) {

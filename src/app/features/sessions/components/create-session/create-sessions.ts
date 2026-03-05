@@ -81,7 +81,7 @@ export class CreateSessionComponent implements OnInit {
     this.isPayMethodOpen.set(false);
   }
   protected selectedPayMethodName(): string {
-    const key = this.formService.form.controls.payMethod.value;
+    const key = this.createSessionForm.value.payMethod;
     return PAY_METHOD_OPTIONS.find((o) => o.key === key)?.label ?? PAY_METHOD_OPTIONS[0].label;
   }
 
@@ -165,7 +165,7 @@ export class CreateSessionComponent implements OnInit {
       return;
     }
 
-    const { stationId, startTime, endTime } = this.createSessionForm.value;
+    const { stationId, startTime, endTime, payMethod } = this.createSessionForm.value;
     const base = new Date(this.selectedDate());
 
     const start = this.mergeDateAndTime(base, startTime!);
@@ -204,6 +204,7 @@ export class CreateSessionComponent implements OnInit {
       end_time: end?.toISOString() ?? null,
       products,
       hourly_rate: this.hourlyRate(),
+      pay_method: payMethod ?? 'Cash',
     };
 
     this.isSubmitting.set(true);

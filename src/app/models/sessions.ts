@@ -24,6 +24,7 @@ export interface CreateSessionDTO {
     name: string;
   }[];
   hourly_rate: number;
+  pay_method: string;
 }
 export const PAY_METHOD_OPTIONS = [
   { key: 'Cash', label: $localize`:@@sessions.cash:Cash` },
