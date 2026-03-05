@@ -15,6 +15,7 @@ export class SessionFormService {
     startTime: new FormControl<Date | null>(new Date(), [Validators.required]),
     endTime: new FormControl<Date | null>(null),
     productIds: new FormControl<number[]>([], { nonNullable: true }),
+    payMethod: new FormControl<string>('Cash'),
   });
 
   readonly amounts = signal<ProductAmount[]>([]);
@@ -22,6 +23,11 @@ export class SessionFormService {
   private readonly formValues = toSignal(this.form.valueChanges, {
     initialValue: this.form.getRawValue(),
   });
+
+  // ── PayMethod ───────────────────────────────────────────────────────────────
+  selectPayMethod(payMethod: string): void {
+    this.form.patchValue({ payMethod: payMethod });
+  }
 
   // ── Station ───────────────────────────────────────────────────────────────
 

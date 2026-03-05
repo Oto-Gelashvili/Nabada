@@ -25,3 +25,10 @@ export interface CreateSessionDTO {
   }[];
   hourly_rate: number;
 }
+export const PAY_METHOD_OPTIONS = [
+  { key: 'Cash', label: $localize`:@@sessions.cash:Cash` },
+  { key: 'Card', label: $localize`:@@sessions.card:Card` },
+  { key: 'Fitpass', label: $localize`:@@sessions.fitPass:Fitpass` },
+] as const;
+
+export type PayMethod = (typeof PAY_METHOD_OPTIONS)[number]['key'];

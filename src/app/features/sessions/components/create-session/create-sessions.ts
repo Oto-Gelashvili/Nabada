@@ -10,6 +10,8 @@ import { NotificationService } from '../../../../core/services/Notification';
 import { Spinner } from '../../../../shared/components/spinner/spinner';
 import { SessionFormService } from '../../../../core/services/sessions/form.service';
 import { SessionOverlapValidator } from '../../../../core/services/sessions/overlap-validator';
+import { PAY_METHOD_OPTIONS } from '../../../../models/sessions';
+
 @Component({
   selector: 'app-create-session',
   imports: [
@@ -36,6 +38,7 @@ export class CreateSessionComponent implements OnInit {
 
   close = output<void>();
   sessionChanged = output<void>();
+  readonly payMethodOptions = PAY_METHOD_OPTIONS;
 
   // ── DI ────────────────────────────────────────────────────────────────────
   protected readonly formService = inject(SessionFormService);
@@ -45,6 +48,7 @@ export class CreateSessionComponent implements OnInit {
 
   // ── UI state ──────────────────────────────────────────────────────────────
   protected readonly isSubmitting = signal(false);
+  protected readonly isPayMethodOpen = signal(false);
   protected readonly isCustomSelectOpen = signal(false);
   protected readonly isCustomMultiSelectOpen = signal(false);
 
@@ -64,6 +68,23 @@ export class CreateSessionComponent implements OnInit {
     }
   }
 
+  // ── PayMethod dropdown ──────────────────────────────────────────────────────
+
+  protected togglePaySelect(): void {
+    this.isPayMethodOpen.update((v) => !v);
+    this.isCustomSelectOpen.set(false);
+    this.isCustomMultiSelectOpen.set(false);
+  }
+
+  protected selectPayMethod(payMethod: string): void {
+    this.formService.selectPayMethod(payMethod);
+    this.isPayMethodOpen.set(false);
+  }
+  protected selectedPayMethodName(): string {
+    const key = this.formService.form.controls.payMethod.value;
+    return PAY_METHOD_OPTIONS.find((o) => o.key === key)?.label ?? PAY_METHOD_OPTIONS[0].label;
+  }
+
   // ── Station dropdown ──────────────────────────────────────────────────────
 
   protected selectedStationName(): string {
@@ -73,6 +94,7 @@ export class CreateSessionComponent implements OnInit {
   protected toggleCustomSelect(): void {
     this.isCustomSelectOpen.update((v) => !v);
     this.isCustomMultiSelectOpen.set(false);
+    this.isPayMethodOpen.set(false);
   }
 
   protected selectStation(station: Station): void {
@@ -85,6 +107,7 @@ export class CreateSessionComponent implements OnInit {
   protected toggleCustomMultiSelect(): void {
     this.isCustomMultiSelectOpen.update((v) => !v);
     this.isCustomSelectOpen.set(false);
+    this.isPayMethodOpen.set(false);
   }
 
   protected isProductSelected(id: number) {

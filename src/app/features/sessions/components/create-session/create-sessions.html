@@ -37,6 +37,27 @@
     </div>
     <div class="optionsRow">
       <div class="input-group">
+        <span class="form-label" i18n="@@sessions.payMethod">Payment Method</span>
+        <div class="customSelect" [class.open]="isPayMethodOpen()">
+          <div class="customSelectHeading" (click)="togglePaySelect()">
+            <p class="defaultOption">{{ selectedPayMethodName() }}</p>
+            <span class="material-symbols-outlined arrow"> expand_more </span>
+          </div>
+          @if (isPayMethodOpen()) {
+            <ul
+              class="customSelectBody"
+              animate.enter="open-animation"
+              animate.leave="close-animation"
+            >
+              @for (option of payMethodOptions; track option.key) {
+                <li (click)="selectPayMethod(option.key)">{{ option.label }}</li>
+              }
+            </ul>
+          }
+        </div>
+      </div>
+
+      <div class="input-group">
         <span class="form-label" i18n="@@sessions.stationLabel">Station</span>
         <div class="customSelect" [class.open]="isCustomSelectOpen()">
           <div class="customSelectHeading" (click)="toggleCustomSelect()">
