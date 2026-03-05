@@ -156,6 +156,7 @@
     "sessions.fitPass": "Fitpass",
     "common.quantity": "რაოდენობა",
     "error.quantityReq": "აუცილებელია რაოდენობა",
-    "products.labelQuantity": "რაოდენობა:"
+    "products.labelQuantity": "რაოდენობა:",
+    "error.stockLimit": "არააკმარისი რაოდენობა"
   }
 }

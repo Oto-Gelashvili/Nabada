@@ -67,6 +67,7 @@
     "common.quantity": "Quantity",
     "error.quantityReq": "Quantity required",
     "products.labelQuantity": "Quantity:",
+    "error.stockLimit": "Not enough stock",
     "common.delete": " Delete ",
     "sessions.sum": "Sum:",
     "error.fillInError": "Please fill in all required fields",
