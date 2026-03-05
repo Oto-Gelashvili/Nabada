@@ -148,6 +148,14 @@
     "landing.step3Desc": "შეამოწმე ანალიტიკა ნებისმიერ დროს. გაფილტრე თარიღით და სადგურის მიხედვით.",
     "landing.ctaTitle": "მზად ხარ კონტროლი აიღო?",
     "landing.ctaSub": "შეუერთდი ნაბადას მომხმარებლებს",
-    "landing.ctaBtn": "შექმენი უფასო ანგარიში"
+    "landing.ctaBtn": "შექმენი უფასო ანგარიში",
+
+    "sessions.payMethod": "გადახდის მეთოდი",
+    "sessions.cash": "ქეში",
+    "sessions.card": "ბარათი",
+    "sessions.fitPass": "Fitpass",
+    "common.quantity": "რაოდენობა",
+    "error.quantityReq": "აუცილებელია რაოდენობა",
+    "products.labelQuantity": "რაოდენობა:"
   }
 }
