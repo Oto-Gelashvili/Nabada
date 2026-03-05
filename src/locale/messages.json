@@ -146,6 +146,7 @@
     "landing.step3Desc": "Check analytics any time. Filter by date, sort by station or product.",
     "landing.ctaTitle": "Ready to take control?",
     "landing.ctaSub": "Join cafe owners already using Nabada.",
-    "landing.ctaBtn": "Create your free account"
+    "landing.ctaBtn": "Create your free account",
+    "productNamePlaceholder": "Product name"
   }
 }

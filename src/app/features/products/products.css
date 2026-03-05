@@ -98,7 +98,7 @@
 .productsCard label {
   font-weight: bold;
   font-size: 1.6rem;
-  width: 100px;
+  min-width: 90px;
 }
 
 .productsCard input {

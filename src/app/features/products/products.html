@@ -177,6 +177,7 @@
             [(ngModel)]="newProduct.name"
             [class.error-input]="showFormErrors() && !newProduct.name"
             placeholder="Product name"
+            i18n-placeholder="@@productNamePlaceholder"
           />
           @if (showFormErrors() && !newProduct.name) {
             <span

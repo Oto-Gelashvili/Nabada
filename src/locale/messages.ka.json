@@ -157,6 +157,7 @@
     "common.quantity": "რაოდენობა",
     "error.quantityReq": "აუცილებელია რაოდენობა",
     "products.labelQuantity": "რაოდენობა:",
-    "error.stockLimit": "არააკმარისი რაოდენობა"
+    "error.stockLimit": "არააკმარისი რაოდენობა",
+    "productNamePlaceholder": "პროდუქტის სახელი"
   }
 }
