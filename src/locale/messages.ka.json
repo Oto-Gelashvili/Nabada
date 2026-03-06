@@ -72,7 +72,7 @@
     "products.addProduct": "დაამატე პროდუქტი",
     "products.labelName": "პროდუქტი:",
     "products.labelPrice": "ფასი:",
-    "products.deleteProduct": "TODO",
+    "products.deleteProduct": "წაშალე პროდუქტი",
 
     "sessions.ongoing": "მიმდინარე",
     "sessions.createTitle": "შექმენი სესია",
