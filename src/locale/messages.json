@@ -148,6 +148,7 @@
     "landing.ctaSub": "Join cafe owners already using Nabada.",
     "landing.ctaBtn": "Create your free account",
     "productNamePlaceholder": "Product name",
-    "settings.fitpassRate": "Fitpass rate"
+    "settings.fitpassRate": "Fitpass rate",
+    "analytics.payMethodIncomes": "Pay methods"
   }
 }

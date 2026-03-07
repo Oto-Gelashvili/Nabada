@@ -107,6 +107,46 @@
           </div>
         </section>
       }
+      @if (payMethodsData().length > 0) {
+        <section class="payMethodData" animate.enter="scale-in-animation">
+          <div class="stationHeading">
+            <h3 i18n="@@analytics.payMethodIncomes">
+              Pay methods
+              <span class="total-badge">{{ totalPayRevenue() | formatCurrency }}</span>
+            </h3>
+            <app-sorter
+              [options]="stationSortOptions"
+              (sortChanged)="onPayMethodSortChange($event)"
+            />
+          </div>
+          <div class="stationBody">
+            @for (payMethod of payMethodsData(); track payMethod.pay_method; let i = $index) {
+              <div class="station-row">
+                <div class="station-row-header">
+                  <span class="station-rank">#{{ i + 1 }}</span>
+                  <span class="station-name">{{ payMethod.pay_method }}</span>
+                </div>
+                <div class="station-stats">
+                  <div class="stat">
+                    <span class="stat-label" i18n="@@analytics.total">Total</span>
+                    <span class="stat-value total"
+                      >{{ payMethod.total_cost | formatCurrency }}
+                    </span>
+                  </div>
+                  <div class="stat">
+                    <span class="stat-label" i18n="@@analytics.gaming">Gaming</span>
+                    <span class="stat-value">{{ payMethod.gaming_cost | formatCurrency }} </span>
+                  </div>
+                  <div class="stat">
+                    <span class="stat-label" i18n="@@analytics.products">Products</span>
+                    <span class="stat-value">{{ payMethod.products_cost | formatCurrency }} </span>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        </section>
+      }
     </div>
   }
 </div>

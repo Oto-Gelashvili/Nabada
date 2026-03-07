@@ -2,8 +2,10 @@ import { inject, Injectable } from '@angular/core';
 import { SUPABASE_CLIENT } from './supabase.token';
 import {
   GraphPoint,
+  PayMethodAnalytics,
   SessionItems,
   StationAnalytics,
+  StationsAnalyticsResult,
 } from '../../features/analytics/models/analytics.models';
 
 type Granularity = 'day' | 'week' | 'month';
@@ -115,7 +117,7 @@ export class AnalyticsService {
     // → "Jan 2025"
   }
 
-  async getStationsAnalytics(startDate: Date, endDate: Date): Promise<StationAnalytics[]> {
+  async getStationsAnalytics(startDate: Date, endDate: Date): Promise<StationsAnalyticsResult> {
     const startStr = new Date(startDate).toISOString();
     const end = new Date(endDate);
     end.setHours(23, 59, 59, 999);
@@ -124,7 +126,7 @@ export class AnalyticsService {
       await Promise.all([
         this.supabase
           .from('sessions')
-          .select('station_id, total_cost, gaming_cost, products_cost')
+          .select('station_id, total_cost, gaming_cost, products_cost, pay_method')
           .gte('start_time', startStr)
           .lte('start_time', end.toISOString()),
         this.supabase
@@ -139,6 +141,8 @@ export class AnalyticsService {
       throw new Error($localize`:@@error.fetchingError:Could not fetch data. Please try again.`);
 
     const byStation = new Map<number, Omit<StationAnalytics, 'id' | 'name'>>();
+    const byPayMethod = new Map<string, PayMethodAnalytics>();
+
     for (const session of sessions) {
       const existing = byStation.get(session.station_id);
       if (existing) {
@@ -152,15 +156,35 @@ export class AnalyticsService {
           products_cost: Number(session.products_cost ?? 0),
         });
       }
-    }
 
-    return stations
+      const method = session.pay_method ?? 'Cash';
+      const existingMethod = byPayMethod.get(method);
+      if (existingMethod) {
+        existingMethod.total_cost += Number(session.total_cost ?? 0);
+        existingMethod.gaming_cost += Number(session.gaming_cost ?? 0);
+        existingMethod.products_cost += Number(session.products_cost ?? 0);
+      } else {
+        byPayMethod.set(method, {
+          pay_method: method,
+          total_cost: Number(session.total_cost ?? 0),
+          gaming_cost: Number(session.gaming_cost ?? 0),
+          products_cost: Number(session.products_cost ?? 0),
+        });
+      }
+    }
+    const stationResults = stations
       .map((station) => ({
         id: station.id,
         name: station.name,
         ...(byStation.get(station.id) ?? { total_cost: 0, gaming_cost: 0, products_cost: 0 }),
       }))
       .sort((a, b) => b.total_cost - a.total_cost);
+
+    const payMethodResults = Array.from(byPayMethod.values()).sort(
+      (a, b) => b.total_cost - a.total_cost,
+    );
+
+    return { stations: stationResults, payMethods: payMethodResults };
   }
 
   async getProductsData(startDate: Date, endDate: Date): Promise<SessionItems[]> {

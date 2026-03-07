@@ -9,7 +9,16 @@ export interface StationAnalytics {
   gaming_cost: number;
   products_cost: number;
 }
-
+export interface PayMethodAnalytics {
+  pay_method: string;
+  total_cost: number;
+  gaming_cost: number;
+  products_cost: number;
+}
+export interface StationsAnalyticsResult {
+  stations: StationAnalytics[];
+  payMethods: PayMethodAnalytics[];
+}
 export interface SessionItems {
   id: number;
   name: string;

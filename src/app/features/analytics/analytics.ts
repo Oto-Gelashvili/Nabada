@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { DatePickerModule } from 'primeng/datepicker';
 import {
   GraphPoint,
+  PayMethodAnalytics,
   PRODUCT_SORT_OPTIONS,
   SessionItems,
   STATION_SORT_OPTIONS,
@@ -32,6 +33,7 @@ export class Analytics implements OnInit {
   readonly loading = signal(false);
   readonly dataPoints = signal<GraphPoint[]>([]);
   readonly stationsData = signal<StationAnalytics[]>([]);
+  readonly payMethodsData = signal<PayMethodAnalytics[]>([]);
   readonly productsData = signal<SessionItems[]>([]);
 
   readonly stationSortOptions = [...STATION_SORT_OPTIONS];
@@ -41,6 +43,9 @@ export class Analytics implements OnInit {
     this.productsData().reduce((sum, p) => sum + p.total_revenue, 0),
   );
   readonly totalRevenue = computed(() =>
+    this.stationsData().reduce((sum, p) => sum + p.total_cost, 0),
+  );
+  readonly totalPayRevenue = computed(() =>
     this.stationsData().reduce((sum, p) => sum + p.total_cost, 0),
   );
 
@@ -55,13 +60,14 @@ export class Analytics implements OnInit {
   async load() {
     try {
       this.loading.set(true);
-      const [points, stations, products] = await Promise.all([
+      const [points, result, products] = await Promise.all([
         this.analyticsService.getIncomeGraph(this.startDate(), this.endDate()),
         this.analyticsService.getStationsAnalytics(this.startDate(), this.endDate()),
         this.analyticsService.getProductsData(this.startDate(), this.endDate()),
       ]);
       this.dataPoints.set(points);
-      this.stationsData.set(stations);
+      this.stationsData.set(result.stations);
+      this.payMethodsData.set(result.payMethods);
       this.productsData.set(products);
     } catch (error) {
       if (error instanceof Error) this.notify.showError(error.message);
@@ -76,14 +82,20 @@ export class Analytics implements OnInit {
   }
 
   onStationSortChange(option: string) {
-    this.stationsData.set(this.sortStations(this.stationsData(), option));
+    this.stationsData.set(this.sortByCost(this.stationsData(), option));
+  }
+  onPayMethodSortChange(option: string) {
+    this.payMethodsData.set(this.sortByCost(this.payMethodsData(), option));
   }
 
   onProductSortChange(option: string) {
     this.productsData.set(this.sortProducts(this.productsData(), option));
   }
 
-  private sortStations(data: StationAnalytics[], sort: string): StationAnalytics[] {
+  private sortByCost<T extends { total_cost: number; gaming_cost: number; products_cost: number }>(
+    data: T[],
+    sort: string,
+  ): T[] {
     return [...data].sort((a, b) => {
       switch (sort) {
         case 'dec-total':
