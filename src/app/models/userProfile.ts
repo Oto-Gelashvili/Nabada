@@ -4,4 +4,5 @@ export interface UserProfile {
   avatar_url: string | null;
   email?: string;
   hourly_rate: number;
+  fitpass_rate: number;
 }

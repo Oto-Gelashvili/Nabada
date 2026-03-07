@@ -58,35 +58,75 @@
                 profileForm.get('username')?.hasError('required')) &&
               profileForm.get('username')?.touched
             ) {
-              <span class="error-msg" i18n="@@settings.errorMinChars"
+              <span
+                animate.enter="show-animated-enter"
+                class="error-msg"
+                i18n="@@settings.errorMinChars"
                 >Must be at least 3 characters</span
               >
             }
           </div>
-          <div class="rateCont">
-            <label for="rate" i18n="@@settings.rate">Hourly rate</label>
-            <div class="inputCont" [class.data-loading]="loading()">
-              <input
-                id="rate"
-                min="0"
-                required
-                type="number"
-                [readonly]="!isEditing()"
-                formControlName="rate"
-                [class.error-border]="
-                  profileForm.get('rate')?.invalid && profileForm.get('rate')?.touched
-                "
-                [class.editableInput]="isEditing()"
-                animate.enter="show-animated-enter"
-              />
+          <div class="rateConts">
+            <div class="rateCont">
+              <label for="rate" i18n="@@settings.rate">Hourly rate</label>
+              <div class="inputCont" [class.data-loading]="loading()">
+                <input
+                  id="rate"
+                  min="0"
+                  required
+                  type="number"
+                  [readonly]="!isEditing()"
+                  formControlName="rate"
+                  [class.error-border]="
+                    profileForm.get('rate')?.invalid && profileForm.get('rate')?.touched
+                  "
+                  [class.editableInput]="isEditing()"
+                  animate.enter="show-animated-enter"
+                />
+              </div>
+              @if (
+                (profileForm.get('rate')?.hasError('min') ||
+                  profileForm.get('rate')?.hasError('required')) &&
+                profileForm.get('rate')?.touched
+              ) {
+                <span
+                  animate.enter="show-animated-enter"
+                  class="error-msg"
+                  i18n="@@settings.errorRate"
+                  >Must be a positive number</span
+                >
+              }
             </div>
-            @if (
-              (profileForm.get('rate')?.hasError('min') ||
-                profileForm.get('rate')?.hasError('required')) &&
-              profileForm.get('rate')?.touched
-            ) {
-              <span class="error-msg" i18n="@@settings.errorRate">Must be a positive number</span>
-            }
+            <div class="fitpassCont">
+              <label for="fitpass" i18n="@@settings.fitpassRate">Fitpass rate</label>
+              <div class="inputCont" [class.data-loading]="loading()">
+                <input
+                  id="fitpass"
+                  min="0"
+                  required
+                  type="number"
+                  [readonly]="!isEditing()"
+                  formControlName="fitpass"
+                  [class.error-border]="
+                    profileForm.get('fitpass')?.invalid && profileForm.get('fitpass')?.touched
+                  "
+                  [class.editableInput]="isEditing()"
+                  animate.enter="show-animated-enter"
+                />
+              </div>
+              @if (
+                (profileForm.get('fitpass')?.hasError('min') ||
+                  profileForm.get('fitpass')?.hasError('required')) &&
+                profileForm.get('fitpass')?.touched
+              ) {
+                <span
+                  animate.enter="show-animated-enter"
+                  class="error-msg"
+                  i18n="@@settings.errorRate"
+                  >Must be a positive number</span
+                >
+              }
+            </div>
           </div>
         </div>
       </div>
@@ -118,7 +158,9 @@
           />
         </div>
         @if (emailForm.get('email')?.hasError('email') && emailForm.get('email')?.touched) {
-          <span class="error-msg" i18n="@@settings.errorEmail">Please enter a valid email</span>
+          <span animate.enter="show-animated-enter" class="error-msg" i18n="@@settings.errorEmail"
+            >Please enter a valid email</span
+          >
         }
       </div>
       <button

@@ -147,6 +147,7 @@
     "landing.ctaTitle": "Ready to take control?",
     "landing.ctaSub": "Join cafe owners already using Nabada.",
     "landing.ctaBtn": "Create your free account",
-    "productNamePlaceholder": "Product name"
+    "productNamePlaceholder": "Product name",
+    "settings.fitpassRate": "Fitpass rate"
   }
 }

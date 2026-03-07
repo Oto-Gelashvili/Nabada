@@ -34,7 +34,8 @@ form {
 }
 .usernameCont,
 .emailCont,
-.rateCont {
+.rateCont,
+.fitpassCont {
   font-size: 1.4rem;
   display: flex;
   flex-direction: column;
@@ -42,7 +43,8 @@ form {
 }
 .usernameCont label,
 .emailCont label,
-.rateCont label {
+.rateCont label,
+.fitpassCont label {
   color: var(--secondary-color);
 }
 
@@ -51,7 +53,8 @@ form {
 }
 .usernameCont input,
 .emailCont input,
-.rateCont input {
+.rateCont input,
+.fitpassCont input {
   transition: 0.4s;
   border: 1px solid transparent;
   outline: 1px solid transparent;
@@ -96,11 +99,9 @@ h2 {
 }
 .usernameCont input.error-border,
 .emailCont input.error-border,
-.rateCont input.error-border {
+.rateCont input.error-border,
+.fitpassCont input.error-border {
   border-color: var(--error);
-}
-.rateCont:has(input.error-border) {
-  margin-bottom: 0.8rem;
 }
 
 .avatar-placeholder {
@@ -224,6 +225,21 @@ h2 {
   }
 }
 
+.rateConts {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+.textCont input {
+  width: 100%;
+}
+.textCont {
+  width: 260px;
+}
+.rateConts:has(input.error-border) {
+  margin-bottom: 2.4rem;
+}
+
 @media screen and (max-width: 768px) {
   .profileInfoCont {
     grid-template-columns: 1fr;
@@ -242,15 +258,22 @@ h2 {
   .formCard {
     gap: 2.4rem;
   }
-}
-@media screen and (max-width: 375px) {
+
   .formCard {
     flex-direction: column;
   }
+  .textCont {
+    width: 300px;
+  }
+}
+@media screen and (max-width: 375px) {
   .profileInfoCont {
     width: 100%;
   }
   .wrapper {
+    width: 100%;
+  }
+  .textCont {
     width: 100%;
   }
 }

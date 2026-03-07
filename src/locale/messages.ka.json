@@ -158,6 +158,7 @@
     "error.quantityReq": "აუცილებელია რაოდენობა",
     "products.labelQuantity": "რაოდენობა:",
     "error.stockLimit": "არააკმარისი რაოდენობა",
-    "productNamePlaceholder": "პროდუქტის სახელი"
+    "productNamePlaceholder": "პროდუქტის სახელი",
+    "settings.fitpassRate": "Fitpass ფასი"
   }
 }
