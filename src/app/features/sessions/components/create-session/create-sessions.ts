@@ -32,6 +32,7 @@ export class CreateSessionComponent implements OnInit {
   stations = input<Station[]>([]);
   products = input<Product[]>([]);
   hourlyRate = input<number>(8.0);
+  fitpassRate = input<number>(5.0);
   editableSessionID = input<number | null>(null);
   existingSessions = input<ServiceSession[]>([]);
   selectedDate = input.required<Date>();
@@ -159,8 +160,19 @@ export class CreateSessionComponent implements OnInit {
   protected readonly totalSum = computed(() => {
     const sessionId = this.editableSessionID();
     const session = sessionId ? this.existingSessions().find((s) => s.id === sessionId) : null;
-    const hourlyRate = session?.hourly_rate ?? this.hourlyRate();
-    return this.formService.buildTotalSum(this.products(), hourlyRate);
+    const selectedPayMethod = this.formService.form.controls.payMethod.value;
+
+    const payMethodChanged = session && session.pay_method !== selectedPayMethod;
+
+    if (selectedPayMethod === 'Fitpass') {
+      const fitpassRate =
+        !payMethodChanged && session?.hourly_rate ? session.hourly_rate : this.fitpassRate();
+      return this.formService.buildTotalSum(this.products(), fitpassRate);
+    } else {
+      const hourlyRate =
+        !payMethodChanged && session?.hourly_rate ? session.hourly_rate : this.hourlyRate();
+      return this.formService.buildTotalSum(this.products(), hourlyRate);
+    }
   });
 
   // ── canEndSession ─────────────────────────────────────────────────────────
@@ -225,7 +237,10 @@ export class CreateSessionComponent implements OnInit {
       start_time: start.toISOString(),
       end_time: end?.toISOString() ?? null,
       products,
-      hourly_rate: this.hourlyRate(),
+      hourly_rate:
+        this.createSessionForm.value.payMethod === 'Fitpass'
+          ? this.fitpassRate()
+          : this.hourlyRate(),
       pay_method: payMethod ?? 'Cash',
     };
 
