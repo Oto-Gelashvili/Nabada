@@ -77,7 +77,7 @@
     "sessions.ongoing": "მიმდინარე",
     "sessions.createTitle": "შექმენი სესია",
     "sessions.editTitle": "შეცვალე სესია",
-    "sessions.end": "დამთავრება",
+    "sessions.end": "დაასრულე",
     "sessions.startLabel": "დასაწყისი",
     "sessions.endLabel": "დასასრული",
     "sessions.stationLabel": "სადგური",
@@ -160,6 +160,7 @@
     "error.stockLimit": "არააკმარისი რაოდენობა",
     "productNamePlaceholder": "პროდუქტის სახელი",
     "settings.fitpassRate": "Fitpass ფასი",
-    "analytics.payMethodIncomes": "გადახდის ტიპები"
+    "analytics.payMethodIncomes": "გადახდის ტიპები",
+    "sessions.ended": "სესია დასრულდა"
   }
 }

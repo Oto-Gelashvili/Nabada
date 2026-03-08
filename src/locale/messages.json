@@ -149,6 +149,7 @@
     "landing.ctaBtn": "Create your free account",
     "productNamePlaceholder": "Product name",
     "settings.fitpassRate": "Fitpass rate",
-    "analytics.payMethodIncomes": "Pay methods"
+    "analytics.payMethodIncomes": "Pay methods",
+    "sessions.ended": "Session ended"
   }
 }

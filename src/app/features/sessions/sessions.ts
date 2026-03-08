@@ -9,6 +9,8 @@ import { SessionStateService } from '../../core/services/sessions/state.service'
 import { StationEditService } from '../../core/services/sessions/edit.service';
 import { TimelineCalculator } from '../../core/services/sessions/timeline-calculator';
 import { ServiceSession } from '../../models/sessions';
+import { SoundService } from '../../core/services/sound.service';
+import { NotificationService } from '../../core/services/Notification';
 
 @Component({
   selector: 'app-sessions',
@@ -31,6 +33,8 @@ export class Sessions implements OnInit {
   // Services — components read directly from their signals in the template
   protected readonly state = inject(SessionStateService);
   protected readonly edit = inject(StationEditService);
+  private readonly sound = inject(SoundService);
+  private readonly notify = inject(NotificationService);
 
   // Local UI state that belongs only to this component
   protected readonly showCreateModal = signal(false);
@@ -39,13 +43,28 @@ export class Sessions implements OnInit {
   protected readonly hours = Array.from({ length: 24 }, (_, i) => i);
   private readonly now = signal(Date.now());
   private readonly timeline = new TimelineCalculator(100);
+  private justExpired = new Set<number>();
 
   // ── Lifecycle ─────────────────────────────────────────────────────────────
 
   ngOnInit(): void {
     this.state.loadAll('initLoad');
 
-    const intervalId = setInterval(() => this.now.set(Date.now()), 60_000);
+    const intervalId = setInterval(() => {
+      const nowMs = Date.now();
+      this.now.set(nowMs);
+
+      for (const session of this.state.sessions()) {
+        if (!session.end_time) continue;
+        const endMs = new Date(session.end_time).getTime();
+        const justPassed = endMs <= nowMs && endMs > nowMs - 60_000;
+        if (justPassed && !this.justExpired.has(session.id)) {
+          this.justExpired.add(session.id);
+          this.sound.playSessionEnd();
+          this.notify.showSuccess($localize`:@@sessions.ended:Session ended`);
+        }
+      }
+    }, 60_000);
     this.destroyRef.onDestroy(() => clearInterval(intervalId));
   }
 
