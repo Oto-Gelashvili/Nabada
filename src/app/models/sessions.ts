@@ -32,6 +32,7 @@ export interface CreateSessionDTO {
   controller_cost: number;
 }
 export const PAY_METHOD_OPTIONS = [
+  { key: 'NotPaid', label: $localize`:@@sessions.notPaid:Not paid` },
   { key: 'Cash', label: $localize`:@@sessions.cash:Cash` },
   { key: 'Card', label: $localize`:@@sessions.card:Card` },
   { key: 'Fitpass', label: $localize`:@@sessions.fitPass:Fitpass` },

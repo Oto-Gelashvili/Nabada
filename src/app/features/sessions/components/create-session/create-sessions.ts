@@ -264,7 +264,7 @@ export class CreateSessionComponent implements OnInit {
         this.createSessionForm.value.payMethod === 'Fitpass'
           ? this.fitpassRate()
           : this.hourlyRate(),
-      pay_method: payMethod ?? 'Cash',
+      pay_method: payMethod ?? PAY_METHOD_OPTIONS[0].key,
       controller_amount: controllerAmount ?? 2,
       controller_cost: controllerCost,
     };

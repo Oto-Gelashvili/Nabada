@@ -163,6 +163,7 @@
     "analytics.payMethodIncomes": "გადახდის ტიპები",
     "sessions.ended": "სესია დასრულდა",
     "settings.controller": "ჯოისტიკის ფასი",
-    "sessions.controllerAmount": "ჯოისტიკების რაოდენობა"
+    "sessions.controllerAmount": "ჯოისტიკების რაოდენობა",
+    "sessions.notPaid": "გადაუხდელი"
   }
 }

@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Product, ProductAmount } from '../../../models/products.model';
 import { ServiceSession, Station } from '../../../models/sessions';
-
+import { PAY_METHOD_OPTIONS } from '../../../models/sessions';
 /**
  * SessionFormService owns the reactive form, product amounts, and all
  * derived computations for the create/edit session modal.
@@ -15,7 +15,7 @@ export class SessionFormService {
     startTime: new FormControl<Date | null>(new Date(), [Validators.required]),
     endTime: new FormControl<Date | null>(null),
     productIds: new FormControl<number[]>([], { nonNullable: true }),
-    payMethod: new FormControl<string>('Cash'),
+    payMethod: new FormControl<string>(PAY_METHOD_OPTIONS[0].key),
     controllerAmount: new FormControl<number>(2),
   });
   readonly initialAmounts = signal<ProductAmount[]>([]);
@@ -153,7 +153,7 @@ export class SessionFormService {
       endTime: session.end_time ? new Date(session.end_time) : null,
       productIds,
       controllerAmount: session.controller_amount ?? 2,
-      payMethod: session.pay_method ?? 'Cash',
+      payMethod: session.pay_method ?? PAY_METHOD_OPTIONS[0].key,
     });
   }
 

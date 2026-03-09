@@ -72,6 +72,7 @@
   color: var(--secondary-color);
   transition: color 0.4s;
   font-family: inherit;
+  box-shadow: none;
 }
 
 :host ::ng-deep .session-datepicker .p-inputtext:hover {

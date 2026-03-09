@@ -1,3 +1,5 @@
+import { PAY_METHOD_OPTIONS } from '../../../models/sessions';
+
 /**
  * Pure, stateless utility for converting session times into pixel positions
  * on the day-view timeline.
@@ -49,15 +51,20 @@ export class TimelineCalculator {
     return classes.join(' ');
   }
 
-  getStateClass(session: { start_time: string; end_time: string | null }): string {
+  getStateClass(session: {
+    start_time: string;
+    end_time: string | null;
+    pay_method: string;
+  }): string {
     const now = Date.now();
-    const start = new Date(session.start_time).getTime();
     const end = session.end_time ? new Date(session.end_time).getTime() : null;
 
-    if (end !== null && end < now) return 'finished';
-    if (end === null) return 'activeOpen';
-    if (start > now) return 'booked';
-    return 'active';
+    if (end !== null && end < now && session.pay_method !== 'NotPaid') {
+      return 'finished';
+    }
+    return (
+      PAY_METHOD_OPTIONS.find((o) => o.key === session.pay_method)?.key ?? PAY_METHOD_OPTIONS[0].key
+    );
   }
 
   // ── Private helpers ───────────────────────────────────────────────────────

@@ -275,16 +275,19 @@
   border-bottom-left-radius: 50rem;
 }
 .session-card.finished {
-  background-color: var(--success);
-}
-.session-card.active {
-  background-color: var(--primary-color);
-}
-.session-card.booked {
   background-color: var(--booked-color);
 }
-.session-card.activeOpen {
-  background: linear-gradient(90deg, var(--primary-color) 10%, var(--booked-color) 95%);
+.session-card.Card {
+  background-color: var(--primary-color);
+}
+.session-card.Fitpass {
+  background-color: var(--fitpass-color);
+}
+.session-card.NotPaid {
+  background-color: var(--error);
+}
+.session-card.Cash {
+  background-color: var(--success);
 }
 
 .session-time {

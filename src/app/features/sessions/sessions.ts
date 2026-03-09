@@ -8,7 +8,7 @@ import { CreateSessionComponent } from './components/create-session/create-sessi
 import { SessionStateService } from '../../core/services/sessions/state.service';
 import { StationEditService } from '../../core/services/sessions/edit.service';
 import { TimelineCalculator } from '../../core/services/sessions/timeline-calculator';
-import { ServiceSession } from '../../models/sessions';
+import { PAY_METHOD_OPTIONS, ServiceSession } from '../../models/sessions';
 import { SoundService } from '../../core/services/sound.service';
 import { NotificationService } from '../../core/services/Notification';
 

@@ -72,7 +72,7 @@ export class SessionStateService {
     return this.sessions()
       .filter((s) => {
         const t = new Date(s.start_time);
-        return t >= start && t <= end;
+        return t >= start && t <= end && s.pay_method !== 'NotPaid';
       })
       .reduce((sum, s) => sum + Number(s.total_cost || 0), 0);
   });

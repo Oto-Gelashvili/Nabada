@@ -1,5 +1,5 @@
 :root {
-  --primary-color: #ffc363;
+  --primary-color: #ffbc4f;
   --secondary-color: #fff;
   --background-color: #000000;
   --accent-color: #0a0a0a;
@@ -10,6 +10,7 @@
   --booked-color: #a1a1a1;
   --error: #dc2626;
   --success: #44bba4;
+  --fitpass-color: #215fb6;
   --spinner-border-color: var(--border-color);
   --spinner-primary-color: var(--primary-color);
   --padding-inline: 4.8rem;
@@ -37,6 +38,7 @@
     --error: #dc2626;
     --success: #44bba4;
     --active-color: #cfdbd5;
+    --fitpass-color: #215fb6;
   }
 }
 :root[data-theme='light'] {
@@ -52,6 +54,8 @@
   --error: #dc2626;
   --success: #44bba4;
   --active-color: #cfdbd5;
+  --fitpass-color: #215fb6;
+
   --leftPostition: 0;
 }
 
@@ -68,6 +72,8 @@
   --light-gray: #131313;
   --error: #dc2626;
   --success: #44bba4;
+  --fitpass-color: #215fb6;
+
   --leftPostition: calc(100% - 26px);
 }
 /* 1. Use a more-intuitive box-sizing model */

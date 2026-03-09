@@ -7,6 +7,7 @@ import {
   StationAnalytics,
   StationsAnalyticsResult,
 } from '../../features/analytics/models/analytics.models';
+import { PAY_METHOD_OPTIONS } from '../../models/sessions';
 
 type Granularity = 'day' | 'week' | 'month';
 
@@ -128,7 +129,8 @@ export class AnalyticsService {
           .from('sessions')
           .select('station_id, total_cost, gaming_cost, products_cost, pay_method')
           .gte('start_time', startStr)
-          .lte('start_time', end.toISOString()),
+          .lte('start_time', end.toISOString())
+          .neq('pay_method', 'NotPaid'),
         this.supabase
           .from('stations')
           .select('id, name')
@@ -157,7 +159,7 @@ export class AnalyticsService {
         });
       }
 
-      const method = session.pay_method ?? 'Cash';
+      const method = session.pay_method ?? PAY_METHOD_OPTIONS[0].key;
       const existingMethod = byPayMethod.get(method);
       if (existingMethod) {
         existingMethod.total_cost += Number(session.total_cost ?? 0);

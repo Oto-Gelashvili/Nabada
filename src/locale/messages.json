@@ -152,6 +152,7 @@
     "analytics.payMethodIncomes": "Pay methods",
     "sessions.ended": "Session ended",
     "settings.controller": "Controller rate",
-    "sessions.controllerAmount": "COntroller amount"
+    "sessions.controllerAmount": "Controller amount",
+    "sessions.notPaid": "Not paid"
   }
 }
