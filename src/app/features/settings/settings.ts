@@ -28,6 +28,7 @@ export class Settings implements OnInit {
     avatar_url: new FormControl(''),
     rate: new FormControl<number | null>(null, [Validators.required, Validators.min(0)]),
     fitpass: new FormControl<number | null>(null, [Validators.required, Validators.min(0)]),
+    controller: new FormControl<number | null>(null, [Validators.required, Validators.min(0)]),
   });
 
   readonly emailForm = new FormGroup({
@@ -50,6 +51,7 @@ export class Settings implements OnInit {
           avatar_url: user.avatar_url,
           rate: user.hourly_rate,
           fitpass: user.fitpass_rate,
+          controller: user.controller_rate,
         });
         this.emailForm.patchValue({
           email: user.email,
@@ -80,6 +82,7 @@ export class Settings implements OnInit {
         this.profileForm.controls.username.dirty ||
         this.profileForm.controls.rate.dirty ||
         this.profileForm.controls.fitpass.dirty ||
+        this.profileForm.controls.controller.dirty ||
         newAvatarUrl
       ) {
         await this.saveProfileData(newAvatarUrl);
@@ -129,6 +132,7 @@ export class Settings implements OnInit {
       avatar_url: newAvatarUrl || (this.profileForm.value.avatar_url as string),
       hourly_rate: this.profileForm.value.rate ?? 8,
       fitpass_rate: this.profileForm.value.fitpass ?? 5,
+      controller_rate: this.profileForm.value.controller ?? 2,
     };
 
     const { error } = await this.supabase.updateProfile(updates);

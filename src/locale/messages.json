@@ -150,6 +150,7 @@
     "productNamePlaceholder": "Product name",
     "settings.fitpassRate": "Fitpass rate",
     "analytics.payMethodIncomes": "Pay methods",
-    "sessions.ended": "Session ended"
+    "sessions.ended": "Session ended",
+    "settings.controller": "Controller rate"
   }
 }

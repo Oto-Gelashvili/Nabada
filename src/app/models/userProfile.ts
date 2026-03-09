@@ -5,4 +5,5 @@ export interface UserProfile {
   email?: string;
   hourly_rate: number;
   fitpass_rate: number;
+  controller_rate: number;
 }

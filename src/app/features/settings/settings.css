@@ -225,7 +225,8 @@ h2 {
   }
 }
 
-.rateConts {
+.rateConts,
+.upperCont {
   display: flex;
   align-items: center;
   gap: 0.8rem;
@@ -236,7 +237,8 @@ h2 {
 .textCont {
   width: 260px;
 }
-.rateConts:has(input.error-border) {
+.rateConts:has(input.error-border),
+.upperCont:has(input.error-border) {
   margin-bottom: 2.4rem;
 }
 

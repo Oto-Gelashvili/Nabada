@@ -38,33 +38,65 @@
           }
         </div>
         <div class="textCont">
-          <div class="usernameCont">
-            <label for="username" i18n="@@settings.labelUsername">Username</label>
-            <div class="inputCont" [class.data-loading]="loading()">
-              <input
-                id="username"
-                type="text"
-                [readonly]="!isEditing()"
-                formControlName="username"
-                [class.error-border]="
-                  profileForm.get('username')?.invalid && profileForm.get('username')?.touched
-                "
-                [class.editableInput]="isEditing()"
-                animate.enter="show-animated-enter"
-              />
+          <div class="upperCont">
+            <div class="usernameCont">
+              <label for="username" i18n="@@settings.labelUsername">Username</label>
+              <div class="inputCont" [class.data-loading]="loading()">
+                <input
+                  id="username"
+                  type="text"
+                  [readonly]="!isEditing()"
+                  formControlName="username"
+                  [class.error-border]="
+                    profileForm.get('username')?.invalid && profileForm.get('username')?.touched
+                  "
+                  [class.editableInput]="isEditing()"
+                  animate.enter="show-animated-enter"
+                />
+              </div>
+              @if (
+                (profileForm.get('username')?.hasError('minlength') ||
+                  profileForm.get('username')?.hasError('required')) &&
+                profileForm.get('username')?.touched
+              ) {
+                <span
+                  animate.enter="show-animated-enter"
+                  class="error-msg"
+                  i18n="@@settings.errorMinChars"
+                  >Must be at least 3 characters</span
+                >
+              }
             </div>
-            @if (
-              (profileForm.get('username')?.hasError('minlength') ||
-                profileForm.get('username')?.hasError('required')) &&
-              profileForm.get('username')?.touched
-            ) {
-              <span
-                animate.enter="show-animated-enter"
-                class="error-msg"
-                i18n="@@settings.errorMinChars"
-                >Must be at least 3 characters</span
-              >
-            }
+            <div class="rateCont">
+              <label for="controller" i18n="@@settings.controller">Controller rate</label>
+              <div class="inputCont" [class.data-loading]="loading()">
+                <input
+                  id="controller"
+                  min="0"
+                  required
+                  type="number"
+                  [readonly]="!isEditing()"
+                  formControlName="controller"
+                  [class.error-border]="
+                    profileForm.get('controller')?.invalid && profileForm.get('controller')?.touched
+                  "
+                  [class.editableInput]="isEditing()"
+                  animate.enter="show-animated-enter"
+                />
+              </div>
+              @if (
+                (profileForm.get('controller')?.hasError('min') ||
+                  profileForm.get('controller')?.hasError('required')) &&
+                profileForm.get('controller')?.touched
+              ) {
+                <span
+                  animate.enter="show-animated-enter"
+                  class="error-msg"
+                  i18n="@@settings.errorRate"
+                  >Must be a positive number</span
+                >
+              }
+            </div>
           </div>
           <div class="rateConts">
             <div class="rateCont">

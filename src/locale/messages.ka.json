@@ -161,6 +161,7 @@
     "productNamePlaceholder": "პროდუქტის სახელი",
     "settings.fitpassRate": "Fitpass ფასი",
     "analytics.payMethodIncomes": "გადახდის ტიპები",
-    "sessions.ended": "სესია დასრულდა"
+    "sessions.ended": "სესია დასრულდა",
+    "settings.controller": "ჯოისტიკის ფასი"
   }
 }
