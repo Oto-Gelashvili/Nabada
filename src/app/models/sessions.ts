@@ -13,6 +13,8 @@ export interface ServiceSession {
   hourly_rate: number;
   total_cost: number;
   pay_method: string;
+  controller_amount: number;
+  controller_cost: number;
 }
 export interface CreateSessionDTO {
   station_id: number;
@@ -26,6 +28,8 @@ export interface CreateSessionDTO {
   }[];
   hourly_rate: number;
   pay_method: string;
+  controller_amount: number;
+  controller_cost: number;
 }
 export const PAY_METHOD_OPTIONS = [
   { key: 'Cash', label: $localize`:@@sessions.cash:Cash` },

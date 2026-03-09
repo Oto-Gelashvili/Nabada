@@ -16,6 +16,7 @@ export class SessionFormService {
     endTime: new FormControl<Date | null>(null),
     productIds: new FormControl<number[]>([], { nonNullable: true }),
     payMethod: new FormControl<string>('Cash'),
+    controllerAmount: new FormControl<number>(2),
   });
   readonly initialAmounts = signal<ProductAmount[]>([]);
   readonly amounts = signal<ProductAmount[]>([]);
@@ -24,6 +25,10 @@ export class SessionFormService {
     initialValue: this.form.getRawValue(),
   });
 
+  // ── controller amount ───────────────────────────────────────────────────────────────
+  selectControllerAmount(amount: number): void {
+    this.form.patchValue({ controllerAmount: amount });
+  }
   // ── PayMethod ───────────────────────────────────────────────────────────────
   selectPayMethod(payMethod: string): void {
     this.form.patchValue({ payMethod: payMethod });
@@ -101,7 +106,7 @@ export class SessionFormService {
 
   // ── Computed sum ──────────────────────────────────────────────────────────
 
-  buildTotalSum(allProducts: Product[], hourlyRate: number): number {
+  buildTotalSum(allProducts: Product[], hourlyRate: number, controllerRate: number): number {
     const vals = this.formValues();
     let sum = 0;
 
@@ -111,6 +116,9 @@ export class SessionFormService {
       const diffMinutes = Math.ceil(diffMs / (1000 * 60));
       sum += (diffMinutes / 60) * hourlyRate;
     }
+
+    const extraControllers = (vals.controllerAmount ?? 2) - 2;
+    sum += extraControllers * controllerRate;
 
     for (const item of this.amounts()) {
       const product = allProducts.find((p) => p.id === item.id);
@@ -144,6 +152,8 @@ export class SessionFormService {
       startTime: new Date(session.start_time),
       endTime: session.end_time ? new Date(session.end_time) : null,
       productIds,
+      controllerAmount: session.controller_amount ?? 2,
+      payMethod: session.pay_method ?? 'Cash',
     });
   }
 

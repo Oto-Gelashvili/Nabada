@@ -79,6 +79,28 @@
           }
         </div>
       </div>
+
+      <div class="input-group">
+        <span class="form-label" i18n="@@sessions.extraControllers">Controller amount</span>
+        <div class="customSelect" [class.open]="isControllerOpen()">
+          <div class="customSelectHeading" (click)="toggleControllerSelect()">
+            <p class="defaultOption">{{ selectedControllerAmount() }}</p>
+            <span class="material-symbols-outlined arrow"> expand_more </span>
+          </div>
+          @if (isControllerOpen()) {
+            <ul
+              class="customSelectBody"
+              animate.enter="open-animation"
+              animate.leave="close-animation"
+            >
+              <li (click)="selectControllerAmount(2)">2</li>
+              <li (click)="selectControllerAmount(3)">3</li>
+              <li (click)="selectControllerAmount(4)">4</li>
+            </ul>
+          }
+        </div>
+      </div>
+
       <div class="input-group">
         <span class="form-label" i18n="@@sessions.productsLabel">Products</span>
         <div class="customSelect" [class.open]="isCustomMultiSelectOpen()">

@@ -22,6 +22,7 @@ export class SessionStateService {
   readonly loading = signal(false);
   readonly resetting = signal(false);
   readonly hourlyRate = signal<number>(8.0);
+  readonly controllerRate = signal<number>(2.0);
   readonly fitpassRate = signal<number>(8.0);
 
   readonly stations = signal<Station[]>([]);
@@ -49,6 +50,9 @@ export class SessionStateService {
       }
       if (profile?.fitpass_rate != null) {
         this.fitpassRate.set(profile.fitpass_rate);
+      }
+      if (profile?.controller_rate != null) {
+        this.controllerRate.set(profile.controller_rate);
       }
     } catch (error) {
       if (error instanceof Error) this.notify.showError(error.message);

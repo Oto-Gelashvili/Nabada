@@ -125,6 +125,8 @@ export class StationsService {
       p_user_id: user.id,
       p_items: data.products || [],
       p_pay_method: data.pay_method,
+      p_controller_amount: data.controller_amount,
+      p_controller_cost: data.controller_cost,
     });
 
     if (error) {
@@ -156,6 +158,8 @@ export class StationsService {
       p_user_id: user.id,
       p_items: data.products || [],
       p_pay_method: data.pay_method,
+      p_controller_amount: data.controller_amount,
+      p_controller_cost: data.controller_cost,
     });
 
     if (error) {

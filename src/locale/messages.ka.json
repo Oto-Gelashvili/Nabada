@@ -162,6 +162,7 @@
     "settings.fitpassRate": "Fitpass ფასი",
     "analytics.payMethodIncomes": "გადახდის ტიპები",
     "sessions.ended": "სესია დასრულდა",
-    "settings.controller": "ჯოისტიკის ფასი"
+    "settings.controller": "ჯოისტიკის ფასი",
+    "sessions.controllerAmount": "ჯოისტიკების რაოდენობა"
   }
 }

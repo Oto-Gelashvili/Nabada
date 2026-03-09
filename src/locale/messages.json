@@ -151,6 +151,7 @@
     "settings.fitpassRate": "Fitpass rate",
     "analytics.payMethodIncomes": "Pay methods",
     "sessions.ended": "Session ended",
-    "settings.controller": "Controller rate"
+    "settings.controller": "Controller rate",
+    "sessions.controllerAmount": "COntroller amount"
   }
 }

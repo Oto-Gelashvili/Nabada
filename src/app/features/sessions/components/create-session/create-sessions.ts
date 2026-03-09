@@ -33,6 +33,7 @@ export class CreateSessionComponent implements OnInit {
   products = input<Product[]>([]);
   hourlyRate = input<number>(8.0);
   fitpassRate = input<number>(5.0);
+  controllerRate = input<number>(2.0);
   editableSessionID = input<number | null>(null);
   existingSessions = input<ServiceSession[]>([]);
   selectedDate = input.required<Date>();
@@ -50,6 +51,7 @@ export class CreateSessionComponent implements OnInit {
   // ── UI state ──────────────────────────────────────────────────────────────
   protected readonly isSubmitting = signal(false);
   protected readonly isPayMethodOpen = signal(false);
+  protected readonly isControllerOpen = signal(false);
   protected readonly isCustomSelectOpen = signal(false);
   protected readonly isCustomMultiSelectOpen = signal(false);
 
@@ -69,12 +71,27 @@ export class CreateSessionComponent implements OnInit {
     }
   }
 
+  // ── Controller dropdown ──────────────────────────────────────────────────────
+  protected toggleControllerSelect(): void {
+    this.isControllerOpen.update((v) => !v);
+    this.isCustomSelectOpen.set(false);
+    this.isCustomMultiSelectOpen.set(false);
+    this.isPayMethodOpen.set(false);
+  }
+  protected selectControllerAmount(amount: number): void {
+    this.formService.selectControllerAmount(amount);
+    this.isControllerOpen.set(false);
+  }
+  protected selectedControllerAmount(): number {
+    return this.createSessionForm.value.controllerAmount ?? 2;
+  }
   // ── PayMethod dropdown ──────────────────────────────────────────────────────
 
   protected togglePaySelect(): void {
     this.isPayMethodOpen.update((v) => !v);
     this.isCustomSelectOpen.set(false);
     this.isCustomMultiSelectOpen.set(false);
+    this.isControllerOpen.set(false);
   }
 
   protected selectPayMethod(payMethod: string): void {
@@ -96,6 +113,7 @@ export class CreateSessionComponent implements OnInit {
     this.isCustomSelectOpen.update((v) => !v);
     this.isCustomMultiSelectOpen.set(false);
     this.isPayMethodOpen.set(false);
+    this.isControllerOpen.set(false);
   }
 
   protected selectStation(station: Station): void {
@@ -112,6 +130,7 @@ export class CreateSessionComponent implements OnInit {
     this.isCustomMultiSelectOpen.update((v) => !v);
     this.isCustomSelectOpen.set(false);
     this.isPayMethodOpen.set(false);
+    this.isControllerOpen.set(false);
   }
 
   protected isProductSelected(id: number) {
@@ -167,11 +186,11 @@ export class CreateSessionComponent implements OnInit {
     if (selectedPayMethod === 'Fitpass') {
       const fitpassRate =
         !payMethodChanged && session?.hourly_rate ? session.hourly_rate : this.fitpassRate();
-      return this.formService.buildTotalSum(this.products(), fitpassRate);
+      return this.formService.buildTotalSum(this.products(), fitpassRate, this.controllerRate());
     } else {
       const hourlyRate =
         !payMethodChanged && session?.hourly_rate ? session.hourly_rate : this.hourlyRate();
-      return this.formService.buildTotalSum(this.products(), hourlyRate);
+      return this.formService.buildTotalSum(this.products(), hourlyRate, this.controllerRate());
     }
   });
 
@@ -199,7 +218,8 @@ export class CreateSessionComponent implements OnInit {
       return;
     }
 
-    const { stationId, startTime, endTime, payMethod } = this.createSessionForm.value;
+    const { stationId, startTime, endTime, payMethod, controllerAmount } =
+      this.createSessionForm.value;
     const base = new Date(this.selectedDate());
 
     const start = this.mergeDateAndTime(base, startTime!);
@@ -232,6 +252,9 @@ export class CreateSessionComponent implements OnInit {
     }
 
     const products = this.formService.buildProductsPayload(this.products());
+    const extraControllers = (controllerAmount ?? 2) - 2;
+    const controllerCost = extraControllers * this.controllerRate();
+
     const payload: CreateSessionDTO = {
       station_id: stationId!,
       start_time: start.toISOString(),
@@ -242,6 +265,8 @@ export class CreateSessionComponent implements OnInit {
           ? this.fitpassRate()
           : this.hourlyRate(),
       pay_method: payMethod ?? 'Cash',
+      controller_amount: controllerAmount ?? 2,
+      controller_cost: controllerCost,
     };
 
     this.isSubmitting.set(true);
