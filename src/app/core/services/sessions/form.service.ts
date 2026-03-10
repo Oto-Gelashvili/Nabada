@@ -114,7 +114,7 @@ export class SessionFormService {
       let diffMs = vals.endTime.getTime() - vals.startTime.getTime();
       if (diffMs < 0) diffMs += 24 * 60 * 60 * 1000;
       const diffMinutes = Math.ceil(diffMs / (1000 * 60));
-      sum += (diffMinutes / 60) * hourlyRate;
+      sum += Math.floor((diffMinutes / 60) * hourlyRate);
     }
 
     const extraControllers = (vals.controllerAmount ?? 2) - 2;
