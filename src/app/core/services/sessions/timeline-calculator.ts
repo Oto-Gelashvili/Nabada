@@ -5,6 +5,12 @@ import { PAY_METHOD_OPTIONS } from '../../../models/sessions';
  * on the day-view timeline.
  */
 export class TimelineCalculator {
+  private readonly colorMap: Record<string, string> = {
+    Cash: 'var(--success)',
+    Card: 'var(--primary-color)',
+    Fitpass: 'var(--fitpass-color)',
+    NotPaid: 'var(--error)',
+  };
   constructor(private readonly pixelsPerHour: number = 100) {}
 
   calculateLeft(startTimeStr: string, selectedDate: Date): number {
@@ -56,17 +62,71 @@ export class TimelineCalculator {
     end_time: string | null;
     pay_method: string;
   }): string {
-    const now = Date.now();
-    const end = session.end_time ? new Date(session.end_time).getTime() : null;
+    if (!session.end_time) {
+      return 'NotPaid';
+    }
 
-    if (end !== null && end < now && session.pay_method !== 'NotPaid') {
+    const now = Date.now();
+    const end = new Date(session.end_time).getTime();
+
+    if (end < now && !session.pay_method.includes('NotPaid')) {
       return 'finished';
     }
-    return (
-      PAY_METHOD_OPTIONS.find((o) => o.key === session.pay_method)?.key ?? PAY_METHOD_OPTIONS[0].key
-    );
+
+    if (session.pay_method.includes('NotPaid')) {
+      return 'NotPaid';
+    }
+
+    const methods = session.pay_method
+      .split(',')
+      .map((m) => m.trim())
+      .filter(Boolean);
+
+    if (methods.length <= 1) {
+      return methods[0] ?? 'NotPaid';
+    }
+
+    return '';
   }
 
+  getStateStyle(session: {
+    start_time: string;
+    end_time: string | null;
+    pay_method: string;
+  }): Record<string, string> {
+    // Ongoing session — no gradient needed, class handles it
+    if (!session.end_time) {
+      return {};
+    }
+
+    const now = Date.now();
+    const end = new Date(session.end_time).getTime();
+
+    if (end < now && session.pay_method !== 'NotPaid') {
+      return {};
+    }
+
+    if (session.pay_method.includes('NotPaid')) {
+      return {};
+    }
+
+    const methods = session.pay_method
+      .split(',')
+      .map((m) => m.trim())
+      .filter(Boolean);
+
+    if (methods.length <= 1) {
+      return {};
+    }
+
+    const colors = methods.map((m) => this.colorMap[m] ?? 'var(--success)');
+    const step = 100 / colors.length;
+    const stops = colors
+      .map((color, i) => `${color} ${i * step}%, ${color} ${(i + 1) * step}%`)
+      .join(', ');
+
+    return { background: `linear-gradient(135deg, ${stops})` };
+  }
   // ── Private helpers ───────────────────────────────────────────────────────
 
   private startOfDay(date: Date): number {

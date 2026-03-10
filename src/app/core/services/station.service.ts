@@ -124,7 +124,9 @@ export class StationsService {
       p_hourly_rate: data.hourly_rate,
       p_user_id: user.id,
       p_items: data.products || [],
-      p_pay_method: data.pay_method,
+      p_cash_paid: data.cash_paid,
+      p_card_paid: data.card_paid,
+      p_fitpass_paid: data.fitpass_paid,
       p_controller_amount: data.controller_amount,
       p_controller_cost: data.controller_cost,
     });
@@ -157,7 +159,9 @@ export class StationsService {
       p_hourly_rate: data.hourly_rate,
       p_user_id: user.id,
       p_items: data.products || [],
-      p_pay_method: data.pay_method,
+      p_cash_paid: data.cash_paid,
+      p_card_paid: data.card_paid,
+      p_fitpass_paid: data.fitpass_paid,
       p_controller_amount: data.controller_amount,
       p_controller_cost: data.controller_cost,
     });

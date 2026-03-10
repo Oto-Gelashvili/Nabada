@@ -212,8 +212,8 @@
   border: 1px solid var(--border-color);
   background-color: var(--background-color);
   border-radius: 12px;
-  min-width: fit-content;
-  width: 200px;
+  min-width: 200px;
+  max-width: 250px;
 }
 .selectedProductCard h4 {
   max-width: 120px;
@@ -392,12 +392,32 @@
   justify-content: space-between;
   margin-top: 1.2rem;
 }
+
+.pay-amount-input,
+.pay-amount-label {
+  width: 100%;
+}
+.pay-amount-input {
+  border: 1px solid var(--border-color);
+  background-color: var(--hover-color);
+  color: var(--text-color);
+  padding: 0.4rem;
+  padding-left: 0.8rem;
+  border-radius: 4px;
+  transition: 0.4s;
+  outline: none;
+}
+.pay-amount-input:hover,
+.pay-amount-input:focus {
+  border-color: var(--primary-color);
+}
 @media screen and (max-width: 575px) {
   .selectedProductsCont {
     grid-template-columns: 1fr;
   }
   .selectedProductCard {
     width: 100%;
+    max-width: unset;
   }
 }
 @media screen and (max-width: 375px) {

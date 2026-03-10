@@ -26,7 +26,8 @@ export class AnalyticsService {
       .select('start_time, total_cost')
       .gte('start_time', startStr)
       .lte('start_time', endStr)
-      .not('total_cost', 'is', null);
+      .not('total_cost', 'is', null)
+      .neq('pay_method', 'NotPaid');
 
     if (error) {
       throw new Error($localize`:@@error.fetchingError:Could not fetch data. Please try again.`);
@@ -127,10 +128,11 @@ export class AnalyticsService {
       await Promise.all([
         this.supabase
           .from('sessions')
-          .select('station_id, total_cost, gaming_cost, products_cost, pay_method')
+          .select(
+            'station_id, total_cost, gaming_cost, products_cost, pay_method, cash_paid, card_paid, fitpass_paid',
+          )
           .gte('start_time', startStr)
-          .lte('start_time', end.toISOString())
-          .neq('pay_method', 'NotPaid'),
+          .lte('start_time', end.toISOString()),
         this.supabase
           .from('stations')
           .select('id, name')
@@ -145,35 +147,62 @@ export class AnalyticsService {
     const byStation = new Map<number, Omit<StationAnalytics, 'id' | 'name'>>();
     const byPayMethod = new Map<string, PayMethodAnalytics>();
 
-    for (const session of sessions) {
-      const existing = byStation.get(session.station_id);
+    const addToPayMethod = (key: string, amount: number, gaming: number, products: number) => {
+      const existing = byPayMethod.get(key);
       if (existing) {
-        existing.total_cost += Number(session.total_cost ?? 0);
-        existing.gaming_cost += Number(session.gaming_cost ?? 0);
-        existing.products_cost += Number(session.products_cost ?? 0);
+        existing.total_cost += amount;
+        existing.gaming_cost += gaming;
+        existing.products_cost += products;
+      } else {
+        byPayMethod.set(key, {
+          pay_method: key,
+          total_cost: amount,
+          gaming_cost: gaming,
+          products_cost: products,
+        });
+      }
+    };
+
+    for (const session of sessions) {
+      // Skip fully unpaid sessions from station totals
+      if (session.pay_method === 'NotPaid') continue;
+
+      const existing = byStation.get(session.station_id);
+      const total = Number(session.total_cost ?? 0);
+      const gaming = Number(session.gaming_cost ?? 0);
+      const products = Number(session.products_cost ?? 0);
+
+      if (existing) {
+        existing.total_cost += total;
+        existing.gaming_cost += gaming;
+        existing.products_cost += products;
       } else {
         byStation.set(session.station_id, {
-          total_cost: Number(session.total_cost ?? 0),
-          gaming_cost: Number(session.gaming_cost ?? 0),
-          products_cost: Number(session.products_cost ?? 0),
+          total_cost: total,
+          gaming_cost: gaming,
+          products_cost: products,
         });
       }
 
-      const method = session.pay_method ?? PAY_METHOD_OPTIONS[0].key;
-      const existingMethod = byPayMethod.get(method);
-      if (existingMethod) {
-        existingMethod.total_cost += Number(session.total_cost ?? 0);
-        existingMethod.gaming_cost += Number(session.gaming_cost ?? 0);
-        existingMethod.products_cost += Number(session.products_cost ?? 0);
-      } else {
-        byPayMethod.set(method, {
-          pay_method: method,
-          total_cost: Number(session.total_cost ?? 0),
-          gaming_cost: Number(session.gaming_cost ?? 0),
-          products_cost: Number(session.products_cost ?? 0),
-        });
-      }
+      // Attribute each payment method by actual paid amounts
+      const cash = Number(session.cash_paid ?? 0);
+      const card = Number(session.card_paid ?? 0);
+      const fitpass = Number(session.fitpass_paid ?? 0);
+      const totalPaid = cash + card + fitpass;
+
+      if (totalPaid === 0) continue;
+
+      // Distribute gaming/products cost proportionally to paid amounts
+      const cashRatio = cash / totalPaid;
+      const cardRatio = card / totalPaid;
+      const fitpassRatio = fitpass / totalPaid;
+
+      if (cash > 0) addToPayMethod('Cash', cash, gaming * cashRatio, products * cashRatio);
+      if (card > 0) addToPayMethod('Card', card, gaming * cardRatio, products * cardRatio);
+      if (fitpass > 0)
+        addToPayMethod('Fitpass', fitpass, gaming * fitpassRatio, products * fitpassRatio);
     }
+
     const stationResults = stations
       .map((station) => ({
         id: station.id,

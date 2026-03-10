@@ -1,5 +1,5 @@
 import { Component, computed, DestroyRef, inject, OnInit, signal } from '@angular/core';
-import { DatePipe, NgClass } from '@angular/common';
+import { DatePipe, NgClass, NgStyle } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CurrencyPipe } from '@angular/common';
 import { Spinner } from '../../shared/components/spinner/spinner';
@@ -23,6 +23,7 @@ import { NotificationService } from '../../core/services/Notification';
     NgClass,
     CreateSessionComponent,
     CurrencyPipe,
+    NgStyle,
   ],
   templateUrl: './sessions.html',
   styleUrl: './sessions.css',
@@ -119,5 +120,8 @@ export class Sessions implements OnInit {
 
   getStateClass(session: ServiceSession): string {
     return this.timeline.getStateClass(session);
+  }
+  getSessionStyle(session: ServiceSession): Record<string, string> {
+    return this.timeline.getStateStyle(session);
   }
 }

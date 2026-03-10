@@ -70,6 +70,7 @@
               <div
                 class="session-card"
                 [ngClass]="[getSessionOverlapClass(session), getStateClass(session)]"
+                [ngStyle]="getSessionStyle(session)"
                 [style.left.px]="calculateLeft(session.start_time)"
                 [style.width.px]="calculateWidth(session.start_time, session.end_time)"
                 (click)="showEditModal(session.id)"

@@ -37,27 +37,6 @@
     </div>
     <div class="optionsRow">
       <div class="input-group">
-        <span class="form-label" i18n="@@sessions.payMethod">Payment Method</span>
-        <div class="customSelect" [class.open]="isPayMethodOpen()">
-          <div class="customSelectHeading" (click)="togglePaySelect()">
-            <p class="defaultOption">{{ selectedPayMethodName() }}</p>
-            <span class="material-symbols-outlined arrow"> expand_more </span>
-          </div>
-          @if (isPayMethodOpen()) {
-            <ul
-              class="customSelectBody"
-              animate.enter="open-animation"
-              animate.leave="close-animation"
-            >
-              @for (option of payMethodOptions; track option.key) {
-                <li (click)="selectPayMethod(option.key)">{{ option.label }}</li>
-              }
-            </ul>
-          }
-        </div>
-      </div>
-
-      <div class="input-group">
         <span class="form-label" i18n="@@sessions.stationLabel">Station</span>
         <div class="customSelect" [class.open]="isCustomSelectOpen()">
           <div class="customSelectHeading" (click)="toggleCustomSelect()">
@@ -100,7 +79,36 @@
           }
         </div>
       </div>
-
+      <div class="input-group">
+        <span class="form-label" i18n="@@sessions.payMethod">Payment Method</span>
+        <div class="customSelect" [class.open]="isPayMethodOpen()">
+          <div class="customSelectHeading" (click)="togglePaySelect()">
+            <p class="defaultOption">{{ selectedPayMethodsLabel() }}</p>
+            <span class="material-symbols-outlined arrow">expand_more</span>
+          </div>
+          @if (isPayMethodOpen()) {
+            <ul
+              class="customSelectBody"
+              animate.enter="open-animation"
+              animate.leave="close-animation"
+            >
+              @for (option of payMethodOptions; track option.key) {
+                <li (click)="togglePayMethod(option.key)">
+                  <div class="checkbox-wrapper">
+                    <p-checkbox
+                      [ngModel]="isPayMethodSelected(option.key)"
+                      [binary]="true"
+                      [readonly]="true"
+                      [ngModelOptions]="{ standalone: true }"
+                    />
+                  </div>
+                  <p>{{ option.label }}</p>
+                </li>
+              }
+            </ul>
+          }
+        </div>
+      </div>
       <div class="input-group">
         <span class="form-label" i18n="@@sessions.productsLabel">Products</span>
         <div class="customSelect" [class.open]="isCustomMultiSelectOpen()">
@@ -136,7 +144,36 @@
         </div>
       </div>
     </div>
-
+    @if (formService.selectedPayMethodsList().length > 0) {
+      <div
+        class="selectedProductsCont"
+        animate.enter="showSelectedProducts"
+        animate.leave="hideSelectedProducts"
+      >
+        @for (key of formService.selectedPayMethodsList(); track key) {
+          <div class="selectedProductCard" animate.enter="scale-in-animation">
+            <div class="cardHeading">
+              <h4>{{ getPayMethodLabel(key) }}</h4>
+            </div>
+            <div class="cardBody">
+              <div class="amountCont">
+                <label [for]="'pay-' + key" i18n="@@sessions.amountPaid" class="pay-amount-label"
+                  >Paid amount:</label
+                >
+                <input
+                  [id]="'pay-' + key"
+                  type="number"
+                  min="0"
+                  [value]="getPayAmount(key)"
+                  (input)="onPayAmountChange(key, $event)"
+                  class="pay-amount-input"
+                />
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    }
     @if (isCustomMultiSelectOpen() || selectedProductsList().length > 0) {
       <div
         class="selectedProductsCont"

@@ -164,6 +164,9 @@
     "sessions.ended": "სესია დასრულდა",
     "settings.controller": "ჯოისტიკის ფასი",
     "sessions.controllerAmount": "ჯოისტიკების რაოდენობა",
-    "sessions.notPaid": "გადაუხდელი"
+    "sessions.notPaid": "გადაუხდელი",
+    "sessions.amountPaid": "თანხა:",
+    "error.hasInvalidAmount": "თანხა უნდა იყოს 0-ზე მეტი",
+    "error.paymentMismatch": "გადახდილ თანხათა ჯამი უნდა იყოს: ₾{$EXPECTED}"
   }
 }

@@ -14,6 +14,7 @@ import { AnalyticsService } from '../../core/services/analytics.service';
 import { NotificationService } from '../../core/services/Notification';
 import { SorterComponent } from './components/sorter/sorter';
 import { FormatCurrencyPipe } from '../../shared/pipes/currency-format.pipe';
+import { PAY_METHOD_OPTIONS } from '../../models/sessions';
 
 @Component({
   selector: 'app-analytics',
@@ -131,5 +132,8 @@ export class Analytics implements OnInit {
           return 0;
       }
     });
+  }
+  getPayMethodLabel(key: string): string {
+    return PAY_METHOD_OPTIONS.find((o) => o.key === key)?.label ?? key;
   }
 }

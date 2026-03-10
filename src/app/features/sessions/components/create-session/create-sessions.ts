@@ -3,14 +3,18 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { DatePickerModule } from 'primeng/datepicker';
 import { CheckboxModule } from 'primeng/checkbox';
 import { CurrencyPipe } from '@angular/common';
-import { CreateSessionDTO, ServiceSession, Station } from '../../../../models/sessions';
+import {
+  CreateSessionDTO,
+  ServiceSession,
+  Station,
+  PAY_METHOD_OPTIONS,
+} from '../../../../models/sessions';
 import { Product } from '../../../../models/products.model';
 import { StationsService } from '../../../../core/services/station.service';
 import { NotificationService } from '../../../../core/services/Notification';
 import { Spinner } from '../../../../shared/components/spinner/spinner';
 import { SessionFormService } from '../../../../core/services/sessions/form.service';
 import { SessionOverlapValidator } from '../../../../core/services/sessions/overlap-validator';
-import { PAY_METHOD_OPTIONS } from '../../../../models/sessions';
 
 @Component({
   selector: 'app-create-session',
@@ -24,11 +28,9 @@ import { PAY_METHOD_OPTIONS } from '../../../../models/sessions';
   ],
   templateUrl: './create-sessions.html',
   styleUrls: ['./create-sessions.css'],
-  // Provide per-instance so each modal gets its own form state
   providers: [SessionFormService],
 })
 export class CreateSessionComponent implements OnInit {
-  // ── Inputs / Outputs ──────────────────────────────────────────────────────
   stations = input<Station[]>([]);
   products = input<Product[]>([]);
   hourlyRate = input<number>(8.0);
@@ -40,27 +42,23 @@ export class CreateSessionComponent implements OnInit {
 
   close = output<void>();
   sessionChanged = output<void>();
+
   readonly payMethodOptions = PAY_METHOD_OPTIONS;
 
-  // ── DI ────────────────────────────────────────────────────────────────────
   protected readonly formService = inject(SessionFormService);
   private readonly stationService = inject(StationsService);
   private readonly notify = inject(NotificationService);
   private readonly overlapValidator = new SessionOverlapValidator();
 
-  // ── UI state ──────────────────────────────────────────────────────────────
   protected readonly isSubmitting = signal(false);
   protected readonly isPayMethodOpen = signal(false);
   protected readonly isControllerOpen = signal(false);
   protected readonly isCustomSelectOpen = signal(false);
   protected readonly isCustomMultiSelectOpen = signal(false);
 
-  // ── Template aliases (keeps template clean) ───────────────────────────────
   protected get createSessionForm() {
     return this.formService.form;
   }
-
-  // ── Lifecycle ─────────────────────────────────────────────────────────────
 
   ngOnInit(): void {
     if (this.editableSessionID()) {
@@ -71,7 +69,7 @@ export class CreateSessionComponent implements OnInit {
     }
   }
 
-  // ── Controller dropdown ──────────────────────────────────────────────────────
+  // ── Controller ────────────────────────────────────────────────────────────
   protected toggleControllerSelect(): void {
     this.isControllerOpen.update((v) => !v);
     this.isCustomSelectOpen.set(false);
@@ -85,44 +83,60 @@ export class CreateSessionComponent implements OnInit {
   protected selectedControllerAmount(): number {
     return this.createSessionForm.value.controllerAmount ?? 2;
   }
-  // ── PayMethod dropdown ──────────────────────────────────────────────────────
 
+  // ── PayMethod multi-select ────────────────────────────────────────────────
   protected togglePaySelect(): void {
     this.isPayMethodOpen.update((v) => !v);
     this.isCustomSelectOpen.set(false);
     this.isCustomMultiSelectOpen.set(false);
     this.isControllerOpen.set(false);
   }
-
-  protected selectPayMethod(payMethod: string): void {
-    this.formService.selectPayMethod(payMethod);
-    this.isPayMethodOpen.set(false);
+  protected togglePayMethod(key: string): void {
+    this.formService.togglePayMethod(key);
   }
-  protected selectedPayMethodName(): string {
-    const key = this.createSessionForm.value.payMethod;
-    return PAY_METHOD_OPTIONS.find((o) => o.key === key)?.label ?? PAY_METHOD_OPTIONS[0].label;
+  protected isPayMethodSelected(key: string): boolean {
+    return this.formService.isPayMethodSelected(key);
+  }
+  protected selectedPayMethodsLabel(): string {
+    const selected = this.formService.selectedPayMethodsList();
+    if (selected.length === 0) return $localize`:@@sessions.notPaid:Not paid`;
+
+    const labels = selected
+      .map((key) => PAY_METHOD_OPTIONS.find((o) => o.key === key)?.label ?? key)
+      .join(', ');
+
+    if (this.formService.hasUnpaidRemainder(this.totalSum())) {
+      return `${labels} + ${$localize`:@@sessions.notPaid:Not paid`}`;
+    }
+    return labels;
+  }
+  protected getPayAmount(key: string): number {
+    return this.formService.getPayAmount(key);
+  }
+  protected onPayAmountChange(key: string, event: Event): void {
+    const value = parseFloat((event.target as HTMLInputElement).value) || 0;
+    this.formService.setPayAmount(key, value);
+  }
+  protected getPayMethodLabel(key: string): string {
+    return PAY_METHOD_OPTIONS.find((o) => o.key === key)?.label ?? key;
   }
 
-  // ── Station dropdown ──────────────────────────────────────────────────────
-
+  // ── Station ───────────────────────────────────────────────────────────────
   protected selectedStationName(): string {
     return this.formService.selectedStationName(this.stations());
   }
-
   protected toggleCustomSelect(): void {
     this.isCustomSelectOpen.update((v) => !v);
     this.isCustomMultiSelectOpen.set(false);
     this.isPayMethodOpen.set(false);
     this.isControllerOpen.set(false);
   }
-
   protected selectStation(station: Station): void {
     this.formService.selectStation(station);
     this.isCustomSelectOpen.set(false);
   }
 
-  // ── Product multi-select ──────────────────────────────────────────────────
-
+  // ── Products ──────────────────────────────────────────────────────────────
   protected readonly productsInStock = computed(() =>
     this.products().filter((p) => p.quantity > 0),
   );
@@ -132,7 +146,6 @@ export class CreateSessionComponent implements OnInit {
     this.isPayMethodOpen.set(false);
     this.isControllerOpen.set(false);
   }
-
   protected isProductSelected(id: number) {
     return this.formService.isProductSelected(id);
   }
@@ -152,7 +165,6 @@ export class CreateSessionComponent implements OnInit {
   protected addAmount(productId: number): void {
     const product = this.products().find((p) => p.id === productId);
     if (!product) return;
-
     const currentAmount = this.formService.getAmount(productId);
     const initialAmount =
       this.formService.initialAmounts().find((a) => a.id === productId)?.amount ?? 0;
@@ -161,10 +173,8 @@ export class CreateSessionComponent implements OnInit {
       this.notify.showError($localize`:@@error.stockLimit:Not enough stock`);
       return;
     }
-
     this.formService.addAmount(productId);
   }
-
   protected getMaxAllowed(productId: number, stockQuantity: number): number {
     const initialAmount =
       this.formService.initialAmounts().find((a) => a.id === productId)?.amount ?? 0;
@@ -175,60 +185,46 @@ export class CreateSessionComponent implements OnInit {
   }
 
   // ── Computed sum ──────────────────────────────────────────────────────────
-
   protected readonly totalSum = computed(() => {
     const sessionId = this.editableSessionID();
     const session = sessionId ? this.existingSessions().find((s) => s.id === sessionId) : null;
-    const selectedPayMethod = this.formService.form.controls.payMethod.value;
 
-    const payMethodChanged = session && session.pay_method !== selectedPayMethod;
+    // If any fitpass selected use fitpass rate, otherwise hourly
+    const hasFitpass = this.formService.isPayMethodSelected('Fitpass');
+    const rate = hasFitpass
+      ? (session?.hourly_rate ?? this.fitpassRate())
+      : (session?.hourly_rate ?? this.hourlyRate());
 
-    if (selectedPayMethod === 'Fitpass') {
-      const fitpassRate =
-        !payMethodChanged && session?.hourly_rate ? session.hourly_rate : this.fitpassRate();
-      return this.formService.buildTotalSum(this.products(), fitpassRate, this.controllerRate());
-    } else {
-      const hourlyRate =
-        !payMethodChanged && session?.hourly_rate ? session.hourly_rate : this.hourlyRate();
-      return this.formService.buildTotalSum(this.products(), hourlyRate, this.controllerRate());
-    }
+    return this.formService.buildTotalSum(this.products(), rate, this.controllerRate());
   });
 
   // ── canEndSession ─────────────────────────────────────────────────────────
-
   protected readonly canEndSession = computed(() => {
     const sessionId = this.editableSessionID();
     if (!sessionId) return false;
-
     const session = this.existingSessions().find((s) => s.id === sessionId);
     if (!session) return false;
-
     const now = Date.now();
     const start = new Date(session.start_time).getTime();
     if (start > now) return false;
-
     return !session.end_time || new Date(session.end_time).getTime() > now;
   });
 
   // ── Submit ────────────────────────────────────────────────────────────────
-
   async onSubmit(): Promise<void> {
     if (this.createSessionForm.invalid) {
       this.notify.showError($localize`:@@error.fillInError:Please fill in all required fields`);
       return;
     }
 
-    const { stationId, startTime, endTime, payMethod, controllerAmount } =
-      this.createSessionForm.value;
+    const { stationId, startTime, endTime, controllerAmount } = this.createSessionForm.value;
     const base = new Date(this.selectedDate());
-
     const start = this.mergeDateAndTime(base, startTime!);
     let end: Date | null = null;
 
     if (endTime) {
       end = this.mergeDateAndTime(base, endTime);
       if (end <= start) {
-        // Handles overnight sessions (e.g. 23:00 – 01:00)
         if (end.getHours() < start.getHours()) {
           end.setDate(end.getDate() + 1);
         } else {
@@ -251,22 +247,43 @@ export class CreateSessionComponent implements OnInit {
       return;
     }
 
+    if (!this.formService.isNotPaid()) {
+      const selected = this.formService.selectedPayMethodsList();
+      const hasZeroAmount = selected.some((key) => this.formService.getPayAmount(key) <= 0);
+      if (hasZeroAmount && selected.length > 1) {
+        this.notify.showError(
+          $localize`:@@error.hasInvalidAmount:Payment amounts must be greater than 0`,
+        );
+        return;
+      }
+
+      const paid = this.formService.totalPaid();
+      const expected = this.totalSum();
+      if (paid > expected) {
+        this.notify.showError(
+          $localize`:@@error.paymentMismatch:Payment amounts must add up to ₾${expected}:EXPECTED:`,
+        );
+        return;
+      }
+    }
     const products = this.formService.buildProductsPayload(this.products());
     const extraControllers = (controllerAmount ?? 2) - 2;
     const controllerCost = extraControllers * this.controllerRate();
+
+    const hasFitpass = this.formService.isPayMethodSelected('Fitpass');
+    const hourlyRate = hasFitpass ? this.fitpassRate() : this.hourlyRate();
 
     const payload: CreateSessionDTO = {
       station_id: stationId!,
       start_time: start.toISOString(),
       end_time: end?.toISOString() ?? null,
       products,
-      hourly_rate:
-        this.createSessionForm.value.payMethod === 'Fitpass'
-          ? this.fitpassRate()
-          : this.hourlyRate(),
-      pay_method: payMethod ?? PAY_METHOD_OPTIONS[0].key,
+      hourly_rate: hourlyRate,
       controller_amount: controllerAmount ?? 2,
       controller_cost: controllerCost,
+      cash_paid: this.formService.getPayAmount('Cash'),
+      card_paid: this.formService.getPayAmount('Card'),
+      fitpass_paid: this.formService.getPayAmount('Fitpass'),
     };
 
     this.isSubmitting.set(true);
@@ -290,8 +307,6 @@ export class CreateSessionComponent implements OnInit {
     }
   }
 
-  // ── End / Delete ──────────────────────────────────────────────────────────
-
   async endSession(): Promise<void> {
     const confirmed = await this.notify.confirm(
       $localize`:@@confirm.endSession:This will end the session`,
@@ -308,7 +323,6 @@ export class CreateSessionComponent implements OnInit {
       $localize`:@@confirm.deleteSession:This will delete session`,
     );
     if (!confirmed) return;
-
     this.isSubmitting.set(true);
     try {
       await this.stationService.deleteSession(sessionId);
@@ -326,12 +340,9 @@ export class CreateSessionComponent implements OnInit {
     this.close.emit();
   }
 
-  // ── Private helpers ───────────────────────────────────────────────────────
-
   private async loadSessionForEdit(): Promise<void> {
     const session = this.existingSessions().find((s) => s.id === this.editableSessionID());
     if (!session) return;
-
     try {
       const items = await this.stationService.getSessionItems(session.id);
       const productIds = items.map((i) => i.product_id);
