@@ -1,4 +1,4 @@
-import { Component, computed, inject, input, OnInit, output, signal } from '@angular/core';
+import { Component, computed, effect, inject, input, OnInit, output, signal } from '@angular/core';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { DatePickerModule } from 'primeng/datepicker';
 import { CheckboxModule } from 'primeng/checkbox';
@@ -59,7 +59,17 @@ export class CreateSessionComponent implements OnInit {
   protected get createSessionForm() {
     return this.formService.form;
   }
-
+  constructor() {
+    effect(() => {
+      const max = this.fitpassMaxCount();
+      const current = this.formService.fitpassCount();
+      if (current > max) {
+        const clamped = Math.max(0, max);
+        this.formService.setFitpassCount(clamped);
+        this.formService.setPayAmount('Fitpass', clamped * this.fitpassRate());
+      }
+    });
+  }
   ngOnInit(): void {
     if (this.editableSessionID()) {
       this.loadSessionForEdit();
@@ -184,18 +194,55 @@ export class CreateSessionComponent implements OnInit {
     return this.formService.removeAmount(id);
   }
 
+  // ── Fitpass stuff ──────────────────────────────────────────────────────────
+
+  protected readonly fitpassMaxCount = computed(() => {
+    const vals = this.formService.formValues();
+    const start = vals.startTime;
+    const end = vals.endTime;
+
+    if (!start) return 0;
+    const base = new Date(this.selectedDate());
+    const startDate = this.mergeDateAndTime(base, start);
+    const endDate = end ? this.mergeDateAndTime(base, end) : null;
+    const effectiveEnd = endDate ?? new Date();
+
+    let diffMs = effectiveEnd.getTime() - startDate.getTime();
+    if (diffMs < 0) diffMs += 24 * 60 * 60 * 1000;
+    const diffMinutes = Math.floor(diffMs / (1000 * 60));
+    const extraControllers = (vals.controllerAmount ?? 2) - 2;
+    return this.formService.getMaxFitpasses(diffMinutes, extraControllers);
+  });
+  protected incrementFitpass(): void {
+    const current = this.formService.fitpassCount();
+    const max = this.fitpassMaxCount();
+    if (current >= max) return;
+    const newCount = current + 1;
+    this.formService.setFitpassCount(newCount);
+    this.formService.setPayAmount('Fitpass', newCount * this.fitpassRate());
+  }
+
+  protected decrementFitpass(): void {
+    const current = this.formService.fitpassCount();
+    if (current <= 0) return;
+    const newCount = current - 1;
+    this.formService.setFitpassCount(newCount);
+    this.formService.setPayAmount('Fitpass', newCount * this.fitpassRate());
+  }
+
   // ── Computed sum ──────────────────────────────────────────────────────────
   protected readonly totalSum = computed(() => {
     const sessionId = this.editableSessionID();
     const session = sessionId ? this.existingSessions().find((s) => s.id === sessionId) : null;
+    const hourlyRate = session?.hourly_rate ?? this.hourlyRate();
+    const fitpassRate = session ? this.fitpassRate() : this.fitpassRate();
 
-    // If any fitpass selected use fitpass rate, otherwise hourly
-    const hasFitpass = this.formService.isPayMethodSelected('Fitpass');
-    const rate = hasFitpass
-      ? (session?.hourly_rate ?? this.fitpassRate())
-      : (session?.hourly_rate ?? this.hourlyRate());
-
-    return this.formService.buildTotalSum(this.products(), rate, this.controllerRate());
+    return this.formService.buildTotalSum(
+      this.products(),
+      hourlyRate,
+      fitpassRate,
+      this.controllerRate(),
+    );
   });
 
   // ── canEndSession ─────────────────────────────────────────────────────────
@@ -269,13 +316,30 @@ export class CreateSessionComponent implements OnInit {
     const products = this.formService.buildProductsPayload(this.products());
     const extraControllers = (controllerAmount ?? 2) - 2;
     let controllerCost = 0;
-    if (extraControllers > 0) {
-      const minutes = end ? Math.ceil((end.getTime() - start.getTime()) / (1000 * 60)) : 0;
-      const blocks = Math.max(1, Math.floor(minutes / 30));
-      controllerCost = blocks * (this.controllerRate() * 0.5) * extraControllers;
-    }
+    const fitpassCount = this.formService.fitpassCount();
     const hasFitpass = this.formService.isPayMethodSelected('Fitpass');
-    const hourlyRate = hasFitpass ? this.fitpassRate() : this.hourlyRate();
+    if (extraControllers > 0) {
+      if (hasFitpass && fitpassCount > 0 && end) {
+        const minutes = Math.ceil((end.getTime() - start.getTime()) / (1000 * 60));
+        const sessionHours = minutes / 60;
+        const gamingHoursCovered = Math.min(fitpassCount, sessionHours);
+        const extraFitpasses = fitpassCount - gamingHoursCovered;
+        const controllerHoursCovered = extraFitpasses * 2;
+        const totalControllerHours = extraControllers * sessionHours;
+        const remainingControllerHours = Math.max(0, totalControllerHours - controllerHoursCovered);
+        controllerCost = remainingControllerHours * (this.controllerRate() + 1);
+      } else {
+        const minutes = end ? Math.ceil((end.getTime() - start.getTime()) / (1000 * 60)) : 0;
+        const blocks = Math.max(1, Math.floor(minutes / 30));
+        controllerCost = blocks * (this.controllerRate() * 0.5) * extraControllers;
+      }
+    }
+
+    const hourlyRate = this.hourlyRate();
+    const fitpassPaid = fitpassCount * this.fitpassRate();
+    if (this.formService.isPayMethodSelected('Fitpass')) {
+      this.formService.setPayAmount('Fitpass', fitpassPaid);
+    }
 
     const payload: CreateSessionDTO = {
       station_id: stationId!,
@@ -287,6 +351,7 @@ export class CreateSessionComponent implements OnInit {
       controller_cost: controllerCost,
       cash_paid: this.formService.getPayAmount('Cash'),
       card_paid: this.formService.getPayAmount('Card'),
+      fitpass_count: fitpassCount,
       fitpass_paid: this.formService.getPayAmount('Fitpass'),
     };
 

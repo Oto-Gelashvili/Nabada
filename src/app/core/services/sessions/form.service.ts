@@ -22,8 +22,9 @@ export class SessionFormService {
   readonly initialAmounts = signal<ProductAmount[]>([]);
   readonly amounts = signal<ProductAmount[]>([]);
   readonly payMethodAmounts = signal<PayMethodAmount[]>([]);
+  readonly fitpassCount = signal<number>(0);
 
-  private readonly formValues = toSignal(this.form.valueChanges, {
+  readonly formValues = toSignal(this.form.valueChanges, {
     initialValue: this.form.getRawValue(),
   });
 
@@ -35,6 +36,21 @@ export class SessionFormService {
     return this.totalPaid() < totalSum;
   }
 
+  // ── Fitpass helpers ────────────────────────────────────────────────
+
+  getMaxFitpasses(sessionMinutes: number, extraControllers: number): number {
+    const completedHours = Math.floor(sessionMinutes / 60);
+    const multiplier = extraControllers >= 2 ? 2 : 1;
+    return completedHours * multiplier;
+  }
+
+  getFitpassCost(fitpassRate: number): number {
+    return this.fitpassCount() * fitpassRate;
+  }
+  setFitpassCount(count: number): void {
+    this.fitpassCount.set(count);
+  }
+
   // ── PayMethod multi-select ────────────────────────────────────────────────
   isPayMethodSelected(key: string): boolean {
     return this.payMethodAmounts().some((p) => p.key === key);
@@ -44,6 +60,7 @@ export class SessionFormService {
     const exists = this.isPayMethodSelected(key);
     if (exists) {
       this.payMethodAmounts.update((prev) => prev.filter((p) => p.key !== key));
+      if (key === 'Fitpass') this.fitpassCount.set(0);
     } else {
       this.payMethodAmounts.update((prev) => [...prev, { key, amount: 0 }]);
     }
@@ -137,13 +154,19 @@ export class SessionFormService {
   }
 
   // ── Computed sum ──────────────────────────────────────────────────────────
-  buildTotalSum(allProducts: Product[], hourlyRate: number, controllerRate: number): number {
+  buildTotalSum(
+    allProducts: Product[],
+    hourlyRate: number,
+    fitpassRate: number,
+    controllerRate: number,
+  ): number {
     const vals = this.formValues();
     let sum = 0;
 
     const start = vals.startTime;
     const now = new Date();
     const end = vals.endTime ?? (start && start <= now ? now : null);
+    const extraControllers = (vals.controllerAmount ?? 2) - 2;
 
     let diffMinutes = 0;
 
@@ -151,13 +174,30 @@ export class SessionFormService {
       let diffMs = end.getTime() - start.getTime();
       if (diffMs < 0) diffMs += 24 * 60 * 60 * 1000;
       diffMinutes = Math.ceil(diffMs / (1000 * 60));
-      sum += Math.round((diffMinutes / 60) * hourlyRate);
-    }
 
-    const extraControllers = (vals.controllerAmount ?? 2) - 2;
-    if (extraControllers > 0) {
-      const blocks = Math.max(1, Math.floor(diffMinutes / 30));
-      sum += blocks * (controllerRate * 0.5) * extraControllers;
+      const hasFitpass = this.isPayMethodSelected('Fitpass');
+      const fitpassCount = this.fitpassCount();
+
+      if (hasFitpass && fitpassCount > 0) {
+        const sessionHours = diffMinutes / 60;
+        const gamingHoursCovered = Math.min(fitpassCount, sessionHours);
+        const extraFitpasses = fitpassCount - gamingHoursCovered;
+        const controllerHoursCovered = extraFitpasses * 2;
+        const totalControllerHours = extraControllers * sessionHours;
+        const remainingControllerHours = Math.max(0, totalControllerHours - controllerHoursCovered);
+        const remainingGamingHours = Math.max(0, sessionHours - gamingHoursCovered);
+        const extraControllerRateWithFitpass = controllerRate + 1;
+
+        sum += fitpassCount * fitpassRate;
+        sum += Math.round(remainingGamingHours * hourlyRate);
+        sum += remainingControllerHours * extraControllerRateWithFitpass;
+      } else {
+        sum += Math.round((diffMinutes / 60) * hourlyRate);
+        if (extraControllers > 0) {
+          const blocks = Math.max(1, Math.floor(diffMinutes / 30));
+          sum += blocks * (controllerRate * 0.5) * extraControllers;
+        }
+      }
     }
 
     for (const item of this.amounts()) {
@@ -189,6 +229,7 @@ export class SessionFormService {
     if (session.cash_paid > 0) restored.push({ key: 'Cash', amount: session.cash_paid });
     if (session.card_paid > 0) restored.push({ key: 'Card', amount: session.card_paid });
     if (session.fitpass_paid > 0) restored.push({ key: 'Fitpass', amount: session.fitpass_paid });
+    this.fitpassCount.set(session.fitpass_count ?? 0);
     this.payMethodAmounts.set(restored);
 
     this.form.patchValue({
@@ -204,5 +245,6 @@ export class SessionFormService {
     this.form.reset({ startTime: new Date(), endTime: null, productIds: [] });
     this.amounts.set([]);
     this.payMethodAmounts.set([]);
+    this.fitpassCount.set(0);
   }
 }

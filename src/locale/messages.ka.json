@@ -167,6 +167,7 @@
     "sessions.notPaid": "გადაუხდელი",
     "sessions.amountPaid": "თანხა:",
     "error.hasInvalidAmount": "თანხა უნდა იყოს 0-ზე მეტი",
-    "error.paymentMismatch": "გადახდილ თანხათა ჯამი უნდა იყოს: ₾{$EXPECTED}"
+    "error.paymentMismatch": "გადახდილ თანხათა ჯამი უნდა იყოს: ₾{$EXPECTED}",
+    "sessions.fitpassCount": "Fitpass-ის ოდენობა:"
   }
 }

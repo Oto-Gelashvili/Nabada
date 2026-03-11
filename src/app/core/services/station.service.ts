@@ -129,6 +129,7 @@ export class StationsService {
       p_fitpass_paid: data.fitpass_paid,
       p_controller_amount: data.controller_amount,
       p_controller_cost: data.controller_cost,
+      p_fitpass_count: data.fitpass_count,
     });
 
     if (error) {
@@ -164,6 +165,7 @@ export class StationsService {
       p_fitpass_paid: data.fitpass_paid,
       p_controller_amount: data.controller_amount,
       p_controller_cost: data.controller_cost,
+      p_fitpass_count: data.fitpass_count,
     });
 
     if (error) {

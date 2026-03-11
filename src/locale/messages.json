@@ -156,6 +156,7 @@
     "sessions.notPaid": "Not paid",
     "sessions.amountPaid": "Paid amount:",
     "error.hasInvalidAmount": "Payment amounts must be greater than 0",
-    "error.paymentMismatch": "Payment amounts must add up to ₾{$EXPECTED}"
+    "error.paymentMismatch": "Payment amounts must add up to ₾{$EXPECTED}",
+    "sessions.fitpassCount": "Fitpass count:"
   }
 }

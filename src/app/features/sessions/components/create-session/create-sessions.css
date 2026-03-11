@@ -291,7 +291,15 @@
   color: var(--text-color);
   opacity: 0.8;
 }
-.total {
+.fitpassPaidAmounCont {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.4rem;
+  width: 100%;
+}
+.total,
+.fitpassPaidAmounCont span {
   width: fit-content;
   font-size: 1.6rem;
   color: var(--success);

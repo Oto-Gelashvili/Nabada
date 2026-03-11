@@ -18,6 +18,7 @@ export interface ServiceSession {
   cash_paid: number;
   card_paid: number;
   fitpass_paid: number;
+  fitpass_count: number;
 }
 
 export interface CreateSessionDTO {
@@ -36,6 +37,7 @@ export interface CreateSessionDTO {
   cash_paid: number;
   card_paid: number;
   fitpass_paid: number;
+  fitpass_count: number;
 }
 
 export const PAY_METHOD_OPTIONS = [
