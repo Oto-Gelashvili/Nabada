@@ -65,6 +65,8 @@
   min-width: 300px;
   width: fit-content;
   margin-block: 4.8rem;
+  max-height: calc(100vh - 9.6rem);
+  overflow-y: auto;
 }
 #createSessionModal .modal-body {
   gap: 0;
