@@ -268,8 +268,12 @@ export class CreateSessionComponent implements OnInit {
     }
     const products = this.formService.buildProductsPayload(this.products());
     const extraControllers = (controllerAmount ?? 2) - 2;
-    const controllerCost = extraControllers * this.controllerRate();
-
+    let controllerCost = 0;
+    if (extraControllers > 0) {
+      const minutes = end ? Math.ceil((end.getTime() - start.getTime()) / (1000 * 60)) : 0;
+      const blocks = Math.max(1, Math.floor(minutes / 30));
+      controllerCost = blocks * (this.controllerRate() * 0.5) * extraControllers;
+    }
     const hasFitpass = this.formService.isPayMethodSelected('Fitpass');
     const hourlyRate = hasFitpass ? this.fitpassRate() : this.hourlyRate();
 

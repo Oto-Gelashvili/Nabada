@@ -145,15 +145,20 @@ export class SessionFormService {
     const now = new Date();
     const end = vals.endTime ?? (start && start <= now ? now : null);
 
+    let diffMinutes = 0;
+
     if (start && end) {
       let diffMs = end.getTime() - start.getTime();
       if (diffMs < 0) diffMs += 24 * 60 * 60 * 1000;
-      const diffMinutes = Math.ceil(diffMs / (1000 * 60));
-      sum += Math.floor((diffMinutes / 60) * hourlyRate);
+      diffMinutes = Math.ceil(diffMs / (1000 * 60));
+      sum += Math.round((diffMinutes / 60) * hourlyRate);
     }
 
     const extraControllers = (vals.controllerAmount ?? 2) - 2;
-    sum += extraControllers * controllerRate;
+    if (extraControllers > 0) {
+      const blocks = Math.max(1, Math.floor(diffMinutes / 30));
+      sum += blocks * (controllerRate * 0.5) * extraControllers;
+    }
 
     for (const item of this.amounts()) {
       const product = allProducts.find((p) => p.id === item.id);
