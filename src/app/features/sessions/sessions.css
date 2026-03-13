@@ -276,10 +276,10 @@
 }
 
 .session-card.Card {
-  background-color: var(--primary-color);
+  background-color: var(--fitpass-color);
 }
 .session-card.Fitpass {
-  background-color: var(--fitpass-color);
+  background-color: var(--primary-color);
 }
 .session-card.NotPaid {
   background-color: var(--error);
