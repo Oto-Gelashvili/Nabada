@@ -1,0 +1,70 @@
+<div class="dashboard">
+  <div class="dashboard-header">
+    <h1 class="dashboard-title" i18n="@@nav.dashboard">Dashboard</h1>
+    <span class="dashboard-clock">{{ currentTime() }}</span>
+  </div>
+
+  <div class="stations-grid">
+    @for (station of stations(); track station.id) {
+      @let session = getActiveSession(station.id);
+      @let state = getStationState(station.id);
+
+      <div class="station-card station-card--{{ state }}">
+        <div class="station-card-top">
+          <span class="station-card-name">{{ station.name }}</span>
+          <span class="station-card-dot station-card-dot--{{ state }}"></span>
+        </div>
+
+        <div class="station-card-body">
+          @if (session) {
+            <div class="station-card-times">
+              <div class="station-card-time-block">
+                <span class="station-card-time-label" i18n="@@dashboard.start">From</span>
+                <span class="station-card-time-value">{{ formatTime(session.start_time) }}</span>
+              </div>
+              <div class="station-card-divider">→</div>
+              <div class="station-card-time-block">
+                <span class="station-card-time-label" i18n="@@dashboard.end">Until</span>
+                <span class="station-card-time-value">
+                  @if (session.end_time) {
+                    {{ formatTime(session.end_time) }}
+                  } @else {
+                    <span class="station-card-ongoing" i18n="@@dashboard.ongoing">Open</span>
+                  }
+                </span>
+              </div>
+            </div>
+
+            @if (state === 'ending-soon') {
+              <div class="station-card-warning" i18n="@@dashboard.endingSoon">⚡ Ending soon</div>
+            }
+            <div class="station-card-footer">
+              @if (session.end_time) {
+                <span class="station-card-total">₾{{ session.total_cost }}</span>
+              } @else {
+                <span class="station-card-total station-card-total--tbd" i18n="@@dashboard.tbd"
+                  >TBD</span
+                >
+              }
+              @if (isUnpaid(session)) {
+                <span
+                  class="station-card-status station-card-status--unpaid"
+                  i18n="@@dashboard.unpaid"
+                  >Unpaid</span
+                >
+              } @else {
+                <span class="station-card-status station-card-status--paid" i18n="@@dashboard.paid"
+                  >Paid</span
+                >
+              }
+            </div>
+          } @else {
+            <div class="station-card-empty">
+              <span i18n="@@dashboard.noSession">Available</span>
+            </div>
+          }
+        </div>
+      </div>
+    }
+  </div>
+</div>

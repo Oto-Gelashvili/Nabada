@@ -168,6 +168,15 @@
     "sessions.amountPaid": "თანხა:",
     "error.hasInvalidAmount": "თანხა უნდა იყოს 0-ზე მეტი",
     "error.paymentMismatch": "გადახდილ თანხათა ჯამი უნდა იყოს: ₾{$EXPECTED}",
-    "sessions.fitpassCount": "Fitpass-ის ოდენობა:"
+    "sessions.fitpassCount": "Fitpass-ის ოდენობა:",
+    "nav.dashboard": "დაფა",
+    "dashboard.start": "დასაწყისი",
+    "dashboard.end": "დასასრული",
+    "dashboard.ongoing": "მიმდინარე",
+    "dashboard.endingSoon": "⚡ სრულდება",
+    "dashboard.tbd": "TBD",
+    "dashboard.unpaid": "გადაუხდელი",
+    "dashboard.paid": "გადახდილი",
+    "dashboard.noSession": "თავისუფალია"
   }
 }

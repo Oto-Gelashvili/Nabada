@@ -39,6 +39,7 @@
       ><p i18n="@@nav.analytics">Analytics</p>
       <span class="material-symbols-outlined"> analytics </span>
     </a>
+
     <a
       [routerLink]="userProfile() ? '/settings' : '/signups'"
       routerLinkActive="active"
@@ -53,6 +54,13 @@
     <a routerLink="/" (click)="toggleState()"
       ><p i18n="@@nav.home">Home</p>
       <span class="material-symbols-outlined"> home </span>
+    </a>
+    <a
+      [routerLink]="userProfile() ? '/dashboard' : '/signups'"
+      routerLinkActive="active"
+      (click)="toggleState()"
+      ><p i18n="@@nav.dashboard">Dashboard</p>
+      <span class="material-symbols-outlined"> dashboard_2 </span>
     </a>
     <app-theme-switcher></app-theme-switcher>
     <div class="btnCont">

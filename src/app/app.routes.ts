@@ -10,6 +10,7 @@ import { PublicLayout } from './layouts/public-layout/public-layout';
 import { AuthLayout } from './layouts/auth-layout/auth-layout';
 import { LandingHome } from './features/landing/pages/landing-home/landing-home';
 import { authGuard, guestGuard } from './core/guards/auth.guard';
+import { Dashboard } from './features/dashboard/dashboard';
 
 export const routes: Routes = [
   {
@@ -54,6 +55,11 @@ export const routes: Routes = [
         path: 'settings',
         component: Settings,
         title: 'Settings Page',
+      },
+      {
+        path: 'dashboard',
+        component: Dashboard,
+        title: 'Dashboard',
       },
     ],
   },
