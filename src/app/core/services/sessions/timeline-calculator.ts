@@ -7,8 +7,8 @@ import { PAY_METHOD_OPTIONS } from '../../../models/sessions';
 export class TimelineCalculator {
   private readonly colorMap: Record<string, string> = {
     Cash: 'var(--success)',
-    Card: 'var(--primary-color)',
-    Fitpass: 'var(--fitpass-color)',
+    Card: 'var(--fitpass-color)',
+    Fitpass: 'var(--primary-color)',
     NotPaid: 'var(--error)',
   };
   constructor(private readonly pixelsPerHour: number = 100) {}
