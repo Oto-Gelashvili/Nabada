@@ -66,13 +66,6 @@ export class TimelineCalculator {
       return 'NotPaid';
     }
 
-    const now = Date.now();
-    const end = new Date(session.end_time).getTime();
-
-    if (end < now && !session.pay_method.includes('NotPaid')) {
-      return 'finished';
-    }
-
     if (session.pay_method.includes('NotPaid')) {
       return 'NotPaid';
     }
@@ -94,15 +87,7 @@ export class TimelineCalculator {
     end_time: string | null;
     pay_method: string;
   }): Record<string, string> {
-    // Ongoing session — no gradient needed, class handles it
     if (!session.end_time) {
-      return {};
-    }
-
-    const now = Date.now();
-    const end = new Date(session.end_time).getTime();
-
-    if (end < now && session.pay_method !== 'NotPaid') {
       return {};
     }
 
