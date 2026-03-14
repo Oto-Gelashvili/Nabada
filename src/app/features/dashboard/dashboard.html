@@ -38,7 +38,7 @@
             @if (state === 'ending-soon') {
               <div class="station-card-warning" i18n="@@dashboard.endingSoon">⚡ Ending soon</div>
             }
-            <div class="station-card-footer">
+            <!-- <div class="station-card-footer">
               @if (session.end_time) {
                 <span class="station-card-total">₾{{ session.total_cost }}</span>
               } @else {
@@ -57,7 +57,7 @@
                   >Paid</span
                 >
               }
-            </div>
+            </div> -->
           } @else {
             <div class="station-card-empty">
               <span i18n="@@dashboard.noSession">Available</span>
