@@ -325,9 +325,15 @@ export class CreateSessionComponent implements OnInit {
         const gamingHoursCovered = Math.min(fitpassCount, sessionHours);
         const extraFitpasses = fitpassCount - gamingHoursCovered;
         const controllerHoursCovered = extraFitpasses * 2;
-        const totalControllerHours = extraControllers * sessionHours;
+        const totalControllerHours = extraControllers * gamingHoursCovered;
         const remainingControllerHours = Math.max(0, totalControllerHours - controllerHoursCovered);
+        const remainingMinutes = Math.max(0, minutes - gamingHoursCovered * 60);
+
         controllerCost = remainingControllerHours * (this.controllerRate() + 1);
+        if (remainingMinutes > 0) {
+          const remainingBlocks = Math.max(1, Math.floor(remainingMinutes / 30));
+          controllerCost += remainingBlocks * (this.controllerRate() * 0.5) * extraControllers;
+        }
       } else {
         const minutes = end ? Math.ceil((end.getTime() - start.getTime()) / (1000 * 60)) : 0;
         const blocks = Math.max(1, Math.floor(minutes / 30));

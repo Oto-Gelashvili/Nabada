@@ -183,14 +183,19 @@ export class SessionFormService {
         const gamingHoursCovered = Math.min(fitpassCount, sessionHours);
         const extraFitpasses = fitpassCount - gamingHoursCovered;
         const controllerHoursCovered = extraFitpasses * 2;
-        const totalControllerHours = extraControllers * sessionHours;
+        const totalControllerHours = extraControllers * gamingHoursCovered;
         const remainingControllerHours = Math.max(0, totalControllerHours - controllerHoursCovered);
-        const remainingGamingHours = Math.max(0, sessionHours - gamingHoursCovered);
+        const remainingGamingMinutes = Math.max(0, diffMinutes - gamingHoursCovered * 60);
+        const remainingGamingHours = remainingGamingMinutes / 60;
         const extraControllerRateWithFitpass = controllerRate + 1;
 
         sum += fitpassCount * fitpassRate;
-        sum += Math.round(remainingGamingHours * hourlyRate);
         sum += remainingControllerHours * extraControllerRateWithFitpass;
+        sum += Math.round(remainingGamingHours * hourlyRate);
+        if (extraControllers > 0 && remainingGamingMinutes > 0) {
+          const remainingBlocks = Math.max(1, Math.floor(remainingGamingMinutes / 30));
+          sum += remainingBlocks * (controllerRate * 0.5) * extraControllers;
+        }
       } else {
         sum += Math.round((diffMinutes / 60) * hourlyRate);
         if (extraControllers > 0) {
