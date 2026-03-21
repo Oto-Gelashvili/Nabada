@@ -3,8 +3,8 @@
     <div
       class="custom-alert"
       [class]="note.type"
+      [class.leaving]="note.leaving"
       animate.enter="enter-animation-alert"
-      animate.leave="leave-animation-alert"
     >
       @if (note.type === 'success') {
         <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">

@@ -4,12 +4,12 @@
 .notification-modal-cont {
   display: flex;
   flex-direction: column;
-  gap: 1.2rem;
   position: fixed;
   top: 2.4rem;
   left: 50%;
   transform: translateX(-50%);
   z-index: var(--most-z);
+  transition: 0.4s;
 }
 .custom-alert {
   position: relative;
@@ -24,8 +24,19 @@
   color: #fff;
   min-width: fit-content;
   line-break: anywhere;
+  transition: 0.4s;
+  max-height: 200px;
+  overflow: hidden;
+  margin-bottom: 1.2rem;
 }
-
+.custom-alert.leaving {
+  opacity: 0;
+  transform: translate(0, -50px);
+  max-height: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  margin: 0;
+}
 .custom-alert.success {
   background-color: var(--success);
 }
@@ -36,9 +47,10 @@
 .enter-animation-alert {
   animation: slide-fade-alert 1s;
 }
-.leave-animation-alert {
+/* .leave-animation-alert {
   animation: slide-out-alert 1s;
-}
+} */
+
 @keyframes slide-fade-alert {
   from {
     opacity: 0;
@@ -48,7 +60,7 @@
     opacity: 1;
   }
 }
-@keyframes slide-out-alert {
+/* @keyframes slide-out-alert {
   from {
     opacity: 1;
   }
@@ -56,7 +68,7 @@
     opacity: 0;
     transform: translate(0, -50px);
   }
-}
+} */
 
 @media screen and (max-width: 375px) {
   .notification-modal-cont {

@@ -4,6 +4,7 @@ export interface AppNotification {
   id: number;
   message: string;
   type: 'success' | 'error';
+  leaving?: boolean;
 }
 interface ConfirmationRequest {
   message: string;
@@ -44,11 +45,17 @@ export class NotificationService {
 
   private show(message: string, type: 'success' | 'error') {
     const id = Date.now() + Math.random();
-
     this.notifications.update((current) => [...current, { id, message, type }]);
 
     setTimeout(() => {
-      this.remove(id);
-    }, 4000);
+      this.markLeaving(id);
+      setTimeout(() => this.remove(id), 600);
+    }, 3400);
+  }
+
+  private markLeaving(id: number) {
+    this.notifications.update((current) =>
+      current.map((n) => (n.id === id ? { ...n, leaving: true } : n)),
+    );
   }
 }
