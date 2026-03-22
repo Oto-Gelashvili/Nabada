@@ -80,6 +80,9 @@ export class SupabaseService {
       provider: 'google',
       options: {
         redirectTo: `${window.location.origin}${isKa ? '/ka' : ''}/sessions`,
+        queryParams: {
+          prompt: 'select_account',
+        },
       },
     });
   }
