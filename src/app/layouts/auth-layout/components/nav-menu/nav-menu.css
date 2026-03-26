@@ -145,12 +145,12 @@
     position: fixed;
     width: 250px;
     height: calc(100% - var(--fixed-header-height));
-    top: 0;
+    top: var(--fixed-header-height);
     right: 0;
-    margin-top: var(--fixed-header-height);
-    justify-content: center;
+    /* margin-top: var(--fixed-header-height); */
+    justify-content: flex-start;
     gap: 1.2rem;
-    overflow-y: scroll;
+    overflow-y: auto;
     z-index: var(--header-z);
   }
   .profileMenu a,
@@ -165,7 +165,11 @@
     align-items: center;
   }
 }
-
+@media screen and (max-width: 768px) and (min-height: 700px) {
+  .profileMenu {
+    justify-content: center;
+  }
+}
 @media screen and (max-width: 475px) {
   .profileMenu {
     width: 100%;
