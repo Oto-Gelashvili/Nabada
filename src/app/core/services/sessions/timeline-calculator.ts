@@ -11,7 +11,30 @@ export class TimelineCalculator {
     Fitpass: 'var(--primary-color)',
     NotPaid: 'var(--error)',
   };
-  constructor(private readonly pixelsPerHour: number = 100) {}
+  constructor(
+    private readonly pixelsPerHour: number = 100,
+    private readonly visibleHours: number[],
+  ) {}
+
+  private getVisibleMinutes(date: Date): number {
+    const hour = date.getHours();
+    const minutes = date.getMinutes();
+
+    let total = 0;
+
+    for (const h of this.visibleHours) {
+      if (h < hour) {
+        total += 60;
+      } else if (h === hour) {
+        total += minutes;
+        break;
+      } else {
+        break;
+      }
+    }
+
+    return total;
+  }
 
   calculateLeft(startTimeStr: string, selectedDate: Date): number {
     const sessionStart = new Date(startTimeStr).getTime();
@@ -20,7 +43,9 @@ export class TimelineCalculator {
     if (sessionStart < viewStart) return 0;
 
     const date = new Date(startTimeStr);
-    return date.getHours() * this.pixelsPerHour + date.getMinutes() * (this.pixelsPerHour / 60);
+    const visibleMinutes = this.getVisibleMinutes(date);
+
+    return visibleMinutes * (this.pixelsPerHour / 60);
   }
 
   calculateWidth(
@@ -29,17 +54,15 @@ export class TimelineCalculator {
     selectedDate: Date,
     nowMs: number,
   ): number {
-    const sessionStart = new Date(startStr).getTime();
-    const sessionEnd = endStr ? new Date(endStr).getTime() : nowMs;
+    const start = new Date(startStr);
+    const end = endStr ? new Date(endStr) : new Date(nowMs);
 
-    const viewStart = this.startOfDay(selectedDate);
-    const viewEnd = this.endOfDay(selectedDate);
+    const startMinutes = this.getVisibleMinutes(start);
+    const endMinutes = this.getVisibleMinutes(end);
 
-    const effectiveStart = Math.max(sessionStart, viewStart);
-    const effectiveEnd = Math.min(sessionEnd, viewEnd);
-    const durationHours = (effectiveEnd - effectiveStart) / (1000 * 60 * 60);
+    const durationMinutes = endMinutes - startMinutes;
 
-    return Math.max(0, durationHours * this.pixelsPerHour);
+    return Math.max(0, durationMinutes * (this.pixelsPerHour / 60));
   }
 
   getOverlapClass(

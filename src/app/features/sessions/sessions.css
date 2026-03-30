@@ -224,7 +224,7 @@
 .timeline-track {
   position: relative;
   display: flex;
-  width: calc(24 * var(--hour-width));
+  width: calc(14 * var(--hour-width));
   user-select: none;
   display: flex;
 }

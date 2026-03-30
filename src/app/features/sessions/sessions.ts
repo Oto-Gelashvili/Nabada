@@ -41,9 +41,11 @@ export class Sessions implements OnInit {
   protected readonly showCreateModal = signal(false);
   protected readonly editableSessionId = signal<number | null>(null);
 
-  protected readonly hours = Array.from({ length: 24 }, (_, i) => i);
+  protected readonly hours = Array.from({ length: 24 }, (_, i) => i).filter(
+    (hour) => hour < 3 || hour > 12,
+  );
   private readonly now = signal(Date.now());
-  private readonly timeline = new TimelineCalculator(100);
+  private readonly timeline = new TimelineCalculator(100, this.hours);
   private justExpired = new Set<number>();
 
   // ── Lifecycle ─────────────────────────────────────────────────────────────
