@@ -7,7 +7,6 @@ import {
   StationAnalytics,
   StationsAnalyticsResult,
 } from '../../features/analytics/models/analytics.models';
-import { PAY_METHOD_OPTIONS } from '../../models/sessions';
 
 type Granularity = 'day' | 'week' | 'month';
 
@@ -60,6 +59,15 @@ export class AnalyticsService {
     const endDay = new Date(endDate);
     endDay.setHours(23, 59, 59, 999);
 
+    if (granularity === 'week') {
+      const day = selectedDay.getDay();
+      const diff = day === 0 ? -6 : 1 - day;
+      selectedDay.setDate(selectedDay.getDate() + diff);
+    }
+
+    if (granularity === 'month') {
+      selectedDay.setDate(1);
+    }
     while (selectedDay <= endDay) {
       const key = this.getBucketKey(selectedDay, granularity);
 
@@ -74,6 +82,7 @@ export class AnalyticsService {
         selectedDay.setDate(selectedDay.getDate() + 7);
       } else {
         selectedDay.setMonth(selectedDay.getMonth() + 1);
+        selectedDay.setDate(1);
       }
     }
 
@@ -82,24 +91,28 @@ export class AnalyticsService {
 
   private getBucketKey(date: Date, granularity: Granularity): string {
     if (granularity === 'day') {
-      // "2025-01-07"
-      return date.toISOString().slice(0, 10);
+      return this.formatLocalDate(date);
     }
 
     if (granularity === 'week') {
-      // ISO week number: we find the Monday of the week this date belongs to
       const monday = new Date(date);
-      const day = date.getDay(); // 0=Sun, 1=Mon ... 6=Sat
-      // getDay() returns 0 for Sunday, we treat Sunday as end of week
+      const day = date.getDay();
       const diff = day === 0 ? -6 : 1 - day;
       monday.setDate(date.getDate() + diff);
-      return monday.toISOString().slice(0, 10);
+
+      return this.formatLocalDate(monday); // ✅ FIX
     }
 
-    // month: "2025-01"
     const y = date.getFullYear();
     const m = String(date.getMonth() + 1).padStart(2, '0');
     return `${y}-${m}`;
+  }
+
+  private formatLocalDate(date: Date): string {
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, '0');
+    const d = String(date.getDate()).padStart(2, '0');
+    return `${y}-${m}-${d}`;
   }
 
   private getLabel(date: Date, granularity: Granularity): string {
