@@ -39,9 +39,8 @@ export class SessionFormService {
   // ── Fitpass helpers ────────────────────────────────────────────────
 
   getMaxFitpasses(sessionMinutes: number, extraControllers: number): number {
-    const completedHours = Math.floor(sessionMinutes / 60);
-    const multiplier = extraControllers >= 2 ? 2 : 1;
-    return completedHours * multiplier;
+    const minutesPerFitpass = extraControllers >= 2 ? 30 : 60;
+    return Math.floor(sessionMinutes / minutesPerFitpass);
   }
 
   getFitpassCost(fitpassRate: number): number {
