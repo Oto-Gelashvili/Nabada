@@ -20,12 +20,12 @@
 }
 
 .dashboard-title {
-  font-size: 2.4rem;
+  font-size: 4.8rem;
   color: var(--secondary-color);
 }
 
 .dashboard-clock {
-  font-size: 2.8rem;
+  font-size: 4.8rem;
   font-weight: 700;
   color: var(--secondary-color);
   font-variant-numeric: tabular-nums;
@@ -113,7 +113,7 @@
 }
 
 .station-card-name {
-  font-size: 2.4rem;
+  font-size: 4.8rem;
   font-weight: 700;
   color: var(--secondary-color);
 }
@@ -175,14 +175,14 @@
 }
 
 .station-card-time-label {
-  font-size: 1.2rem;
+  font-size: 1.8rem;
   font-weight: 600;
   text-transform: uppercase;
   color: var(--text-color);
 }
 
 .station-card-time-value {
-  font-size: 2.4rem;
+  font-size: 4.8rem;
   font-weight: 700;
   color: var(--secondary-color);
   font-variant-numeric: tabular-nums;
