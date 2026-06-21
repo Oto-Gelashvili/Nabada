@@ -32,6 +32,18 @@ export const routes: Routes = [
   },
   {
     path: '',
+    component: BlankLayout,
+    canActivate: [authGuard],
+    children: [
+      {
+        path: 'dashboard',
+        loadComponent: () => import('./features/dashboard/dashboard').then((m) => m.Dashboard),
+        title: 'Dashboard',
+      },
+    ],
+  },
+  {
+    path: '',
     component: AuthLayout,
     canActivate: [authGuard],
     children: [
@@ -54,11 +66,6 @@ export const routes: Routes = [
         path: 'settings',
         loadComponent: () => import('./features/settings/settings').then((m) => m.Settings),
         title: 'Settings Page',
-      },
-      {
-        path: 'dashboard',
-        loadComponent: () => import('./features/dashboard/dashboard').then((m) => m.Dashboard),
-        title: 'Dashboard',
       },
     ],
   },

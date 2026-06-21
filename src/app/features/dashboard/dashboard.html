@@ -1,6 +1,16 @@
 <div class="dashboard">
   <div class="dashboard-header">
-    <h1 class="dashboard-title" i18n="@@nav.dashboard">Dashboard</h1>
+    <div class="dashboard-title-group">
+      <button
+        type="button"
+        class="dashboard-back"
+        routerLink="/sessions"
+        aria-label="Back to sessions"
+      >
+        <span class="material-symbols-outlined">chevron_left</span>
+      </button>
+      <h1 class="dashboard-title" i18n="@@nav.dashboard">Dashboard</h1>
+    </div>
     <span class="dashboard-clock">{{ currentTime() }}</span>
   </div>
 
@@ -12,7 +22,12 @@
       <div class="station-card station-card--{{ state }}">
         <div class="station-card-top">
           <span class="station-card-name">{{ station.name }}</span>
-          <span class="station-card-dot station-card-dot--{{ state }}"></span>
+          <div class="station-timer-cont">
+            @if (session && session.end_time) {
+              <span class="station-card-countdown">{{ getCountdown(station.id) }}</span>
+            }
+            <span class="station-card-dot station-card-dot--{{ state }}"></span>
+          </div>
         </div>
 
         <div class="station-card-body">
