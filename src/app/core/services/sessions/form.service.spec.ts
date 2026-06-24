@@ -27,6 +27,8 @@ const makeSession = (overrides: Partial<ServiceSession> = {}): ServiceSession =>
   card_paid: 0,
   fitpass_paid: 0,
   fitpass_count: 0,
+  smartclass_paid: 0,
+  smartclass_count: 0,
   ...overrides,
 });
 

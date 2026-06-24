@@ -35,6 +35,7 @@ export class CreateSessionComponent implements OnInit {
   products = input<Product[]>([]);
   hourlyRate = input<number>(8.0);
   fitpassRate = input<number>(5.0);
+  smartclassRate = input<number>(5.0);
   controllerRate = input<number>(2.0);
   editableSessionID = input<number | null>(null);
   existingSessions = input<ServiceSession[]>([]);
@@ -67,6 +68,16 @@ export class CreateSessionComponent implements OnInit {
         const clamped = Math.max(0, max);
         this.formService.setFitpassCount(clamped);
         this.formService.setPayAmount('Fitpass', clamped * this.fitpassRate());
+      }
+    });
+
+    effect(() => {
+      const max = this.smartclassMaxCount();
+      const current = this.formService.smartclassCount();
+      if (current > max) {
+        const clamped = Math.max(0, max);
+        this.formService.setSmartclassCount(clamped);
+        this.formService.setPayAmount('SmartClass', clamped * this.smartclassRate());
       }
     });
   }
@@ -197,16 +208,21 @@ export class CreateSessionComponent implements OnInit {
   // ── Fitpass stuff ──────────────────────────────────────────────────────────
 
   protected readonly fitpassMaxCount = computed(() => {
+    return this.sharedPassMaxCount() - this.formService.smartclassCount();
+  });
+
+  protected readonly smartclassMaxCount = computed(() => {
+    return this.sharedPassMaxCount() - this.formService.fitpassCount();
+  });
+  private readonly sharedPassMaxCount = computed(() => {
     const vals = this.formService.formValues();
     const start = vals.startTime;
     const end = vals.endTime;
-
     if (!start) return 0;
     const base = new Date(this.selectedDate());
     const startDate = this.mergeDateAndTime(base, start);
     const endDate = end ? this.mergeDateAndTime(base, end) : null;
     const effectiveEnd = endDate ?? new Date();
-
     let diffMs = effectiveEnd.getTime() - startDate.getTime();
     if (diffMs < 0) diffMs += 24 * 60 * 60 * 1000;
     const diffMinutes = Math.floor(diffMs / (1000 * 60));
@@ -228,6 +244,22 @@ export class CreateSessionComponent implements OnInit {
     const newCount = current - 1;
     this.formService.setFitpassCount(newCount);
     this.formService.setPayAmount('Fitpass', newCount * this.fitpassRate());
+  }
+  protected incrementSmartClass(): void {
+    const current = this.formService.smartclassCount();
+    const max = this.smartclassMaxCount();
+    if (current >= max) return;
+    const newCount = current + 1;
+    this.formService.setSmartclassCount(newCount);
+    this.formService.setPayAmount('SmartClass', newCount * this.smartclassRate());
+  }
+
+  protected decrementSmartClass(): void {
+    const current = this.formService.smartclassCount();
+    if (current <= 0) return;
+    const newCount = current - 1;
+    this.formService.setSmartclassCount(newCount);
+    this.formService.setPayAmount('SmartClass', newCount * this.smartclassRate());
   }
 
   // ── Computed sum ──────────────────────────────────────────────────────────
@@ -318,6 +350,8 @@ export class CreateSessionComponent implements OnInit {
     let controllerCost = 0;
     const fitpassCount = this.formService.fitpassCount();
     const hasFitpass = this.formService.isPayMethodSelected('Fitpass');
+    const smartclassCount = this.formService.smartclassCount();
+
     if (extraControllers > 0) {
       if (hasFitpass && fitpassCount > 0 && end) {
         const minutes = Math.ceil((end.getTime() - start.getTime()) / (1000 * 60));
@@ -346,6 +380,10 @@ export class CreateSessionComponent implements OnInit {
     if (this.formService.isPayMethodSelected('Fitpass')) {
       this.formService.setPayAmount('Fitpass', fitpassPaid);
     }
+    const smartclassPaid = smartclassCount * this.smartclassRate();
+    if (this.formService.isPayMethodSelected('SmartClass')) {
+      this.formService.setPayAmount('SmartClass', smartclassPaid);
+    }
 
     const payload: CreateSessionDTO = {
       station_id: stationId!,
@@ -359,6 +397,8 @@ export class CreateSessionComponent implements OnInit {
       card_paid: this.formService.getPayAmount('Card'),
       fitpass_count: fitpassCount,
       fitpass_paid: this.formService.getPayAmount('Fitpass'),
+      smartclass_count: smartclassCount,
+      smartclass_paid: this.formService.getPayAmount('SmartClass'),
     };
 
     this.isSubmitting.set(true);

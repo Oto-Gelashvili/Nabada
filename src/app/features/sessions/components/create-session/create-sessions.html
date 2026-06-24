@@ -156,26 +156,41 @@
               <h4>{{ getPayMethodLabel(key) }}</h4>
             </div>
             <div class="cardBody">
-              @if (key === 'Fitpass') {
+              @if (key === 'Fitpass' || key === 'SmartClass') {
                 <div class="amountCont">
-                  <label class="pay-amount-label" i18n="@@sessions.fitpassCount"
-                    >Fitpass count:</label
-                  >
+                  <label class="pay-amount-label" i18n="@@sessions.fitpassCount">Count:</label>
                   <div class="amountBtns">
-                    <span class="material-symbols-outlined add" (click)="incrementFitpass()"
-                      >add</span
-                    >
-                    <span>{{ formService.fitpassCount() }}</span>
-                    <span class="material-symbols-outlined remove" (click)="decrementFitpass()"
-                      >remove</span
-                    >
+                    @if (key === 'Fitpass') {
+                      <span class="material-symbols-outlined add" (click)="incrementFitpass()"
+                        >add</span
+                      >
+                      <span>{{ formService.fitpassCount() }}</span>
+                      <span class="material-symbols-outlined remove" (click)="decrementFitpass()"
+                        >remove</span
+                      >
+                    } @else {
+                      <span class="material-symbols-outlined add" (click)="incrementSmartClass()"
+                        >add</span
+                      >
+                      <span>{{ formService.smartclassCount() }}</span>
+                      <span class="material-symbols-outlined remove" (click)="decrementSmartClass()"
+                        >remove</span
+                      >
+                    }
                   </div>
                 </div>
                 <div class="fitpassPaidAmounCont">
                   <label class="pay-amount-label" i18n="@@sessions.amountPaid">Paid amount:</label>
-                  <span>{{
-                    formService.getFitpassCost(fitpassRate()) | currency: 'GEL' : '₾' : '1.2-2'
-                  }}</span>
+                  @if (key === 'Fitpass') {
+                    <span>{{
+                      formService.getFitpassCost(fitpassRate()) | currency: 'GEL' : '₾' : '1.2-2'
+                    }}</span>
+                  } @else {
+                    <span>{{
+                      formService.getSmartclassCost(smartclassRate())
+                        | currency: 'GEL' : '₾' : '1.2-2'
+                    }}</span>
+                  }
                 </div>
               } @else {
                 <div class="amountCont">

@@ -23,6 +23,7 @@ export class SessionFormService {
   readonly amounts = signal<ProductAmount[]>([]);
   readonly payMethodAmounts = signal<PayMethodAmount[]>([]);
   readonly fitpassCount = signal<number>(0);
+  readonly smartclassCount = signal<number>(0);
 
   readonly formValues = toSignal(this.form.valueChanges, {
     initialValue: this.form.getRawValue(),
@@ -50,6 +51,15 @@ export class SessionFormService {
     this.fitpassCount.set(count);
   }
 
+  // ── SmartClass helpers ────────────────────────────────────────────────
+
+  getSmartclassCost(smartclassRate: number): number {
+    return this.smartclassCount() * smartclassRate;
+  }
+  setSmartclassCount(count: number): void {
+    this.smartclassCount.set(count);
+  }
+
   // ── PayMethod multi-select ────────────────────────────────────────────────
   isPayMethodSelected(key: string): boolean {
     return this.payMethodAmounts().some((p) => p.key === key);
@@ -60,6 +70,7 @@ export class SessionFormService {
     if (exists) {
       this.payMethodAmounts.update((prev) => prev.filter((p) => p.key !== key));
       if (key === 'Fitpass') this.fitpassCount.set(0);
+      if (key === 'SmartClass') this.smartclassCount.set(0);
     } else {
       this.payMethodAmounts.update((prev) => [...prev, { key, amount: 0 }]);
     }
@@ -175,12 +186,15 @@ export class SessionFormService {
       diffMinutes = Math.ceil(diffMs / (1000 * 60));
 
       const hasFitpass = this.isPayMethodSelected('Fitpass');
+      const hasSmartClass = this.isPayMethodSelected('SmartClass');
       const fitpassCount = this.fitpassCount();
+      const smartclassCount = this.smartclassCount();
+      const providerCount = fitpassCount + smartclassCount;
 
-      if (hasFitpass && fitpassCount > 0) {
+      if ((hasFitpass || hasSmartClass) && providerCount > 0) {
         const sessionHours = diffMinutes / 60;
-        const gamingHoursCovered = Math.min(fitpassCount, sessionHours);
-        const extraFitpasses = fitpassCount - gamingHoursCovered;
+        const gamingHoursCovered = Math.min(providerCount, sessionHours);
+        const extraFitpasses = providerCount - gamingHoursCovered;
         const controllerHoursCovered = extraFitpasses * 2;
         const totalControllerHours = extraControllers * gamingHoursCovered;
         const remainingControllerHours = Math.max(0, totalControllerHours - controllerHoursCovered);
@@ -189,6 +203,7 @@ export class SessionFormService {
         const extraControllerRateWithFitpass = controllerRate + 1;
 
         sum += fitpassCount * fitpassRate;
+        sum += smartclassCount * fitpassRate;
         sum += remainingControllerHours * extraControllerRateWithFitpass;
         sum += Math.round(remainingGamingHours * hourlyRate);
         if (extraControllers > 0 && remainingGamingMinutes > 0) {
@@ -233,6 +248,9 @@ export class SessionFormService {
     if (session.cash_paid > 0) restored.push({ key: 'Cash', amount: session.cash_paid });
     if (session.card_paid > 0) restored.push({ key: 'Card', amount: session.card_paid });
     if (session.fitpass_paid > 0) restored.push({ key: 'Fitpass', amount: session.fitpass_paid });
+    if (session.smartclass_paid > 0)
+      restored.push({ key: 'SmartClass', amount: session.smartclass_paid });
+    this.smartclassCount.set(session.smartclass_count ?? 0);
     this.fitpassCount.set(session.fitpass_count ?? 0);
     this.payMethodAmounts.set(restored);
 
@@ -250,5 +268,6 @@ export class SessionFormService {
     this.amounts.set([]);
     this.payMethodAmounts.set([]);
     this.fitpassCount.set(0);
+    this.smartclassCount.set(0);
   }
 }

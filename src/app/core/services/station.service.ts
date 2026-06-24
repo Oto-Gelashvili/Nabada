@@ -130,6 +130,8 @@ export class StationsService {
       p_controller_amount: data.controller_amount,
       p_controller_cost: data.controller_cost,
       p_fitpass_count: data.fitpass_count,
+      p_smartclass_paid: data.smartclass_paid,
+      p_smartclass_count: data.smartclass_count,
     });
 
     if (error) {
@@ -166,6 +168,8 @@ export class StationsService {
       p_controller_amount: data.controller_amount,
       p_controller_cost: data.controller_cost,
       p_fitpass_count: data.fitpass_count,
+      p_smartclass_paid: data.smartclass_paid,
+      p_smartclass_count: data.smartclass_count,
     });
 
     if (error) {

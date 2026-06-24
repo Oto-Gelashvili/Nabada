@@ -19,6 +19,8 @@ export interface ServiceSession {
   card_paid: number;
   fitpass_paid: number;
   fitpass_count: number;
+  smartclass_paid: number;
+  smartclass_count: number;
 }
 
 export interface CreateSessionDTO {
@@ -38,24 +40,29 @@ export interface CreateSessionDTO {
   card_paid: number;
   fitpass_paid: number;
   fitpass_count: number;
+  smartclass_paid: number;
+  smartclass_count: number;
 }
 
 export const PAY_METHOD_OPTIONS = [
   { key: 'Cash', label: $localize`:@@sessions.cash:Cash` },
   { key: 'Card', label: $localize`:@@sessions.card:Card` },
   { key: 'Fitpass', label: $localize`:@@sessions.fitPass:Fitpass` },
+  { key: 'SmartClass', label: $localize`:@@sessions.smartClass:SmartClass` },
 ] as const;
 
 export type PayMethod = (typeof PAY_METHOD_OPTIONS)[number]['key'];
 
 export function derivePayMethod(
-  session: Pick<ServiceSession, 'cash_paid' | 'card_paid' | 'fitpass_paid'>,
+  session: Pick<ServiceSession, 'cash_paid' | 'card_paid' | 'fitpass_paid' | 'smartclass_paid'>,
 ): string {
-  const total = session.cash_paid + session.card_paid + session.fitpass_paid;
+  const total =
+    session.cash_paid + session.card_paid + session.fitpass_paid + session.smartclass_paid;
   if (total === 0) return 'NotPaid';
   const methods = [];
   if (session.cash_paid > 0) methods.push('Cash');
   if (session.card_paid > 0) methods.push('Card');
   if (session.fitpass_paid > 0) methods.push('Fitpass');
+  if (session.smartclass_paid > 0) methods.push('SmartClass');
   return methods.join(',');
 }
