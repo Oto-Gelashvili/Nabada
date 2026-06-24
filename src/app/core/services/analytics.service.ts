@@ -142,7 +142,7 @@ export class AnalyticsService {
         this.supabase
           .from('sessions')
           .select(
-            'station_id, total_cost, gaming_cost, products_cost, pay_method, cash_paid, card_paid, fitpass_paid',
+            'station_id, total_cost, gaming_cost, products_cost, pay_method, cash_paid, card_paid, fitpass_paid, smartclass_paid',
           )
           .gte('start_time', startStr)
           .lte('start_time', end.toISOString()),
@@ -201,7 +201,8 @@ export class AnalyticsService {
       const cash = Number(session.cash_paid ?? 0);
       const card = Number(session.card_paid ?? 0);
       const fitpass = Number(session.fitpass_paid ?? 0);
-      const totalPaid = cash + card + fitpass;
+      const smartclass = Number(session.smartclass_paid ?? 0);
+      const totalPaid = cash + card + fitpass + smartclass;
 
       if (totalPaid === 0) continue;
 
@@ -209,11 +210,19 @@ export class AnalyticsService {
       const cashRatio = cash / totalPaid;
       const cardRatio = card / totalPaid;
       const fitpassRatio = fitpass / totalPaid;
+      const smartclassRatio = smartclass / totalPaid;
 
       if (cash > 0) addToPayMethod('Cash', cash, gaming * cashRatio, products * cashRatio);
       if (card > 0) addToPayMethod('Card', card, gaming * cardRatio, products * cardRatio);
       if (fitpass > 0)
         addToPayMethod('Fitpass', fitpass, gaming * fitpassRatio, products * fitpassRatio);
+      if (smartclass > 0)
+        addToPayMethod(
+          'SmartClass',
+          smartclass,
+          gaming * smartclassRatio,
+          products * smartclassRatio,
+        );
     }
 
     const stationResults = stations
