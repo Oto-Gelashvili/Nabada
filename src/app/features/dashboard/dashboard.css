@@ -311,15 +311,27 @@
 }
 @media (max-width: 768px) {
   .station-card-name {
-    font-size: 1.6rem;
+    font-size: 2.4rem;
+  }
+  .station-card-countdown {
+    font-size: 2.4rem;
+  }
+  .station-card-time-label {
+    font-size: 1.8rem;
   }
 
   .station-card-time-value {
-    font-size: 1.8rem;
+    font-size: 2.4rem;
   }
 }
 
 @media (max-width: 575px) {
+  .dashboard-title {
+    font-size: 2.4rem;
+  }
+  .dashboard-clock {
+    display: none;
+  }
   .stations-grid {
     grid-template-columns: 1fr;
   }

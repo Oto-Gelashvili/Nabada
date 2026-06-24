@@ -94,6 +94,10 @@ export class Dashboard implements OnInit, OnDestroy {
   }
 
   protected formatTime(dateStr: string): string {
-    return new Date(dateStr).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    return new Date(dateStr).toLocaleTimeString([], {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    });
   }
 }
