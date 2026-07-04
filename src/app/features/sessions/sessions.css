@@ -287,6 +287,9 @@
 .session-card.Cash {
   background-color: var(--success);
 }
+.session-card.SmartClass {
+  background-color: var(--smartclass-color);
+}
 
 .session-time {
   display: block;

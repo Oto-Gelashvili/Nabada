@@ -10,6 +10,7 @@ export class TimelineCalculator {
     Card: 'var(--fitpass-color)',
     Fitpass: 'var(--primary-color)',
     NotPaid: 'var(--error)',
+    SmartClass: 'var(--smartclass-color)',
   };
   constructor(
     private readonly pixelsPerHour: number = 100,
