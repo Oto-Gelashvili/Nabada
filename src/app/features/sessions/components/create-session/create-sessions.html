@@ -1,0 +1,312 @@
+<div class="backdrop" animate.enter="scale-in-animation" (click)="this.close.emit()">
+  <div id="createSessionModal" class="add-modal-box" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      @if (!editableSessionID()) {
+        <h3 i18n="@@sessions.createTitle">Create Session</h3>
+      } @else {
+        <h3 i18n="@@sessions.editTitle">Edit Session</h3>
+      }
+
+      <div class="headerActionsCont">
+        @if (canEndSession()) {
+          <button i18n="@@sessions.end" type="button" class="end-btn" (click)="endSession()">
+            End
+          </button>
+        }
+        <button class="close-btn" (click)="onCancel()">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+    </div>
+    <form [formGroup]="createSessionForm" (ngSubmit)="onSubmit()" class="modal-body">
+      <div class="time-row">
+        <div class="input-group">
+          <label for="start-time-picker" i18n="@@sessions.startLabel">Start Time</label>
+          <p-datepicker formControlName="startTime" inputId="start-time-picker" [timeOnly]="true" />
+        </div>
+
+        <div class="input-group">
+          <label for="end-time-picker" i18n="@@sessions.endLabel">End Time</label>
+          <p-datepicker
+            placeholder="Ongoing"
+            i18n-placeholder="@@sessions.ongoing"
+            formControlName="endTime"
+            inputId="end-time-picker"
+            [timeOnly]="true"
+          />
+        </div>
+      </div>
+      <div class="optionsRow">
+        <div class="input-group">
+          <span class="form-label" i18n="@@sessions.stationLabel">Station</span>
+          <div class="customSelect" [class.open]="isCustomSelectOpen()">
+            <div class="customSelectHeading" (click)="toggleCustomSelect()">
+              <p class="defaultOption">{{ selectedStationName() }}</p>
+              <span class="material-symbols-outlined arrow"> expand_more </span>
+            </div>
+            @if (isCustomSelectOpen()) {
+              <ul
+                class="customSelectBody"
+                animate.enter="open-animation"
+                animate.leave="close-animation"
+              >
+                @for (station of stations(); track station.id) {
+                  <li (click)="selectStation(station)">
+                    {{ station.name }}
+                  </li>
+                }
+              </ul>
+            }
+          </div>
+        </div>
+
+        <div class="input-group">
+          <span class="form-label" i18n="@@sessions.controllerAmount">Controller amount</span>
+          <div class="customSelect" [class.open]="isControllerOpen()">
+            <div class="customSelectHeading" (click)="toggleControllerSelect()">
+              <p class="defaultOption">{{ selectedControllerAmount() }}</p>
+              <span class="material-symbols-outlined arrow"> expand_more </span>
+            </div>
+            @if (isControllerOpen()) {
+              <ul
+                class="customSelectBody"
+                animate.enter="open-animation"
+                animate.leave="close-animation"
+              >
+                <li (click)="selectControllerAmount(2)">2</li>
+                <li (click)="selectControllerAmount(3)">3</li>
+                <li (click)="selectControllerAmount(4)">4</li>
+              </ul>
+            }
+          </div>
+        </div>
+        <div class="input-group">
+          <span class="form-label" i18n="@@sessions.payMethod">Payment Method</span>
+          <div class="customSelect" [class.open]="isPayMethodOpen()">
+            <div class="customSelectHeading" (click)="togglePaySelect()">
+              <p class="defaultOption">{{ selectedPayMethodsLabel() }}</p>
+              <span class="material-symbols-outlined arrow">expand_more</span>
+            </div>
+            @if (isPayMethodOpen()) {
+              <ul
+                class="customSelectBody"
+                animate.enter="open-animation"
+                animate.leave="close-animation"
+              >
+                @for (option of payMethodOptions; track option.key) {
+                  <li (click)="togglePayMethod(option.key)">
+                    <div class="checkbox-wrapper">
+                      <p-checkbox
+                        [ngModel]="isPayMethodSelected(option.key)"
+                        [binary]="true"
+                        [readonly]="true"
+                        [ngModelOptions]="{ standalone: true }"
+                      />
+                    </div>
+                    <p>{{ option.label }}</p>
+                  </li>
+                }
+              </ul>
+            }
+          </div>
+        </div>
+        <div class="input-group">
+          <span class="form-label" i18n="@@sessions.productsLabel">Products</span>
+          <div class="customSelect" [class.open]="isCustomMultiSelectOpen()">
+            <div class="customSelectHeading" (click)="toggleCustomMultiSelect()">
+              <p class="defaultOption" i18n="@@sessions.addProducts">Add products</p>
+              <span class="material-symbols-outlined arrow"> expand_more </span>
+            </div>
+            @if (isCustomMultiSelectOpen()) {
+              <ul
+                class="customSelectBody"
+                animate.enter="open-animation"
+                animate.leave="close-animation"
+              >
+                @for (product of productsInStock(); track product.id) {
+                  <li
+                    (click)="toggleProduct(product)"
+                    [class.selected]="isProductSelected(product.id)"
+                  >
+                    <div class="checkbox-wrapper">
+                      <p-checkbox
+                        [ngModel]="isProductSelected(product.id)"
+                        [binary]="true"
+                        [readonly]="true"
+                        [ngModelOptions]="{ standalone: true }"
+                        [attr.aria-label]="product.name"
+                      />
+                    </div>
+                    <p>{{ product.name }}</p>
+                  </li>
+                }
+              </ul>
+            }
+          </div>
+        </div>
+      </div>
+      @if (formService.selectedPayMethodsList().length > 0) {
+        <div
+          class="selectedProductsCont"
+          animate.enter="showSelectedProducts"
+          animate.leave="hideSelectedProducts"
+        >
+          @for (key of formService.selectedPayMethodsList(); track key) {
+            <div class="selectedProductCard" animate.enter="scale-in-animation">
+              <div class="cardHeading">
+                <h4>{{ getPayMethodLabel(key) }}</h4>
+              </div>
+              <div class="cardBody">
+                @if (key === 'Fitpass' || key === 'SmartClass') {
+                  <div class="amountCont">
+                    <label class="pay-amount-label" i18n="@@sessions.fitpassCount">Count:</label>
+                    <div class="amountBtns">
+                      @if (key === 'Fitpass') {
+                        <span class="material-symbols-outlined add" (click)="incrementFitpass()"
+                          >add</span
+                        >
+                        <span>{{ formService.fitpassCount() }}</span>
+                        <span class="material-symbols-outlined remove" (click)="decrementFitpass()"
+                          >remove</span
+                        >
+                      } @else {
+                        <span class="material-symbols-outlined add" (click)="incrementSmartClass()"
+                          >add</span
+                        >
+                        <span>{{ formService.smartclassCount() }}</span>
+                        <span
+                          class="material-symbols-outlined remove"
+                          (click)="decrementSmartClass()"
+                          >remove</span
+                        >
+                      }
+                    </div>
+                  </div>
+                  <div class="fitpassPaidAmounCont">
+                    <label class="pay-amount-label" i18n="@@sessions.amountPaid"
+                      >Paid amount:</label
+                    >
+                    @if (key === 'Fitpass') {
+                      <span>{{
+                        formService.getFitpassCost(fitpassRate()) | currency: 'GEL' : '₾' : '1.2-2'
+                      }}</span>
+                    } @else {
+                      <span>{{
+                        formService.getSmartclassCost(smartclassRate())
+                          | currency: 'GEL' : '₾' : '1.2-2'
+                      }}</span>
+                    }
+                  </div>
+                } @else {
+                  <div class="amountCont">
+                    <label
+                      [for]="'pay-' + key"
+                      i18n="@@sessions.amountPaid"
+                      class="pay-amount-label"
+                      >Paid amount:</label
+                    >
+                    <input
+                      [id]="'pay-' + key"
+                      type="number"
+                      min="0"
+                      [value]="getPayAmount(key)"
+                      (input)="onPayAmountChange(key, $event)"
+                      class="pay-amount-input"
+                    />
+                  </div>
+                }
+              </div>
+            </div>
+          }
+        </div>
+      }
+      @if (isCustomMultiSelectOpen() || selectedProductsList().length > 0) {
+        <div
+          class="selectedProductsCont"
+          animate.enter="showSelectedProducts"
+          animate.leave="hideSelectedProducts"
+        >
+          @if (selectedProductsList().length > 0) {
+            @for (selectedProduct of selectedProductsList(); track selectedProduct.id) {
+              <div class="selectedProductCard" animate.enter="scale-in-animation">
+                <div class="cardHeading">
+                  <h4>{{ selectedProduct.name }}</h4>
+                  <div class="amountBtns">
+                    <span
+                      class="material-symbols-outlined add"
+                      (click)="addAmount(selectedProduct.id)"
+                    >
+                      add
+                    </span>
+                    <span
+                      class="material-symbols-outlined remove"
+                      (click)="removeAmount(selectedProduct.id)"
+                    >
+                      remove
+                    </span>
+                  </div>
+                </div>
+                <div class="cardBody">
+                  <div class="amountCont">
+                    <p>
+                      <span i18n="@@sessions.amount">Amount:</span>
+                      {{ getAmount(selectedProduct.id) }}
+                      <span class="stock-hint"
+                        >/{{ getMaxAllowed(selectedProduct.id, selectedProduct.quantity) }}</span
+                      >
+                    </p>
+                    <p class="price">
+                      <span i18n="@@products.labelPrice">Price:</span>
+                      {{ selectedProduct.price | currency: 'GEL' : '₾' : '1.2-2' }}
+                    </p>
+                  </div>
+                  <p class="total">
+                    <span i18n="@@sessions.totalLabel">Total:</span>
+                    {{ getTotalPrice(selectedProduct) | currency: 'GEL' : '₾' : '1.2-2' }}
+                  </p>
+                </div>
+              </div>
+            }
+          } @else {
+            <div class="selectedProductCard template">
+              <div class="cardHeading">
+                <h4>Product</h4>
+                <div class="amountBtns">
+                  <span class="material-symbols-outlined add"> add </span>
+                  <span class="material-symbols-outlined remove"> remove </span>
+                </div>
+              </div>
+              <div class="cardBody">
+                <div class="amountCont">
+                  <p>1</p>
+                  <p>1</p>
+                </div>
+                <p class="total">Total: $1.00</p>
+              </div>
+            </div>
+          }
+        </div>
+      }
+      <div class="modal-footer">
+        @if (editableSessionID()) {
+          <button i18n="@@common.delete" type="button" class="end-btn" (click)="deleteSession()">
+            Delete
+          </button>
+        }
+        <h4 class="sum">
+          <span i18n="@@sessions.sum">Sum:</span>
+          {{ totalSum() | currency: 'GEL' : '₾' : '1.2-2' }}
+        </h4>
+      </div>
+      <button type="submit" class="btn-primary">
+        @if (isSubmitting()) {
+          <app-spinner></app-spinner>
+        } @else if (!editableSessionID()) {
+          <p i18n="@@sessions.createTitle">Create Session</p>
+        } @else {
+          <p i18n="@@sessions.editTitle">Edit Session</p>
+        }
+      </button>
+    </form>
+  </div>
+</div>

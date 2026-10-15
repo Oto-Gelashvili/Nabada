@@ -1,0 +1,152 @@
+<div id="analyticsPage">
+  <div class="heading">
+    <h2 i18n="@@analytics.pageTitle">Analytics</h2>
+
+    <div class="date-range">
+      <p-datepicker
+        [(ngModel)]="startDate"
+        [maxDate]="endDate()"
+        (ngModelChange)="onDateChange()"
+        dateFormat="M d, yy"
+        [showIcon]="true"
+      />
+
+      <span class="date-divider">—</span>
+
+      <p-datepicker
+        [(ngModel)]="endDate"
+        [minDate]="startDate()"
+        [maxDate]="today"
+        (ngModelChange)="onDateChange()"
+        dateFormat="M d, yy"
+        [showIcon]="true"
+      />
+    </div>
+  </div>
+
+  @if (loading()) {
+    <div class="graph-skeleton"></div>
+    <div class="dataSectionsCont">
+      <div class="stations-skeleton"></div>
+      <div class="stations-skeleton"></div>
+    </div>
+  } @else {
+    <app-line-graph [data]="dataPoints()" animate.enter="scale-in-animation" />
+    <div class="dataSectionsCont">
+      @if (stationsData().length > 0) {
+        <section class="stationData" animate.enter="scale-in-animation">
+          <div class="stationHeading">
+            <h3 i18n="@@analytics.stationIncomes">
+              Station incomes
+              <span class="total-badge">{{ totalRevenue() | formatCurrency }}</span>
+            </h3>
+            <app-sorter
+              [options]="stationSortOptions"
+              (sortChanged)="onStationSortChange($event)"
+            />
+          </div>
+          <div class="stationBody">
+            @for (station of stationsData(); track station.id; let i = $index) {
+              <div class="station-row">
+                <div class="station-row-header">
+                  <span class="station-rank">#{{ i + 1 }}</span>
+                  <span class="station-name">{{ station.name }}</span>
+                </div>
+                <div class="station-stats">
+                  <div class="stat">
+                    <span class="stat-label" i18n="@@analytics.total">Total</span>
+                    <span class="stat-value total">{{ station.total_cost | formatCurrency }} </span>
+                  </div>
+                  <div class="stat">
+                    <span class="stat-label" i18n="@@analytics.gaming">Gaming</span>
+                    <span class="stat-value">{{ station.gaming_cost | formatCurrency }} </span>
+                  </div>
+                  <div class="stat">
+                    <span class="stat-label" i18n="@@analytics.products">Products</span>
+                    <span class="stat-value">{{ station.products_cost | formatCurrency }} </span>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        </section>
+      }
+      @if (productsData().length > 0) {
+        <section class="stationData" animate.enter="scale-in-animation">
+          <div class="stationHeading">
+            <h3 i18n="@@analytics.productsIncome">
+              Products income
+              <span class="total-badge">{{ productsTotalRevenue() | formatCurrency }}</span>
+            </h3>
+            <app-sorter
+              [options]="productSortOptions"
+              (sortChanged)="onProductSortChange($event)"
+            />
+          </div>
+          <div class="stationBody">
+            @for (product of productsData(); track product.id; let i = $index) {
+              <div class="station-row">
+                <div class="station-row-header">
+                  <span class="station-rank">#{{ i + 1 }}</span>
+                  <span class="station-name">{{ product.name }}</span>
+                </div>
+                <div class="station-stats">
+                  <div class="stat">
+                    <span class="stat-label" i18n="@@analytics.total">Total</span>
+                    <span class="stat-value total"
+                      >{{ product.total_revenue | formatCurrency }}
+                    </span>
+                  </div>
+                  <div class="stat">
+                    <span class="stat-label" i18n="@@analytics.amount">Amount</span>
+                    <span class="stat-value">{{ product.quantity }} </span>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        </section>
+      }
+      @if (payMethodsData().length > 0) {
+        <section class="payMethodData" animate.enter="scale-in-animation">
+          <div class="stationHeading">
+            <h3 i18n="@@analytics.payMethodIncomes">
+              Pay methods
+              <span class="total-badge">{{ totalPayRevenue() | formatCurrency }}</span>
+            </h3>
+            <app-sorter
+              [options]="stationSortOptions"
+              (sortChanged)="onPayMethodSortChange($event)"
+            />
+          </div>
+          <div class="stationBody">
+            @for (payMethod of payMethodsData(); track payMethod.pay_method; let i = $index) {
+              <div class="station-row">
+                <div class="station-row-header">
+                  <span class="station-rank">#{{ i + 1 }}</span>
+                  <span class="station-name">{{ getPayMethodLabel(payMethod.pay_method) }}</span>
+                </div>
+                <div class="station-stats">
+                  <div class="stat">
+                    <span class="stat-label" i18n="@@analytics.total">Total</span>
+                    <span class="stat-value total"
+                      >{{ payMethod.total_cost | formatCurrency }}
+                    </span>
+                  </div>
+                  <div class="stat">
+                    <span class="stat-label" i18n="@@analytics.gaming">Gaming</span>
+                    <span class="stat-value">{{ payMethod.gaming_cost | formatCurrency }} </span>
+                  </div>
+                  <div class="stat">
+                    <span class="stat-label" i18n="@@analytics.products">Products</span>
+                    <span class="stat-value">{{ payMethod.products_cost | formatCurrency }} </span>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        </section>
+      }
+    </div>
+  }
+</div>

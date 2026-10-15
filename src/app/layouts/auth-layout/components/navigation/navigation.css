@@ -1,0 +1,86 @@
+.heading {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+.logoHeading {
+  font-size: 2.4rem;
+  font-weight: 400;
+  cursor: pointer;
+  margin-right: 8.4rem;
+}
+.logo path {
+  fill: var(--secondary-color);
+}
+.logoCont {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+.logoCont svg {
+  width: 40px;
+  height: 100%;
+}
+.logoCont .wordmark {
+  width: 100px;
+}
+nav {
+  display: flex;
+  align-items: center;
+  gap: 2.4rem;
+  list-style: none;
+  font-size: 1.6rem;
+  position: relative;
+}
+nav .bgEl {
+  position: absolute;
+  background-color: var(--hover-color);
+  width: 88px;
+  height: 3.2rem;
+  border-radius: 50rem;
+  transition: 0.4s ease-in-out;
+  pointer-events: none;
+}
+nav li {
+  z-index: var(--header-z);
+}
+nav li a {
+  cursor: pointer;
+  transition: 0.4s;
+  padding: 0.4rem 1.2rem;
+  z-index: var(--header-z);
+  border-radius: 50rem;
+  border: 1px solid transparent;
+}
+nav li a:hover {
+  color: var(--secondary-color);
+}
+nav li a:active {
+  color: var(--primary-color);
+}
+nav li a:focus {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
+
+nav li a.active {
+  color: var(--primary-color);
+}
+@media screen and (max-width: 1024px) {
+  .logoHeading {
+    margin-right: 4.2rem;
+  }
+}
+@media screen and (max-width: 768px) {
+  nav {
+    display: none;
+  }
+}
+@media screen and (max-width: 375px) {
+  .logoHeading {
+    margin-right: 0;
+  }
+  .wordmark {
+    display: none;
+  }
+}

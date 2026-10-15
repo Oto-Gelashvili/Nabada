@@ -1,0 +1,24 @@
+header {
+  padding: 2.4rem 4.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.2rem;
+  height: var(--fixed-header-height);
+  position: fixed;
+  width: 100%;
+  z-index: var(--header-z);
+  background-color: var(--background-color);
+}
+
+header .footing {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+@media screen and (max-width: 768px) {
+  header {
+    padding-inline: 2.4rem;
+  }
+}

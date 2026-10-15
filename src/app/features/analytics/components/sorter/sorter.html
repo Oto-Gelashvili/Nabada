@@ -1,0 +1,15 @@
+<div class="customSelect" [class.open]="isOpen()">
+  <div class="customSelectHeading" (click)="toggle()">
+    <p class="defaultOption">{{ selectedOption()?.label }}</p>
+    <span class="material-symbols-outlined arrow">expand_more</span>
+  </div>
+  @if (isOpen()) {
+    <ul class="customSelectBody" animate.enter="open-animation" animate.leave="close-animation">
+      @for (option of options(); track option.key) {
+        <li (click)="select(option)" [class.selected]="selectedOption()?.key === option.key">
+          {{ option.label }}
+        </li>
+      }
+    </ul>
+  }
+</div>

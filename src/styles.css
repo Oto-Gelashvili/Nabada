@@ -1,0 +1,543 @@
+:root {
+  --primary-color: #ffbc4f;
+  --secondary-color: #fff;
+  --background-color: #000000;
+  --accent-color: #0a0a0a;
+  --text-color: #a1a1a1;
+  --border-color: #2d2d2d;
+  --hover-color: #1f1f1f;
+  --active-color: #050505;
+  --booked-color: #a1a1a1;
+  --error: #dc2626;
+  --success: #44bba4;
+  --fitpass-color: #215fb6;
+  --surface-card: #111111;
+  --surface-ground: #0a0a0a;
+  --surface-border: #2d2d2d;
+  --smartclass-color: #23c921;
+
+  --spinner-border-color: var(--border-color);
+  --spinner-primary-color: var(--primary-color);
+  --padding-inline: 4.8rem;
+  --padding-inline-mobile: 1.6rem;
+  --total-padding-mobile: calc(var(--padding-inline-mobile) * 2);
+  --fixed-header-height: 8.4rem;
+  --total-padding-block-main: 4.8rem;
+  --hour-width: 100px;
+
+  /* z index priorities */
+  --single-z: 1;
+  --header-z: 2;
+  --most-z: 100;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --primary-color: #a855f7;
+    --secondary-color: #000;
+    --background-color: #fafafa;
+    --accent-color: #fff;
+    --text-color: #666666;
+    --hover-color: #ebebeb;
+    --border-color: #e1e1e1;
+    --error: #dc2626;
+    --success: #44bba4;
+    --active-color: #cfdbd5;
+    --fitpass-color: #215fb6;
+    --surface-card: #ffffff;
+    --surface-ground: #f5f5f5;
+    --surface-border: #e1e1e1;
+    --smartclass-color: #23c921;
+  }
+}
+:root[data-theme='light'] {
+  color-scheme: light;
+  --background-color: #fafafa;
+  --primary-color: #a855f7;
+  --secondary-color: #000;
+  --text-color: #666666;
+  --hover-color: #ebebeb;
+  --border-color: #e1e1e1;
+  --accent-color: #fff;
+  --light-gray: #f5f6f8;
+  --error: #dc2626;
+  --success: #44bba4;
+  --active-color: #cfdbd5;
+  --fitpass-color: #215fb6;
+  --surface-card: #ffffff;
+  --surface-ground: #f5f5f5;
+  --surface-border: #e1e1e1;
+  --smartclass-color: #23c921;
+
+  --leftPostition: 0;
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --primary-color: #ffbc4f;
+  --secondary-color: #fff;
+  --background-color: #000000;
+  --accent-color: #0a0a0a;
+  --text-color: #a1a1a1;
+  --border-color: #2d2d2d;
+  --hover-color: #1f1f1f;
+  --active-color: #cfdbd5;
+  --light-gray: #131313;
+  --error: #dc2626;
+  --success: #44bba4;
+  --fitpass-color: #215fb6;
+  --surface-card: #111111;
+  --surface-ground: #0a0a0a;
+  --surface-border: #2d2d2d;
+  --smartclass-color: #23c921;
+
+  --leftPostition: calc(100% - 26px);
+}
+/* 1. Use a more-intuitive box-sizing model */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* 2. Remove default margin */
+* {
+  margin: 0;
+}
+
+/* 3. Enable keyword animations */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    interpolate-size: allow-keywords;
+  }
+}
+
+body {
+  /* 4. Add accessible line-height */
+  line-height: 1.5;
+  /* 5. Improve text rendering */
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 6. Improve media defaults */
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* 7. Inherit fonts for form controls */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+/* 8. Avoid text overflows */
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+}
+
+/* 9. Improve line wrapping */
+p {
+  text-wrap: pretty;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  text-wrap: balance;
+}
+
+/*
+  10. Create a root stacking context
+*/
+#root,
+#__next {
+  isolation: isolate;
+}
+/*
+  10. stanardize lists
+*/
+ul,
+ol {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+/*
+  10. stanardize links
+*/
+a {
+  text-decoration: none;
+  color: inherit;
+}
+html {
+  font-size: 62.5%;
+  color-scheme: light dark;
+  scrollbar-gutter: stable;
+}
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  overflow-x: hidden; /* Only prevent horizontal scroll */
+  overflow-y: auto;
+}
+app-root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  /* overflow: hidden; */
+}
+app-blank-layout,
+app-auth-layout,
+app-public-layout {
+  display: flex;
+  flex: 1;
+}
+app-blank-layout main {
+  display: flex;
+  flex: 1;
+  padding: 2.4rem 4.8rem 2.4rem 4.8rem;
+  overflow: hidden;
+}
+
+a:visited {
+  color: var(--text-color);
+}
+html.disable-transitions *,
+html.disable-transitions *::before,
+html.disable-transitions *::after {
+  transition: none !important;
+}
+/* Remove mobile tap highlight globally */
+* {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+}
+
+button:focus,
+a:focus {
+  outline: none;
+}
+.material-symbols-outlined {
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+main {
+  display: flex;
+  flex: 1;
+  padding: calc(var(--fixed-header-height) + 2.4rem) 4.8rem 2.4rem 4.8rem;
+  overflow: hidden;
+}
+/* global shared styles */
+
+/* buttons */
+.btn-secondary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.2rem 1.2rem;
+  font-size: 1.4rem;
+  border: 1px solid transparent;
+  outline: 0px;
+  color: var(--primary-color);
+  gap: 0.4rem;
+  transition: 0.4s;
+  cursor: pointer;
+  border-radius: 50rem;
+  font-size: 1.6rem;
+  background-color: var(--accent-color);
+  color: var(--text-color);
+}
+
+.btn-secondary:hover {
+  border-color: var(--primary-color);
+}
+
+.btn-secondary:focus {
+  border-color: var(--primary-color);
+}
+.btn-secondary .material-symbols-outlined {
+  font-size: 1.8rem;
+}
+
+.btn-primary {
+  --spinner-border-color: var(--accent-color);
+  --spinner-primary-color: var(--secondary-color);
+  border-radius: 50rem;
+  font-size: 1.6rem;
+  background-color: var(--primary-color);
+  color: #fff;
+  transition: 0.4s;
+  border: 1px solid transparent;
+  outline: 0px;
+  padding: 0.4rem 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  min-height: 3.4rem;
+  background-image: linear-gradient(to right, var(--primary-color), var(--primary-color));
+  background-size: 0% 100%;
+  background-repeat: no-repeat;
+  background-position: left center;
+  transition:
+    color 0.4s,
+    background-color 0.4s,
+    border-color 0.4s,
+    background-size 0s;
+}
+.btn-primary.del {
+  background-image: linear-gradient(to right, var(--error), var(--error));
+}
+
+.btn-primary:disabled,
+.btn-secondary:disabled {
+  cursor: not-allowed;
+}
+.del.btn-primary {
+  background-color: var(--error);
+  color: #fff;
+}
+.btn-primary:valid:not(.del):hover {
+  background-color: transparent;
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+.btn-primary.del:hover,
+.btn-primary.del:focus {
+  color: var(--error);
+  border-color: var(--error);
+  background-color: transparent;
+}
+
+.btn-primary:not(.del):focus {
+  border-color: var(--primary-color);
+  background-color: var(--accent-color);
+  color: var(--primary-color);
+}
+.btn-primary:valid:active {
+  background-size: 100% 100%;
+  color: #fff !important;
+}
+
+/* animations */
+.scale-in-animation {
+  animation: scale-in 1s;
+}
+.scale-out-animation {
+  animation: scale-out 1s;
+}
+.show-animated-enter-error {
+  animation: show-animated-enter-error 0.4s;
+}
+.error-hide-animation {
+  animation: error-hide 0.1s;
+}
+@keyframes scale-in {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+@keyframes scale-out {
+  from {
+    transform: scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+}
+
+@keyframes show-animated-enter-error {
+  from {
+    opacity: 0;
+    top: 80%;
+  }
+  to {
+    opacity: 1;
+    top: 100%;
+  }
+}
+
+@keyframes error-hide {
+  from {
+    opacity: 1;
+    min-height: 0;
+    height: auto;
+  }
+  to {
+    opacity: 0;
+    min-height: 0;
+    height: 0;
+  }
+}
+/* error msg */
+.error-msg {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  color: var(--error);
+  font-size: 1.2rem;
+}
+
+/* static modal */
+.confirm-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: var(--most-z);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(3px);
+}
+
+/* create sessions/add products shared styles */
+
+#addProductModal .add-modal-box,
+#createSessionModal.add-modal-box {
+  background: var(--hover-color);
+  padding: 2.4rem;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  width: clamp(260px, 300px, 90%);
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+  text-align: left;
+  font-size: 1.4rem;
+  color: var(--text-color);
+  background-color: var(--accent-color);
+}
+#addProductModal .modal-header,
+#createSessionModal .modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 1.2rem;
+  margin-bottom: 0.4rem;
+  gap: 1.6rem;
+}
+
+#addProductModal .modal-header h3,
+#createSessionModal .modal-header h3 {
+  font-size: 1.8rem;
+  color: var(--primary-color);
+}
+
+#addProductModal .close-btn,
+#createSessionModal .close-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-color);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.4rem;
+  border-radius: 50%;
+  transition: 0.4s;
+  border: 1px solid transparent;
+}
+
+#addProductModal .close-btn:hover,
+#createSessionModal .close-btn:hover {
+  background-color: var(--hover-color);
+  color: var(--error);
+}
+#addProductModal .close-btn:focus,
+#createSessionModal .close-btn:focus {
+  border: 1px solid var(--error);
+  color: var(--error);
+}
+
+#addProductModal .modal-body,
+#createSessionModal .modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+#addProductModal .input-group,
+#createSessionModal .input-group {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+#addProductModal .input-group .error-msg,
+#createSessionModal .input-group .error-msg {
+  position: relative;
+}
+
+#addProductModal .input-group label,
+#createSessionModal .input-group label {
+  font-size: 1.4rem;
+  font-weight: 500;
+  color: var(--text-color);
+  margin-bottom: 0.4rem;
+}
+
+#addProductModal .input-group input,
+#createSessionModal .input-group input {
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  color: var(--text-color);
+  background-color: var(--accent-color);
+  font-size: 1.4rem;
+  outline: none;
+  transition: 0.4s;
+  cursor: pointer;
+}
+
+#addProductModal .input-group input:focus,
+#createSessionModal .input-group input:focus {
+  border-color: var(--primary-color);
+}
+#addProductModal .btn-primary:not(:hover),
+#createSessionModal .btn-primary:not(:hover) {
+  background-color: var(--primary-color);
+  color: #fff;
+  width: 100%;
+}
+#addProductModal .btn-primary.saving,
+#createSessionModal .btn-primary.saving {
+  background-size: 0% 100%;
+  background-image: linear-gradient(to right, var(--success), var(--success));
+  background-size: 100% 100%;
+  transition: background-size 0.8s ease-in-out;
+  border-color: var(--success);
+}
+
+@media screen and (max-width: 768px) {
+  main {
+    padding-inline: var(--padding-inline-mobile);
+  }
+}

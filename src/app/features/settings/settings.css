@@ -1,0 +1,281 @@
+:host {
+  flex: 1;
+}
+h1 {
+  font-size: 2.4rem;
+  color: var(--secondary-color);
+  margin-bottom: 2.4rem;
+}
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  background-color: var(--hover-color);
+  padding: 1.2rem;
+  border-radius: 12px;
+  width: fit-content;
+}
+.profileInfoCont {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.2rem;
+  width: fit-content;
+}
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+}
+
+.textCont {
+  gap: 1.6rem;
+  display: flex;
+  flex-direction: column;
+}
+.usernameCont,
+.emailCont,
+.rateCont,
+.fitpassCont {
+  font-size: 1.4rem;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+.usernameCont label,
+.emailCont label,
+.rateCont label,
+.fitpassCont label {
+  color: var(--secondary-color);
+}
+
+.emailCont ::placeholder {
+  color: var(--text-color);
+}
+.usernameCont input,
+.emailCont input,
+.rateCont input,
+.fitpassCont input {
+  transition: 0.4s;
+  border: 1px solid transparent;
+  outline: 1px solid transparent;
+  padding: unset;
+  background-color: transparent;
+  color: var(--text-color);
+  font-size: 1.6rem;
+  border-radius: 4px;
+}
+.textCont input.editableInput {
+  padding: 0.8rem 1.6rem;
+  border-radius: 8px;
+  border-color: var(--border-color);
+  background-color: var(--accent-color);
+}
+
+.textCont input.editableInput:focus {
+  outline-color: var(--primary-color);
+}
+.profileInfoHeading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 5.4rem;
+}
+h2 {
+  font-size: 1.8rem;
+}
+.btn-primary:valid:hover {
+  --spinner-border-color: var(--primary-color);
+  --spinner-primary-color: var(--background-color);
+}
+.btn-primary:valid:active {
+  transition: background-size 0.8s ease-in-out;
+}
+
+.formCard {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap: 4.8rem;
+}
+.usernameCont input.error-border,
+.emailCont input.error-border,
+.rateCont input.error-border,
+.fitpassCont input.error-border {
+  border-color: var(--error);
+}
+
+.avatar-placeholder {
+  border-radius: 50%;
+  width: 84px;
+  height: 84px;
+  background-color: var(--accent-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.4rem;
+  color: var(--secondary-color);
+}
+.data-loading {
+  background: linear-gradient(
+    90deg,
+    var(--border-color) 25%,
+    var(--accent-color) 50%,
+    var(--border-color) 75%
+  );
+  background-size: 400% 100%;
+  animation: shimmer 3s infinite linear;
+}
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+.avatarCont {
+  position: relative;
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+.avatarCont img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: 0.4s;
+  cursor: pointer;
+  border-radius: 50%;
+}
+.avatarCont:has(input):hover img,
+.avatarCont img:hover {
+  opacity: 0.6;
+}
+.avatarCont #avatar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  z-index: var(--header-z);
+  cursor: pointer;
+}
+
+.actionsCont {
+  justify-content: space-between;
+  gap: 2.4rem;
+  width: 100%;
+  gap: 1.2rem;
+}
+.actionsCont .btn-secondary {
+  padding: 0.4rem 1.2rem;
+  color: var(--success);
+  background-image: linear-gradient(to right, var(--success), var(--success));
+  background-size: 0% 100%;
+  background-repeat: no-repeat;
+  background-position: left center;
+}
+.actionsCont .btn-secondary:hover,
+.actionsCont .btn-secondary:focus {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
+
+.actionsCont .btn-secondary:active {
+  transition: background-size 0.8s ease-in-out;
+  background-size: 100% 100%;
+  color: #fff;
+}
+.show-animated-enter {
+  animation: show-animated-enter 2s;
+}
+
+.emailForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.emailCont label {
+  margin-bottom: 0.4rem;
+}
+.emailCont input {
+  width: 100%;
+}
+
+.emailCont input.editableInput {
+  padding: 0.8rem 1.6rem;
+  border-radius: 8px;
+  border-color: var(--border-color);
+  background-color: var(--accent-color);
+}
+
+.emailCont input.editableInput:focus {
+  outline-color: var(--primary-color);
+}
+
+@keyframes show-animated-enter {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.rateConts,
+.upperCont {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+.textCont input {
+  width: 100%;
+}
+.textCont {
+  width: 260px;
+}
+.rateConts:has(input.error-border),
+.upperCont:has(input.error-border) {
+  margin-bottom: 2.4rem;
+}
+
+@media screen and (max-width: 768px) {
+  .profileInfoCont {
+    grid-template-columns: 1fr;
+    justify-items: stretch;
+    place-items: center;
+  }
+  :host {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+}
+
+@media screen and (max-width: 475px) {
+  .formCard {
+    gap: 2.4rem;
+  }
+
+  .formCard {
+    flex-direction: column;
+  }
+  .textCont {
+    width: 300px;
+  }
+}
+@media screen and (max-width: 375px) {
+  .profileInfoCont {
+    width: 100%;
+  }
+  .wrapper {
+    width: 100%;
+  }
+  .textCont {
+    width: 100%;
+  }
+}

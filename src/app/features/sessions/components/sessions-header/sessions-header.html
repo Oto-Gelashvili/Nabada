@@ -1,0 +1,44 @@
+<div class="heading">
+  <div class="dateCont">
+    @if (editMode()) {
+      <button class="headerBtn cancelBtn" (click)="onCancel()">
+        <p i18n="@@common.cancel">cancel</p>
+        <span class="material-symbols-outlined"> cancel </span>
+      </button>
+    } @else {
+      <div class="arrowsCont">
+        <span
+          class="material-symbols-outlined"
+          tabindex="0"
+          (click)="changeDay(-1)"
+          (keydown.enter)="changeDay(-1)"
+          (keydown.space)="changeDay(-1)"
+        >
+          chevron_backward
+        </span>
+        <span
+          class="material-symbols-outlined"
+          tabindex="0"
+          [class.disabled-arrow]="isToday()"
+          (click)="changeDay(1)"
+          (keydown.enter)="changeDay(1)"
+          (keydown.space)="changeDay(1)"
+        >
+          chevron_forward
+        </span>
+      </div>
+
+      <p-datepicker
+        [(ngModel)]="date"
+        [maxDate]="today"
+        dateFormat="MM d, yy"
+        class="session-datepicker"
+      />
+    }
+  </div>
+
+  <button class="headerBtn createSessionBtn" (click)="createClick.emit()">
+    <p i18n="@@sessions.createTitle">create session</p>
+    <span class="material-symbols-outlined"> add </span>
+  </button>
+</div>

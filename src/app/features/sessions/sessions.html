@@ -1,0 +1,127 @@
+<section id="sessions">
+  <app-sessions-header
+    [(date)]="state.selectedDate"
+    [editMode]="edit.editMode()"
+    (dateChange)="onDateChange()"
+    (cancelEdit)="edit.cancelEditMode()"
+    (createClick)="onCreateSession()"
+  ></app-sessions-header>
+
+  <div class="scheduler-container">
+    @if (state.loading()) {
+      <div class="loadingTemplate"></div>
+    } @else {
+      <div class="header-row">
+        <div class="label-column empty-corner">
+          <button
+            (click)="edit.toggleEditMode()"
+            [class.submitBtn]="edit.editMode()"
+            [disabled]="edit.editMode() && edit.hasInvalidStations()"
+            [class.disabled-btn]="edit.editMode() && edit.hasInvalidStations()"
+          >
+            @if (state.resetting()) {
+              <app-spinner></app-spinner>
+            } @else if (edit.editMode()) {
+              <span class="material-symbols-outlined">check</span>
+            } @else {
+              <span class="material-symbols-outlined editIcon">edit</span>
+            }
+          </button>
+        </div>
+
+        <div class="timeline-track">
+          @for (hour of hours; track hour) {
+            <div class="hour-marker">{{ hour }}:00</div>
+          }
+        </div>
+      </div>
+
+      @for (station of edit.allStations(); track station.id) {
+        <div class="station-row">
+          <div class="label-column">
+            <input
+              [id]="'station-name-' + station.id"
+              [attr.name]="'station-name-' + station.id"
+              type="text"
+              [readonly]="!edit.editMode()"
+              [class.editableInput]="edit.editMode()"
+              animate.enter="show-animated-enter-row"
+              [(ngModel)]="station.name"
+              required
+              [class.error-border]="!station.name"
+              aria-label="Station Name"
+            />
+            @if (edit.editMode()) {
+              <span
+                class="material-symbols-outlined removeIcon"
+                animate.enter="show-animated-enter-removeIcon"
+                (click)="edit.removeStation(station.id)"
+              >
+                remove
+              </span>
+            }
+            @if (!station.name) {
+              <div i18n="@@common.required" class="error-msg">Required</div>
+            }
+          </div>
+
+          <div class="timeline-track grid-lines">
+            @for (session of sessionsByStation().get(station.id) ?? []; track session.id) {
+              <div
+                class="session-card"
+                [ngClass]="[getSessionOverlapClass(session), getStateClass(session)]"
+                [ngStyle]="getSessionStyle(session)"
+                [style.left.px]="calculateLeft(session.start_time)"
+                [style.width.px]="calculateWidth(session.start_time, session.end_time)"
+                (click)="showEditModal(session.id)"
+                animate.enter="show-animated-enter-session"
+              >
+                <span class="session-time">
+                  {{ session.start_time | date: 'HH:mm' }} -
+                  {{ session.end_time ? (session.end_time | date: 'HH:mm') : '...' }}
+                </span>
+                <div class="hover-tooltip">
+                  {{ session.start_time | date: 'HH:mm' }} -
+                  {{ session.end_time ? (session.end_time | date: 'HH:mm') : '...' }}
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      }
+    }
+
+    @if (edit.editMode()) {
+      <div
+        class="station-row add-row"
+        animate.enter="show-animated-enter-row"
+        animate.leave="show-animated-leave-row"
+      >
+        <div class="label-column" (click)="edit.addStation()">
+          <span class="material-symbols-outlined addIcon">add</span>
+        </div>
+        <div class="timeline-track grid-lines"></div>
+      </div>
+    }
+  </div>
+
+  <h4 class="sum">
+    <span i18n="@@sessions.sum">Sum:</span>
+    {{ state.totalDaySum() | currency: 'GEL' : '₾' : '1.2-2' }}
+  </h4>
+</section>
+
+@if (showCreateModal()) {
+  <app-create-session
+    (close)="closeModal()"
+    [stations]="state.stations()"
+    [products]="state.products()"
+    [existingSessions]="state.sessions()"
+    [selectedDate]="state.selectedDate()"
+    (sessionChanged)="onSessionChanged()"
+    [editableSessionID]="editableSessionId()"
+    [hourlyRate]="state.hourlyRate()"
+    [fitpassRate]="state.fitpassRate()"
+    [controllerRate]="state.controllerRate()"
+  ></app-create-session>
+}

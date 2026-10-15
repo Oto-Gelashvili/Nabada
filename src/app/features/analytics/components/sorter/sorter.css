@@ -1,0 +1,125 @@
+.customSelect {
+  position: relative;
+  width: 200px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.customSelectHeading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 1rem;
+  transition: 0.2s;
+}
+.defaultOption {
+  font-size: 1.4rem;
+  font-weight: 500;
+}
+.customSelectBody {
+  position: absolute;
+  width: 200px;
+  background: var(--accent-color);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 150px;
+  overflow-y: auto;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+}
+
+.customSelectBody li {
+  padding: 1rem;
+  font-size: 1.4rem;
+  color: var(--text-color);
+  border-bottom: 1px solid var(--hover-color);
+  transition: 0.4s;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.customSelectBody li:last-child {
+  border-bottom: none;
+}
+
+.customSelectBody li:hover {
+  background: var(--hover-color);
+  color: var(--primary-color);
+}
+.customSelectBody li.selected {
+  background-color: var(--background-color);
+  color: var(--secondary-color);
+}
+
+.checkbox-wrapper {
+  pointer-events: none;
+  display: flex;
+}
+
+.customSelect:has(.open-animation) .arrow {
+  animation: arrow-rotate-up-animation 0.6s;
+}
+.customSelect:has(.close-animation) .arrow {
+  animation: arrow-rotate-down-animation 1s;
+}
+.customSelect.open .arrow {
+  transform: rotate(180deg);
+}
+.open-animation {
+  animation: open-animation 0.6s;
+}
+.close-animation {
+  animation: close-animation 1s;
+}
+@keyframes arrow-rotate-up-animation {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(180deg);
+  }
+}
+@keyframes arrow-rotate-down-animation {
+  from {
+    transform: rotate(180deg);
+  }
+  to {
+    transform: rotate(0);
+  }
+}
+@keyframes open-animation {
+  from {
+    opacity: 0;
+    max-height: 0;
+  }
+  to {
+    transform: scale(1);
+    max-height: 150px;
+  }
+}
+
+@keyframes close-animation {
+  from {
+    max-height: 150px;
+  }
+  to {
+    opacity: 0;
+    max-height: 0;
+    border: none;
+  }
+}
+@media screen and (max-width: 768px) {
+  :host {
+    display: contents;
+  }
+  .customSelect,
+  .customSelectBody {
+    width: 100%;
+  }
+}

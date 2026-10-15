@@ -1,0 +1,158 @@
+<section class="hero">
+  <div class="hero-bg">
+    <div class="grid-overlay"></div>
+    <div class="glow glow-1"></div>
+    <div class="glow glow-2"></div>
+  </div>
+
+  <div class="hero-content">
+    <div class="badge" animate.enter="scale-in-animation">
+      <span class="badge-dot"></span>
+      <span i18n="@@landing.badge">Free to use · No credit card required</span>
+    </div>
+
+    <h1>
+      <span i18n="@@landing.heroLine1" class="hero-line">Run your gaming cafe</span>
+      <span i18n="@@landing.heroLine2" class="hero-line accent">without the chaos.</span>
+    </h1>
+
+    <p class="hero-sub" i18n="@@landing.heroSub">
+      Nabada tracks sessions, products, and income — so you can focus on the game, not the
+      spreadsheet.
+    </p>
+
+    <div class="hero-actions">
+      <a routerLink="/signups" class="btn-primary" tabindex="0" i18n="@@landing.getStarted"
+        >Get started free</a
+      >
+      <a href="#features" class="btn-secondary" tabindex="0" i18n="@@landing.seeHow"
+        >See how it works</a
+      >
+    </div>
+  </div>
+
+  <div class="hero-visual" animate.enter="scale-in-animation">
+    <div class="mock-window">
+      <div class="mock-bar">
+        <span class="mock-dot red"></span>
+        <span class="mock-dot yellow"></span>
+        <span class="mock-dot green"></span>
+        <span class="mock-title">Nabada — Sessions</span>
+      </div>
+      <div class="mock-body">
+        <div class="mock-timeline">
+          @for (station of mockStations; track station.name) {
+            <div class="mock-row">
+              <span class="mock-label">{{ station.name }}</span>
+              <div class="mock-track">
+                @for (block of station.blocks; track block.left) {
+                  <div
+                    class="mock-block"
+                    [style.left.%]="block.left"
+                    [style.width.%]="block.width"
+                    [class.active]="block.active"
+                  ></div>
+                }
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="features" id="features">
+  <div class="section-header">
+    <p class="section-label" i18n="@@landing.featuresLabel">What Nabada does</p>
+    <h2 i18n="@@landing.featuresTitle">Everything your cafe needs</h2>
+  </div>
+
+  <div class="features-grid">
+    <div class="feature-card feature-card--large">
+      <div class="feature-icon">
+        <span class="material-symbols-outlined">schedule</span>
+      </div>
+      <h3 i18n="@@landing.f1Title">Session Tracking</h3>
+      <p i18n="@@landing.f1Desc">
+        Visual timeline for every station. Start, edit, and close sessions in seconds. Hourly rates
+        calculated automatically.
+      </p>
+      <div class="feature-tag" i18n="@@landing.f1Tag">Real-time</div>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon">
+        <span class="material-symbols-outlined">box_add</span>
+      </div>
+      <h3 i18n="@@landing.f2Title">Product Sales</h3>
+      <p i18n="@@landing.f2Desc">Add snacks, drinks, and gear directly to any session.</p>
+      <div class="feature-tag" i18n="@@landing.f2Tag">Instant add</div>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon">
+        <span class="material-symbols-outlined">analytics</span>
+      </div>
+      <h3 i18n="@@landing.f3Title">Income Analytics</h3>
+      <p i18n="@@landing.f3Desc">
+        Daily, weekly, monthly charts. See which stations and products earn most.
+      </p>
+      <div class="feature-tag" i18n="@@landing.f3Tag">Smart grouping</div>
+    </div>
+
+    <div class="feature-card feature-card--wide">
+      <div class="feature-icon">
+        <span class="material-symbols-outlined">language</span>
+      </div>
+      <h3 i18n="@@landing.f4Title">Georgian & English</h3>
+      <p i18n="@@landing.f4Desc">
+        Full support for both languages. Switch instantly from the header.
+      </p>
+      <div class="feature-tag" i18n="@@landing.f4Tag">EN / KA</div>
+    </div>
+  </div>
+</section>
+<section class="how-it-works">
+  <div class="section-header">
+    <p class="section-label" i18n="@@landing.howLabel">Simple by design</p>
+    <h2 i18n="@@landing.howTitle">Up and running in seconds</h2>
+  </div>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-number">01</div>
+      <div class="step-content">
+        <h3 i18n="@@landing.step1Title">Create your stations</h3>
+        <p i18n="@@landing.step1Desc">
+          Name your PCs, consoles, or VR rigs. Edit them however you like.
+        </p>
+      </div>
+    </div>
+    <div class="step-divider"></div>
+    <div class="step">
+      <div class="step-number">02</div>
+      <div class="step-content">
+        <h3 i18n="@@landing.step2Title">Start sessions</h3>
+        <p i18n="@@landing.step2Desc">
+          One tap to open a session. Add and remove products any time.
+        </p>
+      </div>
+    </div>
+    <div class="step-divider"></div>
+    <div class="step">
+      <div class="step-number">03</div>
+      <div class="step-content">
+        <h3 i18n="@@landing.step3Title">Track your income</h3>
+        <p i18n="@@landing.step3Desc">
+          Check analytics any time. Filter by date, sort by station or product.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="cta">
+  <div class="cta-glow"></div>
+  <h2 i18n="@@landing.ctaTitle">Ready to take control?</h2>
+  <p i18n="@@landing.ctaSub">Join cafe owners already using Nabada.</p>
+  <a routerLink="/signups" class="btn-primary" i18n="@@landing.ctaBtn">Create your free account</a>
+</section>

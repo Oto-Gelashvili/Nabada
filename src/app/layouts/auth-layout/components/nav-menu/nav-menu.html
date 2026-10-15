@@ -1,0 +1,80 @@
+<span class="material-symbols-outlined profileBtn" (click)="toggleState()" [class.open]="open()">
+  {{ open() ? 'close' : 'menu' }}
+</span>
+
+@if (open()) {
+  <div
+    class="profileMenu"
+    (click)="$event.stopPropagation()"
+    animate.enter="enter-animation"
+    animate.leave="leave-animation"
+  >
+    @if (userProfile(); as profile) {
+      <p class="username">{{ profile.username }}</p>
+    } @else {
+      <p class="username-skeleton">Nabada User</p>
+    }
+    <a
+      [routerLink]="userProfile() ? '/sessions' : '/signups'"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+      (click)="toggleState()"
+      class="mobile"
+      ><p i18n="@@nav.sessions">Sessions</p>
+      <span class="material-symbols-outlined"> work </span>
+    </a>
+    <a
+      [routerLink]="userProfile() ? '/products' : '/signups'"
+      routerLinkActive="active"
+      (click)="toggleState()"
+      class="mobile"
+      ><p i18n="@@nav.products">Products</p>
+      <span class="material-symbols-outlined"> box_add </span>
+    </a>
+    <a
+      [routerLink]="userProfile() ? '/analytics' : '/signups'"
+      routerLinkActive="active"
+      (click)="toggleState()"
+      class="mobile"
+      ><p i18n="@@nav.analytics">Analytics</p>
+      <span class="material-symbols-outlined"> analytics </span>
+    </a>
+
+    <a
+      [routerLink]="userProfile() ? '/settings' : '/signups'"
+      routerLinkActive="active"
+      (click)="toggleState()"
+      ><p i18n="@@nav.settings">Settings</p>
+      @if (userProfile()?.avatar_url; as avatar) {
+        <img [src]="avatar" class="avatar" alt="users avatar" />
+      } @else {
+        <span class="material-symbols-outlined"> settings </span>
+      }
+    </a>
+    <a routerLink="/" (click)="toggleState()"
+      ><p i18n="@@nav.home">Home</p>
+      <span class="material-symbols-outlined"> home </span>
+    </a>
+    <a
+      [routerLink]="userProfile() ? '/dashboard' : '/signups'"
+      routerLinkActive="active"
+      (click)="toggleState()"
+      ><p i18n="@@nav.dashboard">Dashboard</p>
+      <span class="material-symbols-outlined"> dashboard_2 </span>
+    </a>
+    <app-theme-switcher></app-theme-switcher>
+    <div class="btnCont">
+      @if (userProfile()) {
+        <button class="logOutBtn" (click)="signOut()">
+          @if (loading()) {
+            <app-spinner></app-spinner>
+          } @else {
+            <span i18n="@@nav.logOut">Log out</span>
+          }
+        </button>
+      } @else {
+        <a i18n="@@nav.register" class="logOutBtn" routerLink="/signups">Register</a>
+      }
+    </div>
+  </div>
+}
